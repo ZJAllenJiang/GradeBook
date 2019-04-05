@@ -3,3 +3,6 @@
 .project
 .DS_Store
 src/.DS_Store
+.idea/
+Gradebook.iml
+out/
