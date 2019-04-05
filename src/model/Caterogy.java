@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 abstract class Caterogy {
-	String name;
-	ArrayList<Component> components;
-	ArrayList<StudentEntry> studentEntries;
+	protected String name;
+	protected ArrayList<Component> components;
+	protected ArrayList<StudentEntry> studentEntries;
 	
 	public Caterogy(String categName) {
 		this.name = categName;
