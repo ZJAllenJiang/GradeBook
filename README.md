@@ -1,7 +1,7 @@
 # GradeBook
 Your A+ grading assistant
 
-Contributors
+## Contributors:
 Efstathios Karatsiolis
 Wei Jiang
 Aleksandr Burkatovskiy
