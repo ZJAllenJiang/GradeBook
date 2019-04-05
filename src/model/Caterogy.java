@@ -15,7 +15,7 @@ abstract class Caterogy {
 }
 
 class TextCategory extends Caterogy {
-	public TextCategory(String name) {
+	public TextCategory(String categName) {
 		super(categName);
 	}
 }
