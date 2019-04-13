@@ -1,7 +1,7 @@
 package model;
 
 
-class TextCategory extends Category {
+public class TextCategory extends Category {
 	private String content;
 	
 	public TextCategory() {

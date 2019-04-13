@@ -1,6 +1,6 @@
 package model;
 
-class GradeableCategory extends Category {
+public class GradeableCategory extends Category {
 	double weight;
 	
 	public GradeableCategory() {
