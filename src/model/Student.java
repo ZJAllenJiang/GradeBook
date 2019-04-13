@@ -5,6 +5,10 @@ public class Student {
 	private Name name;
 	private boolean status = true;
 	
+	public Student(){
+		this("0", "me", "me", "me");
+	}
+	
 	public Student(String sid, String fName, String mName, String lName) {
 		this.sid = sid;
 		name = new Name(fName, mName, lName);

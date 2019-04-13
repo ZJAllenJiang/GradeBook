@@ -86,19 +86,12 @@ public class Course {
 	}
 	
 	
-	//------------ Methods for adding a category ------------
-	public void addCategory(double weight, String name, boolean isGradeable) {
-		if (isGradeable)
-			addGradeable(weight, name);
-		else
-			addNonGradeable(name);
-	}
-	
-	private void addGradeable(double weight, String name) {
+	//------------ Methods for managing a category ------------
+	public void addGradeable(double weight, String name) {
 		categories.add(new GradeableCategory(weight, name));
 	}
 	
-	private void addNonGradeable(String name) {
+	public void addNonGradeable(String name) {
 		categories.add(new TextCategory(name));
 	}
 	
