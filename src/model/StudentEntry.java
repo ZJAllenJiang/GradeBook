@@ -21,8 +21,8 @@ public class StudentEntry {
 		dataEntries.remove(componentName);
 	}
 	
-	public DataEntry<?> getDataEnty(Component component) {
-		return dataEntries.get(component.getName());
+	public DataEntry<?> getDataEnty(String componentName) {
+		return dataEntries.get(componentName);
 	}
 
 	public Student getStudent() {

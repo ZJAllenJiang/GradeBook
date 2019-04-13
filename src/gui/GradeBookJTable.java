@@ -1,9 +1,14 @@
 package gui;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -17,12 +22,12 @@ import model.Summary;
 public class GradeBookJTable extends JTable {
 	private ArrayList<String> studentHeaders;
 	private Category category;
-	
+		
 	public GradeBookJTable(Category category) {
 		super();
 		
 		this.category = category;
-		
+				
 		refreshTable();
 	}
 	
@@ -80,7 +85,7 @@ public class GradeBookJTable extends JTable {
 			
 			//Get the category specific data
 			for(Component component : category.getComponents()) {
-				DataEntry<?> entry = studentEntry.getDataEnty(component);
+				DataEntry<?> entry = studentEntry.getDataEnty(component.getName());
 				String value = "";
 				if(entry != null) {
 					value = String.valueOf(entry.getData());
@@ -94,21 +99,49 @@ public class GradeBookJTable extends JTable {
 		}
 	}
 	
+	private int getModelColumn(int guiColumn) {
+		return convertColumnIndexToModel(guiColumn);
+	}
+	
 	@Override
 	public boolean isCellEditable(int row, int column) {                
 		if(!isSummaryTable()) {
-			int modelColumn = convertColumnIndexToModel(column);
+			int modelColumn = getModelColumn(column);
 			if(modelColumn < studentHeaders.size()) {
 				//Can only edit student data in Summary table
 				return false;
 			}
 		}
-		
+
 		return super.isCellEditable(row, column);
 	};
 	
 	@Override
 	public TableCellRenderer getCellRenderer(int row, int column) {
-		return super.getCellRenderer(row, column);
+		return new CustomCellRenderer();
+	}
+	
+	private class CustomCellRenderer extends DefaultTableCellRenderer {
+		public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+				boolean isSelected, boolean hasFocus, int row, int column) {
+			java.awt.Component rendererComp = super.getTableCellRendererComponent(table, value, 
+					isSelected, hasFocus,
+					row, column);
+
+			//Gradeable column coloring
+			String columnName = table.getColumnName(column);
+			boolean isGradeable = category.isComponentGradeable(columnName);
+			if(isGradeable) {
+				rendererComp.setBackground(Color.CYAN);
+			}
+
+			//Comment border coloring
+			if(category.componentHasComment(row, columnName)) {
+				Border border = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.YELLOW);
+				((JComponent) rendererComp).setBorder(border);
+			}
+			
+			return rendererComp ;
+		}
 	}
 }
