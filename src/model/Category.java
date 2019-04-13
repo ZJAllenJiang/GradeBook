@@ -2,19 +2,19 @@ package model;
 
 import java.util.ArrayList;
 
-abstract class Caterogy {
+abstract class Category {
 	protected String name;
 	protected ArrayList<Component> components;
 	protected ArrayList<StudentEntry> studentEntries;
 	
-	public Caterogy(String categName) {
+	public Category(String categName) {
 		this.name = categName;
 		components = new ArrayList<>();
 		studentEntries = new ArrayList<>();
 	}
 }
 
-class TextCategory extends Caterogy {
+class TextCategory extends Category {
 	public TextCategory(String categName) {
 		super(categName);
 	}
@@ -26,7 +26,7 @@ class Summary extends TextCategory {
 	}
 }
 
-class GradeableCategory extends Caterogy {
+class GradeableCategory extends Category {
 	double weight;
 	
 	public GradeableCategory(double weight, String categName) {

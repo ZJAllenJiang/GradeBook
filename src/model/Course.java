@@ -35,7 +35,7 @@ public class Course {
 		categories.add(new GradeableCategory());
 		Student student = new Student();
 		students.add(student);
-		Component component = new GradableComponent("dummy", true);
+		Component component = new GradeableComponent("dummy", true);
 		categories.get(0).addComponent(students, component);
 		categories.get(0).addStudentEntry(student);
 	}

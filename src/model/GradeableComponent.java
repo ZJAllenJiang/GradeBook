@@ -1,8 +1,8 @@
 package model;
 
-public class GradableComponent extends Component{
+public class GradeableComponent extends Component{
 
-	public GradableComponent(String n, boolean isEditable) {
+	public GradeableComponent(String n, boolean isEditable) {
 		super(n, isEditable);
 	}
 
