@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-abstract class Category {
+public abstract class Category {
 	protected String name;
 	protected ArrayList<Component> components;
 	protected ArrayList<StudentEntry> studentEntries;
@@ -18,6 +18,14 @@ abstract class Category {
 		return name;
 	}
 	
+	public ArrayList<Component> getComponents() {
+		return components;
+	}
+
+	public ArrayList<StudentEntry> getStudentEntries() {
+		return studentEntries;
+	}
+
 	public void addStudentEntry(Student student){
 		studentEntries.add(new StudentEntry(student));
 	}

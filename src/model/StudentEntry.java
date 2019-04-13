@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StudentEntry {
-	private HashMap<String, DataEntry> dataEntries;
+	private HashMap<String, DataEntry<?>> dataEntries;
 	private Student student;
 	
 	public StudentEntry(Student student) {
@@ -19,6 +19,14 @@ public class StudentEntry {
 	
 	public void deleteDataEntry(String componentName) {
 		dataEntries.remove(componentName);
+	}
+	
+	public DataEntry<?> getDataEnty(Component component) {
+		return dataEntries.get(component.getName());
+	}
+
+	public Student getStudent() {
+		return student;
 	}
 	
 }
