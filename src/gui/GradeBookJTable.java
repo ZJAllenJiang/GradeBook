@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import model.Category;
 import model.Component;
@@ -91,5 +92,23 @@ public class GradeBookJTable extends JTable {
 			
 			tableModel.addRow(row);
 		}
+	}
+	
+	@Override
+	public boolean isCellEditable(int row, int column) {                
+		if(!isSummaryTable()) {
+			int modelColumn = convertColumnIndexToModel(column);
+			if(modelColumn < studentHeaders.size()) {
+				//Can only edit student data in Summary table
+				return false;
+			}
+		}
+		
+		return super.isCellEditable(row, column);
+	};
+	
+	@Override
+	public TableCellRenderer getCellRenderer(int row, int column) {
+		return super.getCellRenderer(row, column);
 	}
 }
