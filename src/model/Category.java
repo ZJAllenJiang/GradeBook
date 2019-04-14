@@ -36,6 +36,11 @@ public abstract class Category {
 			addStudentEntry(student);
 		}
 	}
+	
+	private DataEntry<?> getEntry(int studentEntryIndex, String componentName){
+		DataEntry<?> dataEntry = studentEntries.get(studentEntryIndex).getDataEnty(componentName);
+		return dataEntry;
+	}
 
 	public boolean isComponentGradeable(String columnName) {
 		for(Component c : components) {
@@ -50,12 +55,22 @@ public abstract class Category {
 		return c instanceof GradeableComponent;
 	}
 
-	public boolean componentHasComment(int studentEntryIndex, String componentName) {
-		DataEntry<?> dataEntry = studentEntries.get(studentEntryIndex).getDataEnty(componentName);
+	public String getComment(int studentEntryIndex, String componentName) {
+		DataEntry<?> dataEntry = getEntry(studentEntryIndex, componentName);
 		if(dataEntry == null) {
+			//Shouldn't happen...
+			return null;
+		}
+		
+		return dataEntry.getComment();
+	}
+	
+	public boolean componentHasComment(int studentEntryIndex, String componentName) {
+		DataEntry<?> dataEntry = getEntry(studentEntryIndex, componentName);
+		if(dataEntry == null) {
+			//Shouldn't happen...
 			return false;
 		}
-
 		return dataEntry.hasComment();
 	}
 }

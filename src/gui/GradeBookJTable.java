@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -127,16 +128,25 @@ public class GradeBookJTable extends JTable {
 			java.awt.Component rendererComp = super.getTableCellRendererComponent(table, value, 
 					isSelected, hasFocus,
 					row, column);
+			//Add a tooltip to the headers
+			table.getTableHeader().setToolTipText("Right click to edit");
 
 			//Gradeable column coloring
 			String columnName = table.getColumnName(column);
 			boolean isGradeable = category.isComponentGradeable(columnName);
-			if(isGradeable) {
+			if(!isSelected && isGradeable) {
 				rendererComp.setBackground(Color.CYAN);
 			}
 
-			//Comment border coloring
+			//Comment coloring
 			if(category.componentHasComment(row, columnName)) {
+				//Add tooltip
+				String comment = category.getComment(row, columnName);
+				if(comment != null) {
+					((JLabel)rendererComp).setToolTipText(comment);
+				}
+
+				//Border coloring
 				Border border = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.YELLOW);
 				((JComponent) rendererComp).setBorder(border);
 			}
@@ -144,4 +154,7 @@ public class GradeBookJTable extends JTable {
 			return rendererComp ;
 		}
 	}
+	
+	//https://stackoverflow.com/questions/16743427/jtable-right-click-popup-menu
+	
 }
