@@ -16,6 +16,10 @@ public abstract class DataEntry<T> {
 	public void setData(T data) {
 		this.data = data;
 	}
+	
+	public boolean hasData() {
+		return getData() != null;
+	}
 
 	public String getComment() {
 		return comment;

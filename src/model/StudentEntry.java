@@ -25,8 +25,8 @@ public class StudentEntry implements Writable{
 		
 	}
 	
-	public void updateStudentGradeEntry(Component component) {
-		dataEntries.add(new GradeEntry(component));
+	public void addToStudentEntry(Component component) {
+		dataEntries.add(component.createEntry());
 	}
 	
 	public void deleteDataEntry(Component component) {

@@ -99,7 +99,7 @@ public class GradeBookJTable extends JTable {
 			for(Component component : category.getComponents()) {
 				DataEntry<?> entry = studentEntry.getDataEnty(component.getName());
 				String value = "";
-				if(entry != null) {
+				if(entry != null && entry.hasData()) {
 					value = String.valueOf(entry.getData());
 				}
 				

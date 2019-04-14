@@ -35,9 +35,9 @@ public abstract class Category {
 	}
 	
 	public void addComponent(Component component) {
+		components.add(component);
 		for (StudentEntry studentEntry : studentEntries) {
-			studentEntry.updateStudentGradeEntry(component);
-			
+			studentEntry.addToStudentEntry(component);
 		}
 	}
 	
