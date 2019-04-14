@@ -22,4 +22,8 @@ public abstract class Component {
 	}
 	
 	public abstract DataEntry<?> createEntry();
+	
+	public boolean isGradeable() {
+		return this instanceof GradeableComponent;
+	}
 }

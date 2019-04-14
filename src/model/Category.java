@@ -56,7 +56,7 @@ public abstract class Category {
 	}
 	
 	private boolean isComponentGradeable(Component c) {
-		return c instanceof GradeableComponent;
+		return c.isGradeable();
 	}
 	
 	public String getComment(int studentEntryIndex, String componentName) {
