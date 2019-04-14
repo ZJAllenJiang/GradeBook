@@ -20,6 +20,10 @@ public abstract class DataEntry<T> {
 	public String getComment() {
 		return comment;
 	}
+	
+	public boolean hasComment() {
+		return comment != null && !comment.equals("");
+	}
 
 	public void setComment(String comment) {
 		this.comment = comment;
