@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Summary extends TextCategory {
 	public static final String SUMMARY = "Summary";
@@ -12,11 +14,11 @@ public class Summary extends TextCategory {
 	public static final String STATUS = "Status";
 	
 	public Summary() {
-		this(SUMMARY);
+		this(SUMMARY, new ArrayList<Student>(Collections.singletonList(new Student())));
 	}
 	
-	public Summary(String categName) {
-		super(categName);
+	public Summary(String categName, ArrayList<Student> students) {
+		super(categName, students);
 	}
 	
 	public static ArrayList<String> getAllHeaders(){

@@ -9,7 +9,7 @@ public class Run {
 //		DataUtil.load();
 		
 		
-		Course c = new Course("test");
+		Course c = new Course();
 		Category hw = c.getAllCategories().get(0);
 		
 		for (StudentEntry se : hw.getStudentEntries()) {

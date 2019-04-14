@@ -29,39 +29,29 @@ public class Course {
 		status = true;
 	}
 	
-	public Course() {
-		this("dummy", "dummy", 0);
-		
-		categories.add(new GradeableCategory());
-		Student student = new Student();
-		students.add(student);
-		Component component = new GradeableComponent("dummy", true);
-		categories.get(0).addComponent(students, component);
-		categories.get(0).addStudentEntry(student);
-	}
 	
-	// test for writing database
-	public Course(String a) {
+	//  test for writing database
+	public Course() {
 		this("Java", "591", 2019);
 		
 		Student test_student1 = new Student("U123", "Peter", "J", "Patrick");
 		Student test_student2 = new Student("U124", "John", "H", "Will");
 		Student test_student3 = new Student("U125", "Kate", "", "Rose");
-
+		
 		students.add(test_student1);
 		students.add(test_student2);
 		students.add(test_student3);
 		
-		categories.add(new GradeableCategory(1.0, "Homework"));
+		categories.add(new GradeableCategory(1.0, "Homework", students));
 		Component hw1 = new GradeableComponent("HW1", true);
 		Component hw2 = new GradeableComponent("HW2", true);
 		Component hw3 = new GradeableComponent("HW3", true);
-
-		categories.get(0).addComponent(students, hw1);
-		categories.get(0).addComponent(students, hw2);
-		categories.get(0).addComponent(students, hw3);
 		
+		categories.get(0).addComponent(hw1);
+		categories.get(0).addComponent(hw2);
+		categories.get(0).addComponent(hw3);
 	}
+	
 	//------------ Characteristics Getters & Setters ------------
 	public String getName() {
 		return name;
@@ -114,11 +104,11 @@ public class Course {
 	
 	//------------ Methods for managing a category ------------
 	public void addGradeable(double weight, String name) {
-		categories.add(new GradeableCategory(weight, name));
+		categories.add(new GradeableCategory(weight, name, students));
 	}
 	
 	public void addNonGradeable(String name) {
-		categories.add(new TextCategory(name));
+		categories.add(new TextCategory(name, students));
 	}
 	
 	public void deleteCategory(String name) {

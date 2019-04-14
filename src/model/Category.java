@@ -8,10 +8,14 @@ public abstract class Category {
 	protected ArrayList<StudentEntry> studentEntries;
 	
 	
-	public Category(String categName) {
+	public Category(String categName, ArrayList<Student> students) {
 		this.name = categName;
+		
 		components = new ArrayList<>();
 		studentEntries = new ArrayList<>();
+		for (Student student : students) {
+			studentEntries.add(new StudentEntry(student, components));
+		}
 	}
 	
 	public String getName() {
@@ -21,43 +25,43 @@ public abstract class Category {
 	public ArrayList<Component> getComponents() {
 		return components;
 	}
-
+	
 	public ArrayList<StudentEntry> getStudentEntries() {
 		return studentEntries;
 	}
-
-	public void addStudentEntry(Student student){
+	
+	public void addStudentEntry(Student student) {
 		studentEntries.add(new StudentEntry(student, components));
 	}
 	
-	public void addComponent(ArrayList<Student> students, Component component){
-		components.add(component);
-		for (Student student : students){
-			addStudentEntry(student);
+	public void addComponent(Component component) {
+		for (StudentEntry studentEntry : studentEntries) {
+			studentEntry.updateStudentGradeEntry(component);
+			
 		}
 	}
 	
-	private DataEntry<?> getEntry(int studentEntryIndex, String componentName){
+	private DataEntry<?> getEntry(int studentEntryIndex, String componentName) {
 		DataEntry<?> dataEntry = studentEntries.get(studentEntryIndex).getDataEnty(componentName);
 		return dataEntry;
 	}
-
+	
 	public boolean isComponentGradeable(String columnName) {
-		for(Component c : components) {
-			if(c.getName().equals(columnName)) {
+		for (Component c : components) {
+			if (c.getName().equals(columnName)) {
 				return isComponentGradeable(c);
 			}
 		}
 		return false;
 	}
-
+	
 	private boolean isComponentGradeable(Component c) {
 		return c instanceof GradeableComponent;
 	}
-
+	
 	public String getComment(int studentEntryIndex, String componentName) {
 		DataEntry<?> dataEntry = getEntry(studentEntryIndex, componentName);
-		if(dataEntry == null) {
+		if (dataEntry == null) {
 			//Shouldn't happen...
 			return null;
 		}
@@ -67,7 +71,7 @@ public abstract class Category {
 	
 	public boolean componentHasComment(int studentEntryIndex, String componentName) {
 		DataEntry<?> dataEntry = getEntry(studentEntryIndex, componentName);
-		if(dataEntry == null) {
+		if (dataEntry == null) {
 			//Shouldn't happen...
 			return false;
 		}
