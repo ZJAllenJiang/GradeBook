@@ -50,6 +50,15 @@ public abstract class Category {
 		}
 	}
 	
+	private Component getComponent(String componentName) {
+		for (Component c : components) {
+			if (c.getName().equals(componentName)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
 	private DataEntry<?> getEntry(int studentEntryIndex, String componentName) {
 		DataEntry<?> dataEntry = studentEntries.get(studentEntryIndex).getDataEnty(componentName);
 		return dataEntry;
@@ -94,6 +103,14 @@ public abstract class Category {
 			return false;
 		}
 		return dataEntry.isValidData(guiData);
+	}
+	
+	public boolean isComponentEditable(String componentName) {
+		Component c = getComponent(componentName);
+		if(c == null) {
+			return false;
+		}
+		return c.isEditable();
 	}
 }
 

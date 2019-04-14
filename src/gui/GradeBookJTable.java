@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -116,16 +117,22 @@ public class GradeBookJTable extends JTable {
 	}
 	
 	@Override
-	public boolean isCellEditable(int row, int column) {                
+	public boolean isCellEditable(int row, int column) { 
+		String columnName = this.getColumnName(column);
 		if(!isSummaryTable()) {
-			String columnName = this.getColumnName(column);
 			if(!isComponentSpecificToCategory(columnName)) {
 				//Can only edit student data in Summary table
 				return false;
 			}
 		}
+		else {
+			if(!isComponentSpecificToCategory(columnName)) {
+				//Can edit student data
+				return true;
+			}
+		}
 
-		return super.isCellEditable(row, column);
+		return category.isComponentEditable(columnName);
 	};
 	
 	@Override
@@ -173,9 +180,36 @@ public class GradeBookJTable extends JTable {
 	
 	private String selectedModelHeader = null;
 	private void addRightClickHeaderMenu() {
-		JPopupMenu popupMenu = new JPopupMenu();
+		JPopupMenu popupMenu = new JPopupMenu() {
+			@Override
+			public void show(java.awt.Component invoker, int x, int y) {
+				int guiColumn = GradeBookJTable.this.columnAtPoint(new Point(x, y));
+				String columnName = GradeBookJTable.this.getColumnName(guiColumn);
+				if(GradeBookJTable.this.isComponentSpecificToCategory(columnName)) {
+					super.show(invoker, x, y);
+				}
+			}
+		};
 		
 		//Add menu items
+		JMenuItem statisticItem = new JMenuItem("Compute Statistics");
+		statisticItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println("Compute statistics on column: " + selectedModelHeader);
+            }
+        });
+        popupMenu.add(statisticItem);
+		
+		JMenuItem editItem = new JMenuItem("Edit");
+		editItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println("Do edit on column: " + selectedModelHeader);
+            }
+        });
+        popupMenu.add(editItem);
+        
         JMenuItem deleteItem = new JMenuItem("Delete");
         deleteItem.addActionListener(new ActionListener() {
             @Override
@@ -184,7 +218,6 @@ public class GradeBookJTable extends JTable {
             }
         });
         popupMenu.add(deleteItem);
-        
        
         //Set the context in the header to the right click header cell
         this.getTableHeader().addMouseListener( new MouseAdapter() {
@@ -199,11 +232,20 @@ public class GradeBookJTable extends JTable {
 	}
 	
 	private void addRightClickContentMenu() {
-		JPopupMenu popupMenu = new JPopupMenu();
+		JPopupMenu popupMenu = new JPopupMenu() {
+			@Override
+			public void show(java.awt.Component invoker, int x, int y) {
+				int guiColumn = GradeBookJTable.this.columnAtPoint(new Point(x, y));
+				String columnName = GradeBookJTable.this.getColumnName(guiColumn);
+				if(GradeBookJTable.this.isComponentSpecificToCategory(columnName)) {
+					super.show(invoker, x, y);
+				}
+			}
+		};
 		
 		//Add menu items
-        JMenuItem deleteItem = new JMenuItem("View Comment");
-        deleteItem.addActionListener(new ActionListener() {
+        JMenuItem commentItem = new JMenuItem("Edit Comment");
+        commentItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	java.awt.Component cell = (java.awt.Component)e.getSource();
@@ -214,10 +256,10 @@ public class GradeBookJTable extends JTable {
                 //JOptionPane.showMessageDialog(topFrame, "Right-click performed on table and choose DELETE");
             }
         });
-        popupMenu.add(deleteItem);
+        popupMenu.add(commentItem);
         
         //Set the context in the table to the right clicked cell
-        this.addMouseListener( new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 JTable source = (JTable)e.getSource();
                 int row = source.rowAtPoint( e.getPoint() );

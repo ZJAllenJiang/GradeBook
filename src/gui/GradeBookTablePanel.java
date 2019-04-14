@@ -32,13 +32,12 @@ public class GradeBookTablePanel extends JPanel {
 
 	private void addButtonsForTable() {
 		JPanel addPanel = new JPanel();
-		addComponentBtn = new JButton("Add Component");
+		addComponentBtn = new JButton("Add New Column");
 		addComponentBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				System.out.println("Added new column to " + category.getName());
 			}
 
 		});
