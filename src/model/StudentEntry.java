@@ -1,9 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
-public class StudentEntry {
+import data.Writable;
+
+
+public class StudentEntry implements Writable{
+	
 	private ArrayList<DataEntry<?>> dataEntries;
 	private Student student;
 	
@@ -41,4 +46,46 @@ public class StudentEntry {
 		return student;
 	}
 	
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return student.toString();
+	}
+
+	@Override
+	public ArrayList<String> writeAsRecord() {
+		// TODO Auto-generated method stub
+		ArrayList<String> res = new ArrayList<String>();
+		
+		for (DataEntry<?> entry : dataEntries) {
+			// add values together with comments in records
+			res.add(entry.getData().toString());
+			if (entry.hasComment())
+				res.add(entry.getComment());
+			else
+				res.add("");
+		}
+		return res;
+	}
+
+	@Override
+	public ArrayList<String> getColumnName() {
+		// TODO Auto-generated method stub
+		ArrayList<String> res = new ArrayList<String>();
+				
+		res.add("ID/Name");
+		for (DataEntry<?> key : dataEntries) {
+			// ensure that each col has a corresponding comment col
+			res.add(key.getComponent().getName());
+			res.add("Comment");
+		}
+
+		return res;
+	}
+	
+	
+	// test only
+	public ArrayList<DataEntry<?>> getAllData() {
+		return dataEntries;
+	}
 }

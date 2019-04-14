@@ -1,6 +1,10 @@
 package model;
 
-public class Student {
+import java.util.ArrayList;
+
+import data.Writable;
+
+public class Student implements Writable{
 	private String sid;
 	private Name name;
 	private boolean status = true;
@@ -49,5 +53,35 @@ public class Student {
 	@Override
 	public String toString() {
 		return sid + " " + name.toString();
+	}
+
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return sid;
+	}
+
+	@Override
+	public ArrayList<String> writeAsRecord() {
+		// TODO Auto-generated method stub
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(name.toString());
+		if (status)
+			res.add("Active");
+		else
+			res.add("Inactive");
+		
+		return res;
+	}
+
+	@Override
+	public ArrayList<String> getColumnName() {
+		// TODO Auto-generated method stub
+		ArrayList<String> res = new ArrayList<String>();
+		res.add("Student ID");
+		res.add("Name");
+		res.add("Status");
+		
+		return res;
 	}
 }
