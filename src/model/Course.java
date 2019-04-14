@@ -32,12 +32,15 @@ public class Course {
 	public Course() {
 		this("dummy", "dummy", 0);
 		
-		categories.add(new GradeableCategory());
+		Category category = new GradeableCategory();
+		categories.add(category);
+		
 		Student student = new Student();
 		students.add(student);
+		
 		Component component = new GradeableComponent("dummy", true);
 		categories.get(0).addComponent(students, component);
-		categories.get(0).addStudentEntry(student);
+//		categories.get(0).addStudentEntry(student);
 	}
 	
 	//------------ Characteristics Getters & Setters ------------
@@ -124,5 +127,10 @@ public class Course {
 				students.remove(stud);
 			}
 		}
+	}
+	
+	//------------- Update Summary ------------
+	private void updateSummary() {
+	
 	}
 }

@@ -27,7 +27,7 @@ public abstract class Category {
 	}
 
 	public void addStudentEntry(Student student){
-		studentEntries.add(new StudentEntry(student));
+		studentEntries.add(new StudentEntry(student, components));
 	}
 	
 	public void addComponent(ArrayList<Student> students, Component component){
