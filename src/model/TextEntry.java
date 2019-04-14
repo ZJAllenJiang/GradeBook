@@ -6,4 +6,7 @@ public class TextEntry extends DataEntry<String>{
 		super(component);
 	}
 	
+	public boolean isValidData(String guiData) {
+		return true;
+	}
 }

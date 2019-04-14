@@ -26,6 +26,15 @@ public abstract class Category {
 		return components;
 	}
 	
+	public boolean hasComponent(String componentName) {
+		for (Component c : components) {
+			if (c.getName().equals(componentName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public ArrayList<StudentEntry> getStudentEntries() {
 		return studentEntries;
 	}
@@ -46,9 +55,9 @@ public abstract class Category {
 		return dataEntry;
 	}
 	
-	public boolean isComponentGradeable(String columnName) {
+	public boolean isComponentGradeable(String componentName) {
 		for (Component c : components) {
-			if (c.getName().equals(columnName)) {
+			if (c.getName().equals(componentName)) {
 				return isComponentGradeable(c);
 			}
 		}
@@ -69,13 +78,22 @@ public abstract class Category {
 		return dataEntry.getComment();
 	}
 	
-	public boolean componentHasComment(int studentEntryIndex, String componentName) {
+	public boolean entryHasComment(int studentEntryIndex, String componentName) {
 		DataEntry<?> dataEntry = getEntry(studentEntryIndex, componentName);
 		if (dataEntry == null) {
 			//Shouldn't happen...
 			return false;
 		}
 		return dataEntry.hasComment();
+	}
+	
+	public boolean validUserEntry(int studentEntryIndex, String componentName, String guiData) {
+		DataEntry<?> dataEntry = getEntry(studentEntryIndex, componentName);
+		if (dataEntry == null) {
+			//Shouldn't happen...
+			return false;
+		}
+		return dataEntry.isValidData(guiData);
 	}
 }
 

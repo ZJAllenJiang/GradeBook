@@ -36,4 +36,6 @@ public abstract class DataEntry<T> {
 	public Component getComponent() {
 		return component;
 	}
+	
+	public abstract boolean isValidData(String guiData);
 }

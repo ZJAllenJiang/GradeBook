@@ -110,16 +110,16 @@ public class GradeBookJTable extends JTable {
 			tableModel.addRow(row);
 		}
 	}
-	
-	private int getModelColumn(int guiColumn) {
-		return convertColumnIndexToModel(guiColumn);
+
+	private boolean isComponentSpecificToCategory(String columnName) {
+		return category.hasComponent(columnName);
 	}
 	
 	@Override
 	public boolean isCellEditable(int row, int column) {                
 		if(!isSummaryTable()) {
-			int modelColumn = getModelColumn(column);
-			if(modelColumn < studentHeaders.size()) {
+			String columnName = this.getColumnName(column);
+			if(!isComponentSpecificToCategory(columnName)) {
 				//Can only edit student data in Summary table
 				return false;
 			}
@@ -148,9 +148,14 @@ public class GradeBookJTable extends JTable {
 			if(!isSelected && isGradeable) {
 				rendererComp.setBackground(Color.CYAN);
 			}
+			
+			//Invalid input coloring
+			if(isComponentSpecificToCategory(columnName) && !category.validUserEntry(row, columnName, (String)value)) {
+				rendererComp.setBackground(Color.RED);
+			}
 
 			//Comment coloring
-			if(category.componentHasComment(row, columnName)) {
+			if(category.entryHasComment(row, columnName)) {
 				//Add tooltip
 				String comment = category.getComment(row, columnName);
 				if(comment != null) {
@@ -166,7 +171,7 @@ public class GradeBookJTable extends JTable {
 		}
 	}
 	
-	private int selectedModelHeader = -1;
+	private String selectedModelHeader = null;
 	private void addRightClickHeaderMenu() {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
@@ -186,7 +191,7 @@ public class GradeBookJTable extends JTable {
             public void mousePressed(MouseEvent e) {
             	JTableHeader header = (JTableHeader) e.getSource();
                 int guiColumn = header.columnAtPoint(e.getPoint());
-                selectedModelHeader = GradeBookJTable.this.getModelColumn(guiColumn);
+                selectedModelHeader = GradeBookJTable.this.getColumnName(guiColumn);
             }
         });    
     
