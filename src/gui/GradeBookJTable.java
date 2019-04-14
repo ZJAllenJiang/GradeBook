@@ -1,16 +1,23 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 import model.Category;
@@ -30,6 +37,10 @@ public class GradeBookJTable extends JTable {
 		this.category = category;
 				
 		refreshTable();
+		
+		//Setup right clicks just once
+		addRightClickHeaderMenu();
+		addRightClickContentMenu();
 	}
 	
 	public boolean isSummaryTable() {
@@ -151,10 +162,68 @@ public class GradeBookJTable extends JTable {
 				((JComponent) rendererComp).setBorder(border);
 			}
 			
-			return rendererComp ;
+			return rendererComp;
 		}
 	}
 	
-	//https://stackoverflow.com/questions/16743427/jtable-right-click-popup-menu
+	private int selectedModelHeader = -1;
+	private void addRightClickHeaderMenu() {
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+		//Add menu items
+        JMenuItem deleteItem = new JMenuItem("Delete");
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	System.out.println("Do delete on column: " + selectedModelHeader);
+            }
+        });
+        popupMenu.add(deleteItem);
+        
+       
+        //Set the context in the header to the right click header cell
+        this.getTableHeader().addMouseListener( new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+            	JTableHeader header = (JTableHeader) e.getSource();
+                int guiColumn = header.columnAtPoint(e.getPoint());
+                selectedModelHeader = GradeBookJTable.this.getModelColumn(guiColumn);
+            }
+        });    
+    
+        this.getTableHeader().setComponentPopupMenu(popupMenu);
+	}
 	
+	private void addRightClickContentMenu() {
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+		//Add menu items
+        JMenuItem deleteItem = new JMenuItem("View Comment");
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	java.awt.Component cell = (java.awt.Component)e.getSource();
+                JPopupMenu popup = (JPopupMenu)cell.getParent();
+                JTable table = (JTable)popup.getInvoker();
+                System.out.println("View comment for cell: " + table.getSelectedRow() + ", " + table.getSelectedColumn());
+            	//JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                //JOptionPane.showMessageDialog(topFrame, "Right-click performed on table and choose DELETE");
+            }
+        });
+        popupMenu.add(deleteItem);
+        
+        //Set the context in the table to the right clicked cell
+        this.addMouseListener( new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                JTable source = (JTable)e.getSource();
+                int row = source.rowAtPoint( e.getPoint() );
+                int column = source.columnAtPoint( e.getPoint() );
+
+                //if (! source.isRowSelected(row)){
+                source.changeSelection(row, column, false, false);
+                //}
+            }
+        });
+        
+        this.setComponentPopupMenu(popupMenu);
+	}
 }
