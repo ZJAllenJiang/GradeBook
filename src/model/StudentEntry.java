@@ -28,9 +28,9 @@ public class StudentEntry {
 //		dataEntries.remove(component);
 	}
 	
-	public DataEntry<?> getDataEnty(Component component) {
+	public DataEntry<?> getDataEnty(String componentName) {
 		for (DataEntry entry : dataEntries) {
-			if (entry.getComponent().getName().equals(component.getName())) {
+			if (entry.getComponent().getName().equals(componentName)) {
 				return dataEntries.get(dataEntries.indexOf(entry));
 			}
 		}
