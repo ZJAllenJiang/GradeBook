@@ -27,6 +27,7 @@ import model.DataEntry;
 import model.Student;
 import model.StudentEntry;
 import model.Summary;
+import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
 	private ArrayList<String> studentHeaders;
@@ -177,6 +178,23 @@ public class GradeBookJTable extends JTable {
 			return rendererComp;
 		}
 	}
+	
+	@Override
+	protected JTableHeader createDefaultTableHeader() {
+        return new JTableHeader(columnModel) {
+            public String getToolTipText(MouseEvent e) {
+                String toolTipText = null;
+                java.awt.Point p = e.getPoint();
+                int guiColumn = columnModel.getColumnIndexAtX(p.x);
+                String columnName = GradeBookJTable.this.getColumnName(guiColumn);
+                if(category.isComponentGradeable(columnName)) {
+                	double weight = ((GradeableComponent) category.getComponent(columnName)).getWeight();
+                	toolTipText = "Weight: " + weight;
+                }
+                return toolTipText;
+            }
+        };
+    }
 	
 	private String selectedModelHeader = null;
 	private void addRightClickHeaderMenu() {

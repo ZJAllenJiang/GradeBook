@@ -22,6 +22,10 @@ public abstract class Category {
 		return name;
 	}
 	
+	public boolean isGradeable() {
+		return this instanceof GradeableCategory;
+	}
+	
 	public ArrayList<Component> getComponents() {
 		return components;
 	}
@@ -50,7 +54,7 @@ public abstract class Category {
 		}
 	}
 	
-	private Component getComponent(String componentName) {
+	public Component getComponent(String componentName) {
 		for (Component c : components) {
 			if (c.getName().equals(componentName)) {
 				return c;

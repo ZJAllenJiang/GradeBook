@@ -43,9 +43,9 @@ public class Course {
 		students.add(test_student3);
 		
 		categories.add(new GradeableCategory(1.0, "Homework", students));
-		Component hw1 = new GradeableComponent("HW1", true);
-		Component hw2 = new GradeableComponent("HW2", true);
-		Component hw3 = new GradeableComponent("HW3", true);
+		Component hw1 = new GradeableComponent("HW1", true, .1);
+		Component hw2 = new GradeableComponent("HW2", true, .5);
+		Component hw3 = new GradeableComponent("HW3", true, .4);
 		
 		categories.get(0).addComponent(hw1);
 		categories.get(0).addComponent(hw2);
@@ -95,6 +95,15 @@ public class Course {
 	
 	public Category getCategory(int index) {
 		return categories.get(index);
+	}
+	
+	public Category getCategory(String categoryName) {
+		for(Category c : categories) {
+			if(c.getName().equals(categoryName)) {
+				return c;
+			}
+		}
+		return null;
 	}
 	
 	public Summary getSummary() {

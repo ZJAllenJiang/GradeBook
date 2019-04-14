@@ -16,6 +16,7 @@ import javax.swing.plaf.TabbedPaneUI;
 import model.Category;
 import model.Course;
 import model.Summary;
+import model.GradeableCategory;
 
 public class GradeBookPanel extends JPanel {
 	private Course course;
@@ -36,7 +37,14 @@ public class GradeBookPanel extends JPanel {
 		
 		//Add the other Categories
 		for(Category category : course.getAllCategories()) {
-			gradeBookTabs.addTab(category.getName(), new GradeBookTablePanel(category));
+			if(category.isGradeable()) {
+				double weight = ((GradeableCategory) category).getWeight();
+				String weightToolTip = getWeightToolTipString(weight);
+				gradeBookTabs.addTab(category.getName(), null, new GradeBookTablePanel(category), weightToolTip);
+			}
+			else {
+				gradeBookTabs.addTab(category.getName(), new GradeBookTablePanel(category));
+			}
 		}
 		
 		gradeBookTabs.addMouseListener(new MouseAdapter() {
@@ -50,6 +58,7 @@ public class GradeBookPanel extends JPanel {
 						String tabName = gradeBookTabs.getTitleAt(tabIndex);
 						//Can't modify Summary tab
 						if(!tabName.equals(Summary.SUMMARY)) {
+							Category category = course.getCategory(tabName);
 			    			JPopupMenu popupMenu = new JPopupMenu();
 			    			
 			    			//Add menu items
@@ -67,6 +76,9 @@ public class GradeBookPanel extends JPanel {
 			    	            @Override
 			    	            public void actionPerformed(ActionEvent e) {
 			    	            	System.out.println("Do edit on column: " + tabName);
+			    	            	double weight = ((GradeableCategory) category).getWeight();
+			    					String weightToolTip = getWeightToolTipString(weight);
+			    	            	gradeBookTabs.setToolTipTextAt(tabIndex, weightToolTip);
 			    	            }
 			    	        });
 			    	        popupMenu.add(editItem);
@@ -88,5 +100,9 @@ public class GradeBookPanel extends JPanel {
 		});
 		
 		add(gradeBookTabs);
+	}
+	
+	private String getWeightToolTipString(double weight) {
+		return "Weight: " + weight;
 	}
 }
