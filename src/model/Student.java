@@ -2,9 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
-import data.Writable;
+import data.ReadIn;
+import data.Writeout;
 
-public class Student implements Writable{
+public class Student implements Writeout, ReadIn{
 	private String sid;
 	private Name name;
 	private boolean status = true;
@@ -65,7 +66,9 @@ public class Student implements Writable{
 	public ArrayList<String> writeAsRecord() {
 		// TODO Auto-generated method stub
 		ArrayList<String> res = new ArrayList<String>();
-		res.add(name.toString());
+		res.add(this.getFirstName());
+		res.add(this.getMiddleName());
+		res.add(this.getLastName());
 		if (status)
 			res.add("Active");
 		else
@@ -79,9 +82,37 @@ public class Student implements Writable{
 		// TODO Auto-generated method stub
 		ArrayList<String> res = new ArrayList<String>();
 		res.add("Student ID");
-		res.add("Name");
+		res.add("First name");
+		res.add("Middle initial");
+		res.add("Last name");
 		res.add("Status");
 		
 		return res;
+	}
+
+	@Override
+	public void readFromRowData(String line) {
+		// TODO Auto-generated method stub
+		
+		// the separator of csv is ','
+		String[] terms = line.split(",");
+		
+		// should be one to one mapping 
+		if (terms.length != 5) {
+			System.out.println("[Student readFromRowData] can't compose object, "
+					+ "the rowdata is: " + line);
+			return;
+		}
+		
+		this.setSid(terms[0]);
+		this.setName(terms[1], terms[2], terms[3]);
+		if (terms[4].equals("Active"))
+			this.setStatus(true);
+		else if (terms[4].equals("Inactive"))
+			this.setStatus(false);
+		else
+			this.setStatus(false);
+			System.out.println("[Student readFromRowData] miss matched type."
+					+ " status = " + terms[4]);
 	}
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *  when an object would be written into csv file
  *  it should implement this interface first
  */
-public interface Writable {
+public interface Writeout {
 	
 	/*
 	 *  indicate the row index for that object

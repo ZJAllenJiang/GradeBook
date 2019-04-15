@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import data.Writable;
+import data.ReadIn;
+import data.Writeout;
 
 
-public class StudentEntry implements Writable{
+public class StudentEntry implements Writeout, ReadIn{
 	
 	private ArrayList<DataEntry<?>> dataEntries;
 	private Student student;
@@ -59,7 +60,11 @@ public class StudentEntry implements Writable{
 		
 		for (DataEntry<?> entry : dataEntries) {
 			// add values together with comments in records
-			res.add(entry.getData().toString());
+			if (entry.getData() != null) 
+				res.add(entry.getData().toString());
+			else
+				res.add("");
+			
 			if (entry.hasComment())
 				res.add(entry.getComment());
 			else
@@ -87,5 +92,29 @@ public class StudentEntry implements Writable{
 	// test only
 	public ArrayList<DataEntry<?>> getAllData() {
 		return dataEntries;
+	}
+
+	@Override
+	public void readFromRowData(String line) {
+		// TODO Auto-generated method stub
+		
+		// the separator of csv is ','
+		String[] terms = line.split(",");
+		
+		// ensure that two times of existing components equals to terms.length - 1 
+		// one component has a value col together with a comment col
+		if (terms.length - 1 != 2 * dataEntries.size()) {
+			System.out.println("[StudentEntry readFromRowData] mis matched size. "
+					+ "terms.length = " + terms.length + " , size of components = "
+							+ dataEntries.size());
+			return;
+		}
+		
+		for (int i = 0; i < dataEntries.size(); i++) {
+			String data = terms[i * 2 + 1];
+			String comment = terms[i * 2 + 2];
+			dataEntries.get(i).setDataWithString(data);
+			dataEntries.get(i).setComment(comment);
+		}
 	}
 }
