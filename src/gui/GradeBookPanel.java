@@ -62,14 +62,16 @@ public class GradeBookPanel extends JPanel {
 			    			JPopupMenu popupMenu = new JPopupMenu();
 			    			
 			    			//Add menu items
-			    			JMenuItem statisticItem = new JMenuItem("Compute Statistics");
-			    			statisticItem.addActionListener(new ActionListener() {
-			    	            @Override
-			    	            public void actionPerformed(ActionEvent e) {
-			    	            	System.out.println("Compute statistics on column: " + tabName);
-			    	            }
-			    	        });
-			    	        popupMenu.add(statisticItem);
+			    			if(category.isGradeable()) {
+			    				JMenuItem statisticItem = new JMenuItem("Compute Statistics");
+			    				statisticItem.addActionListener(new ActionListener() {
+			    					@Override
+			    					public void actionPerformed(ActionEvent e) {
+			    						System.out.println("Compute statistics on column: " + tabName);
+			    					}
+			    				});
+			    				popupMenu.add(statisticItem);
+			    			}
 			    			
 			    			JMenuItem editItem = new JMenuItem("Edit");
 			    			editItem.addActionListener(new ActionListener() {
