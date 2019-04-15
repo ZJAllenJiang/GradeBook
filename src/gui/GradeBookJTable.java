@@ -243,6 +243,14 @@ public class GradeBookJTable extends JTable {
             	JTableHeader header = (JTableHeader) e.getSource();
                 int guiColumn = header.columnAtPoint(e.getPoint());
                 selectedModelHeader = GradeBookJTable.this.getColumnName(guiColumn);
+                
+                //Can compute statistics?
+                if(category.isComponentGradeable(selectedModelHeader)) {
+                	statisticItem.setVisible(true);
+                }
+                else {
+                	statisticItem.setVisible(false);
+                }
             }
         });    
     
