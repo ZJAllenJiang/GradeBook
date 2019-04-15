@@ -129,6 +129,11 @@ public class Course {
 		}
 	}
 	
+	// add category by passing an existing category
+	public void addCategory(Category category) {
+		categories.add(category);
+	}
+	
 	//------------- Methods for adding students ------------
 	public void addStudent(String sId, String fName, String mName, String lName) {
 		Student student = new Student(sId, fName, mName, lName);

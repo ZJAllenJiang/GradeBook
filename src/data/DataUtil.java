@@ -99,46 +99,51 @@ public class DataUtil {
 		// load Active / Inactive status
 		Course res = new Course(name, code, year);
 		res.setStatus(readStatus(coursePath + "/" + "Status"));
-		ArrayList<Student> studentlist = readStudent(coursePath + "/" + "Student.csv");
+		
+		// load Student.csv
+		ArrayList<Student> studentlist = readStudent(coursePath + "/" + "Student.csv"); 
+		for (Student student : studentlist)
+			res.addStudent(student.getSid(), student.getFirstName(), 
+				student.getMiddleName(), student.getLastName());
+
 		// load Summary.csv
 		
-		
 		// load categories
-		
-		// organize gradeable categories
 		String GradeableCategory = coursePath + "/" + "Category" + "/" + "GradeableCategory";
 		String TextCategory = coursePath + "/" + "Category" + "/" + "TextCategory";
-		for (String categorypath : lookForDir(TextCategory)) {
-			ArrayList<Component> components = readComponents(TextCategory + "/" + 
-					categorypath + "/" + categorypath + ".csv",
-					TextCategory + "/" + categorypath + "/" + "componentType");
-			ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
-					categorypath + "/" + categorypath + ".csv", studentlist, components);
-			
-			
-			res.addNonGradeable(name);
-		}
-		
-		// organize text categories
+		// organize gradeable categories
 		for (String categorypath : lookForDir(GradeableCategory)) {
 			String categoryname = categorypath;
 			double weight = readOverallWeight(GradeableCategory + "/" +
 					categorypath + "/" + "overweight");
 			ArrayList<Component> components = readComponents(GradeableCategory + "/" +
 					categorypath + "/" + categorypath + ".csv",
-					GradeableCategory + "/" + categorypath + "/" + "componentType");
+					GradeableCategory + "/" + categorypath + "/" + "componentType",
+					GradeableCategory + "/" + categorypath + "/" + "componentweight");
 			ArrayList<StudentEntry> studententries = readStudentEntries(GradeableCategory + "/" +
 					categorypath + "/" + categorypath + ".csv", studentlist, components);
 			
-			res.addGradeable(weight, categoryname);
+			Category c = new GradeableCategory(weight, categoryname, studentlist);
+			for (Component component : components) 
+				c.addComponent(component);
+			res.addCategory(c);
+		}		
+		// organize text categories
+		for (String categorypath : lookForDir(TextCategory)) {
+			String categoryname = categorypath; 
+			ArrayList<Component> components = readComponents(TextCategory + "/" + 
+					categorypath + "/" + categorypath + ".csv",
+					TextCategory + "/" + categorypath + "/" + "componentType",
+					"");
+			ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
+					categorypath + "/" + categorypath + ".csv", studentlist, components);
+			
+			Category c = new TextCategory(categoryname, studentlist);
+			for (Component component : components) 
+				c.addComponent(component);
+			res.addCategory(c);
 		}
-		
-		// load Student.csv, have to load it after dealing with categories thing
-		for (Student student : studentlist)
-			res.addStudent(student.getSid(), student.getFirstName(), 
-				student.getMiddleName(), student.getLastName(), student.isStatus());
 
-		
 		return res;
 	}
 	
@@ -159,22 +164,29 @@ public class DataUtil {
 		return res;
 	}
 	
-	private static ArrayList<Component> readComponents(String filename, String typefile) {
+	private static ArrayList<Component> readComponents(String filename, 
+			String typefile, String optional) {
 		ArrayList<Component> res = new ArrayList<Component>();
 		
 		// read components from first row
 		String[] attributes = readCSV(filename).get(0).split(",");
 		String[] componentsType = readText(typefile).split(",");
+		String[] componentsWeight = null;
+		if (!optional.equals(""))
+			componentsWeight = readText(optional).split(",");
 		
 		if (attributes.length == componentsType.length + 1) {
 			for (int i = 1; i < attributes.length; i++) {
 				String name = attributes[i];
 				Component c = null;
+				
 				// all return editable by default
 				if (componentsType[i-1].equals(ctypeText)) {
 					c = new TextComponent(name, true);
-				} else if (componentsType[i-1].equals(ctypeGradeable)) {
-					c = new GradeableComponent(name, true);
+				} else if (componentsType[i-1].equals(ctypeGradeable)
+						&& componentsWeight != null) {
+					c = new GradeableComponent(name, true, 
+							Double.parseDouble(componentsWeight[i-1]));
 				} else {
 					System.out.println("[DataUtil readComponents] miss match type, type = "
 							+ componentsType[i-1]);
@@ -258,11 +270,30 @@ public class DataUtil {
 			writeText(overweight, 
 					Double.toString(((GradeableCategory) category).getWeight()));
 			
-//			// text, weight for each component
-//			String componentweight = path + "/" + "componentweight";
-//			createFile(componentweight);
-//			writeText(componentweight,)
+			// text, weight for each component
+			String componentweight = path + "/" + "componentweight";
+			createFile(componentweight);
+			writeText(componentweight,
+					getAllComponentWeight(category));
 		}
+	}
+	
+	private static String getAllComponentWeight(Category category) {
+		String res = "";
+		for(int i = 0; i < category.getComponents().size(); i++) {
+			Component c = category.getComponents().get(i);
+			
+			// only GradeableComponents have weights so far
+			if (c instanceof GradeableComponent) 
+				res += Double.toString(
+						((GradeableComponent) c).getWeight());
+			else
+				res += " ";
+			
+			if (i != category.getComponents().size() - 1)
+				res += ",";
+		}
+		return res;
 	}
 	
 	private static String getAllComponentType(Category category) {
@@ -289,7 +320,7 @@ public class DataUtil {
 		File currentDir = new File(dir);
 		for (File file : currentDir.listFiles()) {
 			if (file.isDirectory())
-				res.add(file.getAbsolutePath().replace(File.separatorChar, '/'));
+				res.add(file.getName());
 		}
 		return res;
 	}
@@ -301,7 +332,7 @@ public class DataUtil {
 		String reg_expression = "(.*)" + reg + "(.*)";
 		for (File file : currentDir.listFiles()) {
 			if (file.isFile() && file.getName().matches(reg_expression))
-				res.add(file.getAbsolutePath().replace(File.separatorChar, '/'));
+				res.add(file.getName());
 		}
 		return res;
 	}

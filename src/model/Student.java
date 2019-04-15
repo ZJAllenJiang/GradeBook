@@ -110,9 +110,10 @@ public class Student implements Writeout, ReadIn{
 			this.setStatus(true);
 		else if (terms[4].equals("Inactive"))
 			this.setStatus(false);
-		else
+		else {
 			this.setStatus(false);
 			System.out.println("[Student readFromRowData] miss matched type."
 					+ " status = " + terms[4]);
+		}
 	}
 }
