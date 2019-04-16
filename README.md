@@ -5,4 +5,4 @@ Your A+ grading assistant
 Efstathios Karatsiolis
 Wei Jiang
 Aleksandr Burkatovskiy
-Chengun Wu
+Chenjun Wu
