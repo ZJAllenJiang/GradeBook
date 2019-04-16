@@ -13,6 +13,7 @@ import model.Student;
 import model.StudentEntry;
 import model.TextCategory;
 import model.TextComponent;
+import model.GradeableComponent.DataEntryMode;
 import model.Category;
 import model.Component;
 
@@ -186,7 +187,8 @@ public class DataUtil {
 				} else if (componentsType[i-1].equals(ctypeGradeable)
 						&& componentsWeight != null) {
 					c = new GradeableComponent(name, true, 
-							Double.parseDouble(componentsWeight[i-1]));
+							Double.parseDouble(componentsWeight[i-1]),
+							1, DataEntryMode.POINTS_EARNED);
 				} else {
 					System.out.println("[DataUtil readComponents] miss match type, type = "
 							+ componentsType[i-1]);
