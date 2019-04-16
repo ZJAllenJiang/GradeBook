@@ -204,6 +204,6 @@ public class EditCoursePage {
 		saveButton.setBounds(150, 290, 120, 30);
 		frame.getContentPane().add(saveButton);
 		
-		
+		frame.setResizable(false);
 	}
 }

@@ -62,5 +62,6 @@ public class loginErrorPage {
 		});
 		backButton.setBounds(165, 140, 120, 30);
 		frame.getContentPane().add(backButton);
+		frame.setResizable(false);
 	}
 }

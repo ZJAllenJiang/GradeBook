@@ -152,5 +152,6 @@ public class CreateCoursePage {
 		});
 		saveButton.setBounds(150, 280, 120, 30);
 		frame.getContentPane().add(saveButton);
+		frame.setResizable(false);
 	}
 }
