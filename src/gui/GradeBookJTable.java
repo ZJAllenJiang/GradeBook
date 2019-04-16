@@ -199,8 +199,15 @@ public class GradeBookJTable extends JTable {
                 int guiColumn = columnModel.getColumnIndexAtX(p.x);
                 String columnName = GradeBookJTable.this.getColumnName(guiColumn);
                 if(category.isComponentGradeable(columnName)) {
-                	double weight = ((GradeableComponent) category.getComponent(columnName)).getWeight();
-                	toolTipText = "Weight: " + weight;
+                	GradeableComponent gComponent = ((GradeableComponent) category.getComponent(columnName));
+                	toolTipText = "<html>";
+                	double weight = gComponent.getWeight();
+                	toolTipText = toolTipText + "Weight: " + weight + "<br>";
+                	double maxScore = gComponent.getMaxScore();
+                	toolTipText = toolTipText + "Max Score: " + maxScore + "<br>";
+                	String entryMode = gComponent.getDateEntryMode().toString();
+                	toolTipText = toolTipText + "Grade Entry Mode: " + entryMode;
+                	toolTipText = toolTipText + "</html>";
                 }
                 return toolTipText;
             }
