@@ -15,7 +15,7 @@ import model.TextCategory;
 import model.TextComponent;
 import model.GradeableComponent.DataEntryMode;
 import model.Category;
-import model.Component;
+import model.CategoryComponent;
 
 public class DataUtil {
 	private static final String root = "";
@@ -117,7 +117,7 @@ public class DataUtil {
 			String categoryname = categorypath;
 			double weight = readOverallWeight(GradeableCategory + "/" +
 					categorypath + "/" + "overweight");
-			ArrayList<Component> components = readComponents(GradeableCategory + "/" +
+			ArrayList<CategoryComponent> components = readComponents(GradeableCategory + "/" +
 					categorypath + "/" + categorypath + ".csv",
 					GradeableCategory + "/" + categorypath + "/" + "componentType",
 					GradeableCategory + "/" + categorypath + "/" + "componentweight");
@@ -125,14 +125,14 @@ public class DataUtil {
 					categorypath + "/" + categorypath + ".csv", studentlist, components);
 			
 			Category c = new GradeableCategory(weight, categoryname, studentlist);
-			for (Component component : components) 
+			for (CategoryComponent component : components) 
 				c.addComponent(component);
 			res.addCategory(c);
 		}		
 		// organize text categories
 		for (String categorypath : lookForDir(TextCategory)) {
 			String categoryname = categorypath; 
-			ArrayList<Component> components = readComponents(TextCategory + "/" + 
+			ArrayList<CategoryComponent> components = readComponents(TextCategory + "/" + 
 					categorypath + "/" + categorypath + ".csv",
 					TextCategory + "/" + categorypath + "/" + "componentType",
 					"");
@@ -140,7 +140,7 @@ public class DataUtil {
 					categorypath + "/" + categorypath + ".csv", studentlist, components);
 			
 			Category c = new TextCategory(categoryname, studentlist);
-			for (Component component : components) 
+			for (CategoryComponent component : components) 
 				c.addComponent(component);
 			res.addCategory(c);
 		}
@@ -165,9 +165,9 @@ public class DataUtil {
 		return res;
 	}
 	
-	private static ArrayList<Component> readComponents(String filename, 
+	private static ArrayList<CategoryComponent> readComponents(String filename, 
 			String typefile, String optional) {
-		ArrayList<Component> res = new ArrayList<Component>();
+		ArrayList<CategoryComponent> res = new ArrayList<CategoryComponent>();
 		
 		// read components from first row
 		String[] attributes = readCSV(filename).get(0).split(",");
@@ -179,7 +179,7 @@ public class DataUtil {
 		if (attributes.length == componentsType.length + 1) {
 			for (int i = 1; i < attributes.length; i++) {
 				String name = attributes[i];
-				Component c = null;
+				CategoryComponent c = null;
 				
 				// all return editable by default
 				if (componentsType[i-1].equals(ctypeText)) {
@@ -201,7 +201,7 @@ public class DataUtil {
 	}
 	
 	private static ArrayList<StudentEntry> readStudentEntries(String filename, 
-			ArrayList<Student> students, ArrayList<Component> components) {
+			ArrayList<Student> students, ArrayList<CategoryComponent> components) {
 		ArrayList<StudentEntry> res = new ArrayList<StudentEntry>();
 		ArrayList<String> rowData = readCSV(filename);
 		
@@ -283,7 +283,7 @@ public class DataUtil {
 	private static String getAllComponentWeight(Category category) {
 		String res = "";
 		for(int i = 0; i < category.getComponents().size(); i++) {
-			Component c = category.getComponents().get(i);
+			CategoryComponent c = category.getComponents().get(i);
 			
 			// only GradeableComponents have weights so far
 			if (c instanceof GradeableComponent) 
@@ -301,7 +301,7 @@ public class DataUtil {
 	private static String getAllComponentType(Category category) {
 		String res = "";
 		for(int i = 0; i < category.getComponents().size(); i++) {
-			Component c = category.getComponents().get(i);
+			CategoryComponent c = category.getComponents().get(i);
 			if (c instanceof TextComponent) 
 				res += ctypeText;
 			else if (c instanceof GradeableComponent) 

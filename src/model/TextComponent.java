@@ -1,6 +1,6 @@
 package model;
 
-public class TextComponent extends Component {
+public class TextComponent extends CategoryComponent {
 
 	public TextComponent(String n, boolean isEditable) {
 		super(n, isEditable);

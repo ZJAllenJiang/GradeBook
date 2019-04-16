@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import model.Category;
-import model.Component;
+import model.CategoryComponent;
 import model.TextComponent;
 
 
@@ -38,7 +38,7 @@ public class GradeBookTablePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Added new column to " + category.getName());
-				Component c = new TextComponent("Test", true);
+				CategoryComponent c = new TextComponent("Test", true);
 				category.addComponent(c);
 				gradeBookTable.refreshTable();
 			}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Category {
 	protected String name;
-	protected ArrayList<Component> components;
+	protected ArrayList<CategoryComponent> components;
 	protected ArrayList<StudentEntry> studentEntries;
 	
 	
@@ -26,12 +26,12 @@ public abstract class Category {
 		return this instanceof GradeableCategory;
 	}
 	
-	public ArrayList<Component> getComponents() {
+	public ArrayList<CategoryComponent> getComponents() {
 		return components;
 	}
 	
 	public boolean hasComponent(String componentName) {
-		for (Component c : components) {
+		for (CategoryComponent c : components) {
 			if (c.getName().equals(componentName)) {
 				return true;
 			}
@@ -47,15 +47,15 @@ public abstract class Category {
 		studentEntries.add(new StudentEntry(student, components));
 	}
 	
-	public void addComponent(Component component) {
+	public void addComponent(CategoryComponent component) {
 		components.add(component);
 		for (StudentEntry studentEntry : studentEntries) {
 			studentEntry.addToStudentEntry(component);
 		}
 	}
 	
-	public Component getComponent(String componentName) {
-		for (Component c : components) {
+	public CategoryComponent getComponent(String componentName) {
+		for (CategoryComponent c : components) {
 			if (c.getName().equals(componentName)) {
 				return c;
 			}
@@ -69,7 +69,7 @@ public abstract class Category {
 	}
 	
 	public boolean isComponentGradeable(String componentName) {
-		for (Component c : components) {
+		for (CategoryComponent c : components) {
 			if (c.getName().equals(componentName)) {
 				return isComponentGradeable(c);
 			}
@@ -77,7 +77,7 @@ public abstract class Category {
 		return false;
 	}
 	
-	private boolean isComponentGradeable(Component c) {
+	private boolean isComponentGradeable(CategoryComponent c) {
 		return c.isGradeable();
 	}
 	
@@ -110,7 +110,7 @@ public abstract class Category {
 	}
 	
 	public boolean isComponentEditable(String componentName) {
-		Component c = getComponent(componentName);
+		CategoryComponent c = getComponent(componentName);
 		if(c == null) {
 			return false;
 		}

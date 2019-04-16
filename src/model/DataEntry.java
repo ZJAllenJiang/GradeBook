@@ -1,11 +1,11 @@
 package model;
 
 public abstract class DataEntry<T> {
-	private Component component;
+	private CategoryComponent component;
 	private T data;
 	private String comment;
 	
-	public DataEntry(Component component) {
+	public DataEntry(CategoryComponent component) {
 		this.component = component;
 	}
 
@@ -21,6 +21,13 @@ public abstract class DataEntry<T> {
 		return getData() != null;
 	}
 
+	public String getDisplayData() {
+		if(!hasData()) {
+			return "";
+		}
+		return String.valueOf(getData());
+	}
+	
 	public String getComment() {
 		return comment;
 	}
@@ -33,7 +40,7 @@ public abstract class DataEntry<T> {
 		this.comment = comment;
 	}
 
-	public Component getComponent() {
+	public CategoryComponent getComponent() {
 		return component;
 	}
 	

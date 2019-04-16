@@ -1,6 +1,6 @@
 package model;
 
-public class GradeableComponent extends Component{
+public class GradeableComponent extends CategoryComponent{
 	private double weight;
 	private double maxScore;
 	private DataEntryMode dateEntryMode;

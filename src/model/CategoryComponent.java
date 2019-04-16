@@ -1,10 +1,10 @@
 package model;
 
-public abstract class Component {
+public abstract class CategoryComponent {
 	private String name;
 	private boolean isEditable;
 	
-	public Component(String n, boolean isEditable) {
+	public CategoryComponent(String n, boolean isEditable) {
 		name = n;
 		this.isEditable = isEditable;
 	}

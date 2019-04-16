@@ -22,7 +22,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 import model.Category;
-import model.Component;
+import model.CategoryComponent;
 import model.DataEntry;
 import model.Student;
 import model.StudentEntry;
@@ -73,7 +73,7 @@ public class GradeBookJTable extends JTable {
 		columnNameList.addAll(studentHeaders);
 		
 		//Add the category specific headers
-		for(Component component : category.getComponents()) {
+		for(CategoryComponent component : category.getComponents()) {
 			columnNameList.add(component.getName());
 		}
 		
@@ -98,11 +98,11 @@ public class GradeBookJTable extends JTable {
 			}
 			
 			//Get the category specific data
-			for(Component component : category.getComponents()) {
+			for(CategoryComponent component : category.getComponents()) {
 				DataEntry<?> entry = studentEntry.getDataEnty(component.getName());
 				String value = "";
-				if(entry != null && entry.hasData()) {
-					value = String.valueOf(entry.getData());
+				if(entry != null) {
+					value = entry.getDisplayData();
 				}
 				
 				row[index] = value;

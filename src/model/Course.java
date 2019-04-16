@@ -45,9 +45,9 @@ public class Course {
 		students.add(test_student3);
 		
 		categories.add(new GradeableCategory(1.0, "Homework", students));
-		Component hw1 = new GradeableComponent("HW1", true, .1, 50, DataEntryMode.POINTS_EARNED);
-		Component hw2 = new GradeableComponent("HW2", true, .5, 60, DataEntryMode.POINTS_EARNED);
-		Component hw3 = new GradeableComponent("HW3", true, .4, 50, DataEntryMode.POINTS_EARNED);
+		CategoryComponent hw1 = new GradeableComponent("HW1", true, .1, 50, DataEntryMode.POINTS_EARNED);
+		CategoryComponent hw2 = new GradeableComponent("HW2", true, .5, 60, DataEntryMode.POINTS_EARNED);
+		CategoryComponent hw3 = new GradeableComponent("HW3", true, .4, 50, DataEntryMode.POINTS_EARNED);
 		
 		categories.get(0).addComponent(hw1);
 		categories.get(0).addComponent(hw2);

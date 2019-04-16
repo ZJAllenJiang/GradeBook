@@ -14,10 +14,10 @@ public class StudentEntry implements Writeout, ReadIn{
 	private Student student;
 	
 	
-	public StudentEntry(Student student, ArrayList<Component> components) {
+	public StudentEntry(Student student, ArrayList<CategoryComponent> components) {
 		this.student = student;
 		dataEntries = new ArrayList<>();
-		for (Component component : components) {
+		for (CategoryComponent component : components) {
 			if (component instanceof GradeableComponent)
 				dataEntries.add(new GradeEntry(component));
 			else
@@ -26,11 +26,11 @@ public class StudentEntry implements Writeout, ReadIn{
 		
 	}
 	
-	public void addToStudentEntry(Component component) {
+	public void addToStudentEntry(CategoryComponent component) {
 		dataEntries.add(component.createEntry());
 	}
 	
-	public void deleteDataEntry(Component component) {
+	public void deleteDataEntry(CategoryComponent component) {
 //		dataEntries.remove(component);
 	}
 	
