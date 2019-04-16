@@ -154,7 +154,18 @@ public class GradeBookJTable extends JTable {
 			String columnName = table.getColumnName(column);
 			boolean isGradeable = category.isComponentGradeable(columnName);
 			if(!isSelected && isGradeable) {
-				rendererComp.setBackground(Color.CYAN);
+				GradeableComponent gComponent = (GradeableComponent)(category.getComponent(columnName));
+				switch(gComponent.getDateEntryMode()) {
+				case POINTS_EARNED:
+					rendererComp.setBackground(Color.CYAN);
+					break;
+				case POINTS_LOST:
+					rendererComp.setBackground(Color.PINK);
+					break;
+				case PERCENTAGE:
+					rendererComp.setBackground(Color.GREEN);
+					break;
+				}
 			}
 			
 			//Invalid input coloring

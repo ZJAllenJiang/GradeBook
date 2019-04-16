@@ -20,13 +20,13 @@ public class GradeEntry extends DataEntry<Double>{
 		DataEntryMode entryMode = gComponent.getDateEntryMode();
 		switch(entryMode){
 			case POINTS_EARNED:
-				//formattedScore = score;
+				formattedScore = score;
 				break;
 			case POINTS_LOST:
-				//formattedScore = gComponent.getMaxScore();
+				formattedScore = gComponent.getMaxScore() - score;
 				break;
 			case PERCENTAGE:
-				
+				formattedScore = score / gComponent.getMaxScore();
 				break;
 		}
 		
@@ -52,8 +52,23 @@ public class GradeEntry extends DataEntry<Double>{
 			return false;
 		}
 		
-		//Larger than input value?
-		//TODO
+		GradeableComponent gComponent = (GradeableComponent) getComponent();
+		DataEntryMode entryMode = gComponent.getDateEntryMode();
+		switch(entryMode){
+			case POINTS_EARNED:
+			case POINTS_LOST:
+				//Input value larger than max score?
+				if(value > gComponent.getMaxScore()) {
+					return false;
+				}
+				break;
+			case PERCENTAGE:
+				//Larger than 100%?
+				if(value > 100) {
+					return false;
+				}
+				break;
+		}
 		
 		return true;
 	}
