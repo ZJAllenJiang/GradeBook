@@ -9,4 +9,10 @@ public class TextEntry extends DataEntry<String>{
 	public boolean isValidData(String guiData) {
 		return true;
 	}
+
+	@Override
+	protected boolean doSetDataFromGUI(String guiData) {
+		this.setData(guiData);
+		return true;
+	}
 }

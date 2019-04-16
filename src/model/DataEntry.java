@@ -46,6 +46,17 @@ public abstract class DataEntry<T> {
 	
 	public abstract boolean isValidData(String guiData);
 	
+	public boolean setDataFromGUI(String guiData) {
+		if(!isValidData(guiData)) {
+			//Could not set the data because it is invalid
+			return false;
+		}
+		
+		return doSetDataFromGUI(guiData);
+	}
+	
+	protected abstract boolean doSetDataFromGUI(String guiData);
+	
 	// need to implement because every time string type is returned 
 	// when read from database
 	public String setDataWithString(String data) {

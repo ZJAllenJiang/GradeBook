@@ -117,9 +117,7 @@ public class GradeBookJTable extends JTable {
 		return category.hasComponent(columnName);
 	}
 	
-	@Override
-	public boolean isCellEditable(int row, int column) { 
-		String columnName = this.getColumnName(column);
+	public boolean isCellEditable(String columnName) { 
 		if(!isSummaryTable()) {
 			if(!isComponentSpecificToCategory(columnName)) {
 				//Can only edit student data in Summary table
@@ -134,6 +132,13 @@ public class GradeBookJTable extends JTable {
 		}
 
 		return category.isComponentEditable(columnName);
+	}
+	
+	@Override
+	public boolean isCellEditable(int row, int column) { 
+		String columnName = this.getColumnName(column);
+		boolean isEditable = isCellEditable(columnName);
+		return isEditable;
 	};
 	
 	@Override
@@ -193,6 +198,7 @@ public class GradeBookJTable extends JTable {
 	@Override
 	protected JTableHeader createDefaultTableHeader() {
         return new JTableHeader(columnModel) {
+        	@Override
             public String getToolTipText(MouseEvent e) {
                 String toolTipText = null;
                 java.awt.Point p = e.getPoint();
@@ -316,5 +322,34 @@ public class GradeBookJTable extends JTable {
         });
         
         this.setComponentPopupMenu(popupMenu);
+	}
+	
+	public boolean setDataFromGUI() {
+		for (int row = 0; row < this.getModel().getRowCount(); row++){
+			StudentEntry studentEntry = this.category.getStudentEntries().get(row);
+			Student student = studentEntry.getStudent();
+			
+			for (int modelColumnIndex = 0; modelColumnIndex < this.getModel().getColumnCount(); modelColumnIndex++){
+				int viewColumnIndex = this.convertColumnIndexToView(modelColumnIndex);
+				String columnName = this.getColumnName(viewColumnIndex);
+				String guiValue = this.getModel().getValueAt(row, modelColumnIndex).toString();
+
+				if(this.isSummaryTable() && studentHeaders.contains(columnName)) {
+					Summary.setData(student, columnName, guiValue);
+				}
+				else if(isComponentSpecificToCategory(columnName)){
+					DataEntry<?> dataEntry = studentEntry.getDataEnty(columnName);
+					if(dataEntry != null) {
+						boolean success = dataEntry.setDataFromGUI(guiValue);
+						if(!success) {
+							//Invalid data!
+							return false;
+						}
+					}
+				}
+			}	
+		}
+		
+		return true;
 	}
 }

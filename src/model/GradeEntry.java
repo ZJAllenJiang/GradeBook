@@ -26,7 +26,7 @@ public class GradeEntry extends DataEntry<Double>{
 				formattedScore = gComponent.getMaxScore() - score;
 				break;
 			case PERCENTAGE:
-				formattedScore = score / gComponent.getMaxScore();
+				formattedScore = score / gComponent.getMaxScore() * 100;
 				break;
 		}
 		
@@ -70,6 +70,34 @@ public class GradeEntry extends DataEntry<Double>{
 				break;
 		}
 		
+		return true;
+	}
+	
+	@Override
+	protected boolean doSetDataFromGUI(String guiData) {
+		if(guiData == null || guiData.equals("")) {
+			//User is clearing data
+			setData(null);
+			return true;
+		}
+		
+		double guiValue = Double.parseDouble(guiData);
+		GradeableComponent gComponent = (GradeableComponent) getComponent();
+		DataEntryMode entryMode = gComponent.getDateEntryMode();
+		double validValue = -1;
+		switch(entryMode){
+			case POINTS_EARNED:
+				validValue = guiValue;
+				break;
+			case POINTS_LOST:
+				validValue = gComponent.getMaxScore() - guiValue;
+				break;
+			case PERCENTAGE:
+				validValue = guiValue / 100 * gComponent.getMaxScore();				
+				break;
+		}
+
+		this.setData(validValue);
 		return true;
 	}
 }
