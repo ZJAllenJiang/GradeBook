@@ -162,7 +162,7 @@ public class CourseCollectionPage {
 			
 		});
 		
-
+		frame.setResizable(false);
 		
 		
 	}

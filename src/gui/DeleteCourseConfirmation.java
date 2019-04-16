@@ -81,6 +81,7 @@ public class DeleteCourseConfirmation {
 		});
 		yesButton.setBounds(240, 150, 120, 30);
 		frame.getContentPane().add(yesButton);
+		frame.setResizable(false);
 	}
 
 }

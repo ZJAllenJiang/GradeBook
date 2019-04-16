@@ -94,5 +94,7 @@ public class LoginPage {
 		});
 		loginButton.setBounds(240, 300, 120, 40);
 		frame.getContentPane().add(loginButton);
+		
+		frame.setResizable(false);
 	}
 }
