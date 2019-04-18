@@ -318,7 +318,7 @@ public class GradeBookJTable extends JTable {
                 }
                 JScrollPane sp = new JScrollPane(ta);
                 int result = JOptionPane.showConfirmDialog(topFrame, sp, 
-						"Save the comment?", JOptionPane.YES_NO_OPTION);
+						"Press OK to keep the comment", JOptionPane.OK_CANCEL_OPTION);
                 if(result == JOptionPane.OK_OPTION) {
                 	entry.setComment(ta.getText());
                 }

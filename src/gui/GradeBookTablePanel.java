@@ -8,8 +8,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import model.Category;
 import model.CategoryComponent;
@@ -42,16 +46,46 @@ public class GradeBookTablePanel extends JPanel {
 			addGradeBtn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("Added new column to " + category.getName());
-					CategoryComponent c = new GradeableComponent("Grade", true,
-							.1, 50, DataEntryMode.POINTS_EARNED);
-					category.addComponent(c);
-					gradeBookTable.refreshTable();
+					String categoryName = category.getName();
+					
+					JFrame topFrame = (JFrame) SwingUtilities
+							.getWindowAncestor(GradeBookTablePanel.this);
+					CreateGradeableComponentPanel createGradeablePanel =
+							new CreateGradeableComponentPanel();
+			        int result = JOptionPane.showConfirmDialog(topFrame, 
+			        		createGradeablePanel, 
+							"Add New " + categoryName,
+							JOptionPane.OK_CANCEL_OPTION);
+			        
+			        if(result == JOptionPane.OK_OPTION) {
+			        	if(!createGradeablePanel.hasProperData()) {
+					    	JOptionPane.showMessageDialog(null, 
+					    			"Invalid data entered.");
+					    	return;
+			        	}
+			        	
+			        	String name = createGradeablePanel.getName();
+			        	if(category.getComponent(name) != null) {
+			        		JOptionPane.showMessageDialog(null, 
+					    			"Already have a " + categoryName + " with the name " 
+			        				+ name + ".");
+			        		return;
+			        	}
+			        	
+			        	double maxScore = createGradeablePanel.getMaxScore();
+			        	double percentWeight = createGradeablePanel.getPercentWeight();
+			        	DataEntryMode entryMode = createGradeablePanel.getDataEntryMode();
+			        	CategoryComponent c = new GradeableComponent(name, true,
+			        			percentWeight/100, maxScore, entryMode);
+						category.addComponent(c);
+						gradeBookTable.refreshTable();
+			        }
 				}
 			});
 			addPanel.add(addGradeBtn);
-			addPanel.add(Box.createRigidArea(new Dimension(50, 0)));	
+			addPanel.add(GuiUtil.createHorizontalGap(50));	
 		}
+		
 		JButton addTextBtn = new JButton("Add New Text Column");
 		addTextBtn.addActionListener(new ActionListener() {
 			@Override
@@ -64,6 +98,10 @@ public class GradeBookTablePanel extends JPanel {
 		});
 		addPanel.add(addTextBtn);
 		this.add(addPanel, BorderLayout.PAGE_START);
+	}
+	
+	private void createGradeablePanel() {
+
 	}
 	
 	private void addTable() {
