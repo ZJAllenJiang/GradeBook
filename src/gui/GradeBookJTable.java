@@ -11,10 +11,15 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -152,9 +157,6 @@ public class GradeBookJTable extends JTable {
 			java.awt.Component rendererComp = super.getTableCellRendererComponent(table, value, 
 					isSelected, hasFocus,
 					row, column);
-			//Add a tooltip to the headers
-			table.getTableHeader().setToolTipText("Right click to edit");
-
 			//Gradeable column coloring
 			String columnName = table.getColumnName(column);
 			boolean isGradeable = category.isComponentGradeable(columnName);
@@ -162,13 +164,13 @@ public class GradeBookJTable extends JTable {
 				GradeableComponent gComponent = (GradeableComponent)(category.getComponent(columnName));
 				switch(gComponent.getDateEntryMode()) {
 				case POINTS_EARNED:
-					rendererComp.setBackground(Color.CYAN);
+					//rendererComp.setBackground(Color.CYAN);
 					break;
 				case POINTS_LOST:
-					rendererComp.setBackground(Color.PINK);
+					//rendererComp.setBackground(Color.PINK);
 					break;
 				case PERCENTAGE:
-					rendererComp.setBackground(Color.GREEN);
+					//rendererComp.setBackground(Color.GREEN);
 					break;
 				}
 			}
@@ -301,9 +303,28 @@ public class GradeBookJTable extends JTable {
             	java.awt.Component cell = (java.awt.Component)e.getSource();
                 JPopupMenu popup = (JPopupMenu)cell.getParent();
                 JTable table = (JTable)popup.getInvoker();
-                System.out.println("View comment for cell: " + table.getSelectedRow() + ", " + table.getSelectedColumn());
-            	//JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                //JOptionPane.showMessageDialog(topFrame, "Right-click performed on table and choose DELETE");
+                int row = table.getSelectedRow();
+                StudentEntry studentEntry = category.getStudentEntries().get(row);
+                int column = table.getSelectedColumn();
+                String columnName = table.getColumnName(column);
+                
+                DataEntry<?> entry = studentEntry.getDataEnty(columnName);
+                String comment = entry.getComment();
+                
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(table);
+                JTextArea ta = new JTextArea(10, 30);
+                if(comment != null) {
+                	ta.setText(comment);
+                }
+                JScrollPane sp = new JScrollPane(ta);
+                int result = JOptionPane.showConfirmDialog(topFrame, sp, 
+						"Save the comment?", JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.OK_OPTION) {
+                	entry.setComment(ta.getText());
+                }
+                else {
+                	entry.setComment(null);
+                }
             }
         });
         popupMenu.add(commentItem);
