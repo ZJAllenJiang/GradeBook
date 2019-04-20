@@ -6,17 +6,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-public class CategoryComponentPanel extends JPanel {
+public class NamePanel extends JPanel {
 	private JTextField nameField;
 	
-	public CategoryComponentPanel() {
+	public NamePanel() {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		setUpGUI();
 	}
 	
-	public CategoryComponentPanel(String name) {
+	public NamePanel(String name) {
 		this();
 		
 		nameField.setText(name);

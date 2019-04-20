@@ -22,6 +22,10 @@ public abstract class Category {
 		return name;
 	}
 	
+	public void setName(String newName) {
+		name = newName;
+	}
+	
 	public boolean isGradeable() {
 		return this instanceof GradeableCategory;
 	}

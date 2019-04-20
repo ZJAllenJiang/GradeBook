@@ -35,14 +35,10 @@ public class Course {
 	//  test for writing database
 	public Course() {
 		this("Java", "591", 2019);
-		
-		Student test_student1 = new Student("U123", "Peter", "J", "Patrick");
-		Student test_student2 = new Student("U124", "John", "H", "Will");
-		Student test_student3 = new Student("U125", "Kate", "", "Rose");
-		
-		students.add(test_student1);
-		students.add(test_student2);
-		students.add(test_student3);
+
+		this.addStudent("U123", "Peter", "J", "Patrick");
+		this.addStudent("U124", "John", "H", "Will");
+		this.addStudent("U125", "Kate", "", "Rose");
 		
 		categories.add(new GradeableCategory(1.0, "Homework", students));
 		CategoryComponent hw1 = new GradeableComponent("HW1", true, .1, 50, DataEntryMode.POINTS_EARNED);
@@ -140,6 +136,8 @@ public class Course {
 	public void addStudent(String sId, String fName, String mName, String lName) {
 		Student student = new Student(sId, fName, mName, lName);
 		students.add(student);
+		
+		summary.addStudentEntry(student);
 		for (Category category : categories) {
 			category.addStudentEntry(student);
 		}

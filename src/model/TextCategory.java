@@ -7,11 +7,7 @@ import java.util.Collections;
 
 public class TextCategory extends Category {
 	private String content;
-	
-	public TextCategory() {
-		this("Dummy", new ArrayList<>(Collections.singletonList(new Student())));
-	}
-	
+
 	public TextCategory(String categName, ArrayList<Student> students) {
 		super(categName, students);
 		content = "";

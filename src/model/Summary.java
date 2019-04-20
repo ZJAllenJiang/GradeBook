@@ -14,13 +14,9 @@ public class Summary extends TextCategory {
 	public static final String STATUS = "Status";
 	
 	public Summary() {
-		this(SUMMARY, new ArrayList<Student>(Collections.singletonList(new Student())));
+		super(SUMMARY, new ArrayList<Student>());
 	}
-	
-	public Summary(String categName, ArrayList<Student> students) {
-		super(categName, students);
-	}
-	
+
 	public static ArrayList<String> getAllHeaders(){
 		ArrayList<String> commonHeaders = getCommonHeaders();
 		ArrayList<String> allHeaders = new ArrayList<String>();
@@ -67,14 +63,19 @@ public class Summary extends TextCategory {
 		switch (categoryName) {
 		case STUDENT_ID:
 			s.setSid(value);
+			break;
 		case FIRST_NAME:
 			s.setName(value, s.getMiddleName(), s.getLastName());
+			break;
 		case MIDDLE_NAME:
 			s.setName(s.getFirstName(), value, s.getLastName());
+			break;
 		case LAST_NAME:
 			s.setName(s.getFirstName(), s.getMiddleName(), value);
+			break;
 		case STATUS:
 			s.setStatus(Boolean.getBoolean(value));
+			break;
 		}
 	}
 }

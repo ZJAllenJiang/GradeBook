@@ -8,7 +8,7 @@ import javax.swing.JTextField;
 
 import model.GradeableComponent.DataEntryMode;
 
-public class GradeableComponentPanel extends CategoryComponentPanel{
+public class GradeableComponentPanel extends NamePanel{
 	private JTextField maxScoreField;
 	private JTextField percentWeightField;
 	private JComboBox<DataEntryMode> entryModeField;
@@ -92,7 +92,7 @@ public class GradeableComponentPanel extends CategoryComponentPanel{
 		}catch(Exception e) {
 			return false;
 		}
-		if(percentWeight <= 0 || 100 <= percentWeight) {
+		if(percentWeight <= 0 || 100 < percentWeight) {
 			return false;
 		}
 		

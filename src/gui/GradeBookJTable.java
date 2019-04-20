@@ -258,14 +258,14 @@ public class GradeBookJTable extends JTable {
             			.getWindowAncestor(GradeBookJTable.this);
 
             	CategoryComponent c = category.getComponent(selectedModelHeader);
-            	CategoryComponentPanel componentPanel;
+            	NamePanel componentPanel;
             	if(c.isGradeable()) {
             		GradeableComponent gradeableComp = (GradeableComponent) c;
             		componentPanel = new GradeableComponentPanel(gradeableComp.getName(), gradeableComp.getMaxScore(),
             				gradeableComp.getWeight() * 100, gradeableComp.getDateEntryMode());
             	}
             	else {
-            		componentPanel = new CategoryComponentPanel(c.getName());
+            		componentPanel = new NamePanel(c.getName());
             	}
 
             	int result = JOptionPane.showConfirmDialog(topFrame, 

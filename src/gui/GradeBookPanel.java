@@ -16,9 +16,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.TabbedPaneUI;
 
 import model.Category;
+import model.CategoryComponent;
 import model.Course;
 import model.Summary;
+import model.GradeableComponent.DataEntryMode;
 import model.GradeableCategory;
+import model.GradeableComponent;
 
 public class GradeBookPanel extends JPanel {
 	private Course course;
@@ -70,7 +73,7 @@ public class GradeBookPanel extends JPanel {
 			    				statisticItem.addActionListener(new ActionListener() {
 			    					@Override
 			    					public void actionPerformed(ActionEvent e) {
-			    						System.out.println("Compute statistics on column: " + tabName);
+			    						System.out.println("Compute statistics on category: " + tabName);
 			    					}
 			    				});
 			    				popupMenu.add(statisticItem);
@@ -80,11 +83,15 @@ public class GradeBookPanel extends JPanel {
 			    			editItem.addActionListener(new ActionListener() {
 			    	            @Override
 			    	            public void actionPerformed(ActionEvent e) {
-			    	            	System.out.println("Do edit on column: " + tabName);
+			    	            	handleEditCategory(category);
 			    	            	
-			    	            	double weight = ((GradeableCategory) category).getWeight();
-			    					String weightToolTip = getWeightToolTipString(weight);
-			    	            	gradeBookTabs.setToolTipTextAt(tabIndex, weightToolTip);
+			    	            	//Update the GUI
+			    	            	gradeBookTabs.setTitleAt(tabIndex, category.getName());
+			    	            	if(category.isGradeable()) {
+			    	            		double weight = ((GradeableCategory) category).getWeight();
+				    					String weightToolTip = getWeightToolTipString(weight);
+				    	            	gradeBookTabs.setToolTipTextAt(tabIndex, weightToolTip);
+			    	            	}
 			    	            }
 			    	        });
 			    	        popupMenu.add(editItem);
@@ -120,5 +127,56 @@ public class GradeBookPanel extends JPanel {
 	
 	public static String getWeightToolTipString(double weight) {
 		return "Weight: " + weight*100 + "%";
+	}
+	
+	private void handleEditCategory(Category category) {
+    	JFrame topFrame = (JFrame) SwingUtilities
+    			.getWindowAncestor(this);
+
+    	NamePanel categoryPanel;
+    	if(category.isGradeable()) {
+    		GradeableCategory gradeableCategory = (GradeableCategory) category;
+    		categoryPanel = new GradeableCategoryPanel(gradeableCategory.getName(), gradeableCategory.getWeight() * 100);
+    	}
+    	else {
+    		categoryPanel = new NamePanel(category.getName());
+    	}
+
+    	int result = JOptionPane.showConfirmDialog(topFrame, 
+    			categoryPanel, 
+    			"Edit Category " + category.getName(),
+    			JOptionPane.OK_CANCEL_OPTION);
+
+    	if(result == JOptionPane.OK_OPTION) {
+    		if(!categoryPanel.hasProperData()) {
+    			JOptionPane.showMessageDialog(null, 
+    					"Invalid data entered.");
+    			return;
+    		}
+
+    		String newName = categoryPanel.getName();
+    		if(!category.getName().equals(newName) && course.getCategory(newName) != null) {
+    			JOptionPane.showMessageDialog(null, 
+    					"Already have a category the name " + newName + ".");
+    			return;
+    		}
+
+    		//Update to the new component data
+    		category.setName(newName);
+    		if(category.isGradeable()) {
+    			GradeableCategory gradeableCategory = (GradeableCategory) category;
+    			GradeableCategoryPanel gradeableCategoryPanel = (GradeableCategoryPanel) categoryPanel;
+    			
+    			double percentWeight = gradeableCategoryPanel.getPercentWeight();
+    			gradeableCategory.setWeight(percentWeight / 100);
+    		}
+    	}
+	}
+	
+	public void setAllData() {
+		for(int tabIndex=0; tabIndex<gradeBookTabs.getTabCount(); tabIndex++) {
+			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
+			gBookTablePanel.syncModelAndGUI();
+		}
 	}
 }

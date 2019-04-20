@@ -2,7 +2,7 @@ package model;
 
 public class GradeableComponent extends CategoryComponent{
 	private double weight;
-	private double maxScore;
+	private double maxScore;	//Must be > 0
 	private DataEntryMode dateEntryMode;
 	
 	public enum DataEntryMode{

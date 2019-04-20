@@ -6,12 +6,7 @@ import java.util.Collections;
 
 public class GradeableCategory extends Category {
 	double weight;
-	
-	public GradeableCategory() {
-		this(0.5, "dummy", new ArrayList<>(Collections.singletonList(new Student())));
-		
-	}
-	
+
 	public GradeableCategory(double weight, String categName, ArrayList<Student> students) {
 		super(categName, students);
 		this.weight = weight;

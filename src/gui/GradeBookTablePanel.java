@@ -68,14 +68,14 @@ public class GradeBookTablePanel extends JPanel {
 		JFrame topFrame = (JFrame) SwingUtilities
 				.getWindowAncestor(GradeBookTablePanel.this);
 		
-		CategoryComponentPanel componentPanel;
+		NamePanel componentPanel;
 		String type;
 		if(isGradeable) {
 			componentPanel = new GradeableComponentPanel();
 			type = category.getName();
 		}
 		else {
-			componentPanel = new CategoryComponentPanel();
+			componentPanel = new NamePanel();
 			type = "Text Column";
 		}
 		
@@ -127,5 +127,10 @@ public class GradeBookTablePanel extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(gradeBookTable);
 		this.add(scrollPane, BorderLayout.CENTER);
+	}
+	
+	public void syncModelAndGUI() {
+		gradeBookTable.setDataFromGUI();
+		gradeBookTable.refreshTable();
 	}
 }
