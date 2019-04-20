@@ -20,6 +20,15 @@ public class CreateGradeableComponentPanel extends JPanel{
 		
 		setUpGUI();
 	}
+	
+	public CreateGradeableComponentPanel(String name, double maxScore, double percentWeight, DataEntryMode entryMode) {
+		this();
+		
+		nameField.setText(name);
+		maxScoreField.setText(Double.toString(maxScore));
+		percentWeightField.setText(Double.toString(percentWeight));
+		entryModeField.setSelectedItem(entryMode);
+	}
 
 	private void setUpGUI() {
 		addNamePanel();

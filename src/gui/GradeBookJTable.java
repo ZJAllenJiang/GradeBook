@@ -32,6 +32,7 @@ import model.DataEntry;
 import model.Student;
 import model.StudentEntry;
 import model.Summary;
+import model.GradeableComponent.DataEntryMode;
 import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
@@ -55,14 +56,13 @@ public class GradeBookJTable extends JTable {
 	}
 
 	public void refreshTable() {
-		//Clear current data
+		//Clear current data in GUI
 		DefaultTableModel tableModel = (DefaultTableModel) this.getModel();
 		tableModel.setRowCount(0);
 		
+		//Redraw the GUI
 		updateHeader();
-
 		refreshTableData();
-
 		tableModel.fireTableDataChanged();
 	}
 	
@@ -83,6 +83,8 @@ public class GradeBookJTable extends JTable {
 		}
 		
 		DefaultTableModel tableModel = (DefaultTableModel) this.getModel();
+		tableModel.setColumnCount(0);
+		this.getTableHeader().setDraggedColumn(null);
 	    tableModel.setColumnIdentifiers(columnNameList);
 	}
 
@@ -240,6 +242,9 @@ public class GradeBookJTable extends JTable {
 		statisticItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	//Set the valid data in the model in the format it is in now
+    			GradeBookJTable.this.setDataFromGUI();
+            	
             	System.out.println("Compute statistics on column: " + selectedModelHeader);
             }
         });
@@ -249,16 +254,73 @@ public class GradeBookJTable extends JTable {
 		editItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	System.out.println("Do edit on column: " + selectedModelHeader);
+            	JFrame topFrame = (JFrame) SwingUtilities
+            			.getWindowAncestor(GradeBookJTable.this);
+
+            	CategoryComponent c = category.getComponent(selectedModelHeader);
+            	if(c.isGradeable()) {
+            		GradeableComponent gradeableComp = (GradeableComponent) c;
+            		CreateGradeableComponentPanel createGradeablePanel =
+            				new CreateGradeableComponentPanel(gradeableComp.getName(), gradeableComp.getMaxScore(),
+            						gradeableComp.getWeight() * 100, gradeableComp.getDateEntryMode());
+            		int result = JOptionPane.showConfirmDialog(topFrame, 
+            				createGradeablePanel, 
+            				"Edit " + selectedModelHeader,
+            				JOptionPane.OK_CANCEL_OPTION);
+
+            		if(result == JOptionPane.OK_OPTION) {
+            			if(!createGradeablePanel.hasProperData()) {
+            				JOptionPane.showMessageDialog(null, 
+            						"Invalid data entered.");
+            				return;
+            			}
+
+            			String name = createGradeablePanel.getName();
+            			if(!c.getName().equals(name) && category.getComponent(name) != null) {
+            				String categoryName = category.getName();
+            				JOptionPane.showMessageDialog(null, 
+            						"Already have a " + categoryName + " with the name " 
+            								+ name + ".");
+            				return;
+            			}
+            			
+            			//Set the valid data in the model in the format it is in now
+            			GradeBookJTable.this.setDataFromGUI();
+
+            			double maxScore = createGradeablePanel.getMaxScore();
+            			double percentWeight = createGradeablePanel.getPercentWeight();
+            			DataEntryMode entryMode = createGradeablePanel.getDataEntryMode();
+            			
+            			gradeableComp.setName(name);
+            			gradeableComp.setMaxScore(maxScore);
+            			gradeableComp.setWeight(percentWeight / 100);
+            			gradeableComp.setDateEntryMode(entryMode);
+            			
+                    	GradeBookJTable.this.refreshTable();
+            		}
+            	}
+            	else {
+            		//Set the valid data in the model in the format it is in now
+        			GradeBookJTable.this.setDataFromGUI();
+        			
+        			
+                	GradeBookJTable.this.refreshTable();
+            	}
             }
-        });
+		});
         popupMenu.add(editItem);
         
         JMenuItem deleteItem = new JMenuItem("Delete");
         deleteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	//Set the valid data in the model in the format it is in now
+    			GradeBookJTable.this.setDataFromGUI();
+    			
             	System.out.println("Do delete on column: " + selectedModelHeader);
+            	
+            	
+            	GradeBookJTable.this.refreshTable();
             }
         });
         popupMenu.add(deleteItem);
@@ -345,7 +407,7 @@ public class GradeBookJTable extends JTable {
         this.setComponentPopupMenu(popupMenu);
 	}
 	
-	public boolean setDataFromGUI() {
+	public void setDataFromGUI() {
 		for (int row = 0; row < this.getModel().getRowCount(); row++){
 			StudentEntry studentEntry = this.category.getStudentEntries().get(row);
 			Student student = studentEntry.getStudent();
@@ -364,13 +426,11 @@ public class GradeBookJTable extends JTable {
 						boolean success = dataEntry.setDataFromGUI(guiValue);
 						if(!success) {
 							//Invalid data!
-							return false;
+							//return false;
 						}
 					}
 				}
 			}	
 		}
-		
-		return true;
 	}
 }

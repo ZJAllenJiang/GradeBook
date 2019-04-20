@@ -72,6 +72,9 @@ public class GradeBookTablePanel extends JPanel {
 			        		return;
 			        	}
 			        	
+			        	//Set the valid data in the model so that we can recreate the table
+			        	gradeBookTable.setDataFromGUI();
+			        	
 			        	double maxScore = createGradeablePanel.getMaxScore();
 			        	double percentWeight = createGradeablePanel.getPercentWeight();
 			        	DataEntryMode entryMode = createGradeablePanel.getDataEntryMode();
@@ -90,6 +93,9 @@ public class GradeBookTablePanel extends JPanel {
 		addTextBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//Set the valid data in the model so that we can recreate the table
+	        	gradeBookTable.setDataFromGUI();
+	        	
 				System.out.println("Added new column to " + category.getName());
 				CategoryComponent c = new TextComponent("Text", true);
 				category.addComponent(c);
@@ -99,11 +105,7 @@ public class GradeBookTablePanel extends JPanel {
 		addPanel.add(addTextBtn);
 		this.add(addPanel, BorderLayout.PAGE_START);
 	}
-	
-	private void createGradeablePanel() {
 
-	}
-	
 	private void addTable() {
 		gradeBookTable = new GradeBookJTable(category);
 		
