@@ -116,6 +116,11 @@ public abstract class Category {
 		}
 		return c.isEditable();
 	}
+
+	public void deleteComponent(String componentName) {
+		// TODO Auto-generated method stub
+		System.err.println("TODO: Implement Delete Category.deleteComponent()");
+	}
 }
 
 

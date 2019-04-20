@@ -6,7 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
@@ -56,6 +58,7 @@ public class GradeBookPanel extends JPanel {
 		    		int tabIndex = tabUI.tabForCoordinate(gradeBookTabs, e.getX(), e.getY());
 		    		if(tabIndex >= 0) {
 						String tabName = gradeBookTabs.getTitleAt(tabIndex);
+						
 						//Can't modify Summary tab
 						if(!tabName.equals(Summary.SUMMARY)) {
 							Category category = course.getCategory(tabName);
@@ -90,7 +93,17 @@ public class GradeBookPanel extends JPanel {
 			    	        deleteItem.addActionListener(new ActionListener() {
 			    	            @Override
 			    	            public void actionPerformed(ActionEvent e) {
-			    	            	System.out.println("Do delete on column: " + tabName);
+			    	            	JFrame topFrame = (JFrame) SwingUtilities
+			    	            			.getWindowAncestor(GradeBookPanel.this);
+			    	            	int result = JOptionPane.showConfirmDialog(topFrame, 
+			    	            			"Are you sure you want to delete category " + tabName + "?", 
+			    	            			"Delete " + tabName,
+			    	            			JOptionPane.OK_CANCEL_OPTION);
+			    	            	
+			    	            	if(result == JOptionPane.OK_OPTION) {
+			    	            		course.deleteCategory(tabName);
+			    	            		gradeBookTabs.remove(tabIndex);
+			    	            	}
 			    	            }
 			    	        });
 			    	        popupMenu.add(deleteItem);

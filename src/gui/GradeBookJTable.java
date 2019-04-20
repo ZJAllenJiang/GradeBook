@@ -317,13 +317,21 @@ public class GradeBookJTable extends JTable {
         deleteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	//Set the valid data in the model in the format it is in now
-    			GradeBookJTable.this.setDataFromGUI();
-    			
-            	System.out.println("Do delete on column: " + selectedModelHeader);
+            	JFrame topFrame = (JFrame) SwingUtilities
+            			.getWindowAncestor(GradeBookJTable.this);
+            	int result = JOptionPane.showConfirmDialog(topFrame, 
+            			"Are you sure you want to delete " + selectedModelHeader + "?", 
+            			"Delete " + selectedModelHeader,
+            			JOptionPane.OK_CANCEL_OPTION);
             	
-            	
-            	GradeBookJTable.this.refreshTable();
+            	if(result == JOptionPane.OK_OPTION) {
+            		//Set the valid data in the model in the format it is in now
+            		GradeBookJTable.this.setDataFromGUI();
+
+            		category.deleteComponent(selectedModelHeader);
+
+            		GradeBookJTable.this.refreshTable();
+            	}
             }
         });
         popupMenu.add(deleteItem);
