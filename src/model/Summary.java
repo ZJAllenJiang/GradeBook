@@ -74,7 +74,7 @@ public class Summary extends TextCategory {
 			s.setName(s.getFirstName(), s.getMiddleName(), value);
 			break;
 		case STATUS:
-			s.setStatus(Boolean.getBoolean(value));
+			s.setStatus(Boolean.parseBoolean(value));
 			break;
 		}
 	}
