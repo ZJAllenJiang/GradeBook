@@ -20,6 +20,7 @@ import model.CategoryComponent;
 import model.Course;
 import model.Summary;
 import model.GradeableComponent.DataEntryMode;
+import model.Student;
 import model.GradeableCategory;
 import model.GradeableComponent;
 
@@ -38,17 +39,17 @@ public class GradeBookPanel extends JPanel {
 		gradeBookTabs = new JTabbedPane();
 		
 		//Add the Summary
-		gradeBookTabs.addTab(Summary.SUMMARY, new GradeBookTablePanel(course.getSummary()));
+		gradeBookTabs.addTab(Summary.SUMMARY, new GradeBookTablePanel(this, course.getSummary()));
 		
 		//Add the other Categories
 		for(Category category : course.getAllCategories()) {
 			if(category.isGradeable()) {
 				double weight = ((GradeableCategory) category).getWeight();
 				String weightToolTip = getWeightToolTipString(weight);
-				gradeBookTabs.addTab(category.getName(), null, new GradeBookTablePanel(category), weightToolTip);
+				gradeBookTabs.addTab(category.getName(), null, new GradeBookTablePanel(this, category), weightToolTip);
 			}
 			else {
-				gradeBookTabs.addTab(category.getName(), new GradeBookTablePanel(category));
+				gradeBookTabs.addTab(category.getName(), new GradeBookTablePanel(this, category));
 			}
 		}
 		
@@ -173,10 +174,16 @@ public class GradeBookPanel extends JPanel {
     	}
 	}
 	
-	public void setAllData() {
+	public void handleDeleteStudent(Student studentToDelete) {
+		setAllData(true);
+		course.deleteStudent(studentToDelete);
+		setAllData(false);
+	}
+	
+	public void setAllData(boolean doSetData) {
 		for(int tabIndex=0; tabIndex<gradeBookTabs.getTabCount(); tabIndex++) {
 			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
-			gBookTablePanel.syncModelAndGUI();
+			gBookTablePanel.syncModelAndGUI(doSetData);
 		}
 	}
 }

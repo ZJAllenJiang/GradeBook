@@ -17,18 +17,21 @@ import javax.swing.SwingUtilities;
 
 import model.Category;
 import model.CategoryComponent;
+import model.Course;
 import model.GradeableComponent;
 import model.GradeableComponent.DataEntryMode;
 import model.TextComponent;
 
 
 public class GradeBookTablePanel extends JPanel {
+	private GradeBookPanel gradeBookPanel;
 	private Category category;
 	
 	private GradeBookJTable gradeBookTable;
 	
-	public GradeBookTablePanel(Category category) {
+	public GradeBookTablePanel(GradeBookPanel gradeBookPanel, Category category) {
 		super(new BorderLayout());
+		this.gradeBookPanel = gradeBookPanel;
 		this.category = category;
 
 		setUpGUI();
@@ -123,14 +126,16 @@ public class GradeBookTablePanel extends JPanel {
 	}
 
 	private void addTable() {
-		gradeBookTable = new GradeBookJTable(category);
+		gradeBookTable = new GradeBookJTable(gradeBookPanel, category);
 		
 		JScrollPane scrollPane = new JScrollPane(gradeBookTable);
 		this.add(scrollPane, BorderLayout.CENTER);
 	}
 	
-	public void syncModelAndGUI() {
-		gradeBookTable.setDataFromGUI();
+	public void syncModelAndGUI(boolean doSetData) {
+		if(doSetData) {
+			gradeBookTable.setDataFromGUI();
+		}
 		gradeBookTable.refreshTable();
 	}
 }

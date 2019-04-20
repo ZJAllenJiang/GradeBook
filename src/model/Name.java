@@ -10,11 +10,7 @@ public class Name {
 		this.middleName = middleName;
 		this.lastName = lastName;
 	}
-	
-	public Name() {
-		this("Test", "T", "Tester");
-	}
-	
+
 	@Override
 	public String toString() {
 		return lastName + " " + middleName + " " + firstName;

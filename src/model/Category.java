@@ -51,6 +51,19 @@ public abstract class Category {
 		studentEntries.add(new StudentEntry(student, components));
 	}
 	
+	public void deleteStudentEntry(Student student) {
+		StudentEntry entryToDelete = null;
+		for(StudentEntry entry : studentEntries) {
+			if(entry.getStudent().equals(student)) {
+				entryToDelete = entry;
+				break;
+			}
+		}
+		if(entryToDelete != null) {
+			studentEntries.remove(entryToDelete);
+		}
+	}
+	
 	public void addComponent(CategoryComponent component) {
 		components.add(component);
 		for (StudentEntry studentEntry : studentEntries) {

@@ -147,12 +147,11 @@ public class Course {
 	
 	}
 	
-	public void deleteStudent(String sId) {
-		for (Student stud : students) {
-			if (stud.getSid().equals(sId)) {
-//				categories.deleteStudent(students.indexOf(stud));
-				students.remove(stud);
-			}
+	public void deleteStudent(Student student) {
+		students.remove(student);
+		summary.deleteStudentEntry(student);
+		for (Category category : categories) {
+			category.deleteStudentEntry(student);
 		}
 	}
 }

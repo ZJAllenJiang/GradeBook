@@ -28,6 +28,7 @@ import javax.swing.table.TableCellRenderer;
 
 import model.Category;
 import model.CategoryComponent;
+import model.Course;
 import model.DataEntry;
 import model.Student;
 import model.StudentEntry;
@@ -37,11 +38,14 @@ import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
 	private ArrayList<String> studentHeaders;
+	
+	private GradeBookPanel gradeBookPanel;
 	private Category category;
 		
-	public GradeBookJTable(Category category) {
+	public GradeBookJTable(GradeBookPanel gradeBookPanel, Category category) {
 		super();
 		
+		this.gradeBookPanel = gradeBookPanel;
 		this.category = category;
 				
 		refreshTable();
@@ -362,7 +366,8 @@ public class GradeBookJTable extends JTable {
 			public void show(java.awt.Component invoker, int x, int y) {
 				int guiColumn = GradeBookJTable.this.columnAtPoint(new Point(x, y));
 				String columnName = GradeBookJTable.this.getColumnName(guiColumn);
-				if(GradeBookJTable.this.isComponentSpecificToCategory(columnName)) {
+				if(GradeBookJTable.this.isComponentSpecificToCategory(columnName)
+						|| (GradeBookJTable.this.isSummaryTable() && columnName.equals(Summary.STUDENT_ID))) {
 					super.show(invoker, x, y);
 				}
 			}
@@ -402,6 +407,32 @@ public class GradeBookJTable extends JTable {
         });
         popupMenu.add(commentItem);
         
+        JMenuItem deleteStudentItem = new JMenuItem("Delete Student");
+        deleteStudentItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	java.awt.Component cell = (java.awt.Component)e.getSource();
+                JPopupMenu popup = (JPopupMenu)cell.getParent();
+                JTable table = (JTable)popup.getInvoker();
+                int row = table.getSelectedRow();
+                StudentEntry studentEntry = category.getStudentEntries().get(row);
+                Student student = studentEntry.getStudent();
+                
+                String studentInfo = student.toString();
+                JFrame topFrame = (JFrame) SwingUtilities
+            			.getWindowAncestor(GradeBookJTable.this);
+            	int result = JOptionPane.showConfirmDialog(topFrame, 
+            			"Are you sure you want to delete " + studentInfo + "?", 
+            			"Delete " + studentInfo,
+            			JOptionPane.OK_CANCEL_OPTION);
+            	
+            	if(result == JOptionPane.OK_OPTION) {
+            		gradeBookPanel.handleDeleteStudent(student);
+            	}
+            }
+        });
+        popupMenu.add(deleteStudentItem);
+        
         //Set the context in the table to the right clicked cell
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -409,9 +440,18 @@ public class GradeBookJTable extends JTable {
                 int row = source.rowAtPoint( e.getPoint() );
                 int column = source.columnAtPoint( e.getPoint() );
 
-                //if (! source.isRowSelected(row)){
                 source.changeSelection(row, column, false, false);
-                //}
+                
+                //Control which menu options come up
+                String columnName = source.getColumnName(column);
+                if(GradeBookJTable.this.isSummaryTable() && columnName.equals(Summary.STUDENT_ID)) {
+                	commentItem.setVisible(false);
+                	deleteStudentItem.setVisible(true);
+                }
+                else {
+                	commentItem.setVisible(true);
+                	deleteStudentItem.setVisible(false);
+                }
             }
         });
         
