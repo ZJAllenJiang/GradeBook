@@ -46,43 +46,7 @@ public class GradeBookTablePanel extends JPanel {
 			addGradeBtn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					String categoryName = category.getName();
-					
-					JFrame topFrame = (JFrame) SwingUtilities
-							.getWindowAncestor(GradeBookTablePanel.this);
-					CreateGradeableComponentPanel createGradeablePanel =
-							new CreateGradeableComponentPanel();
-			        int result = JOptionPane.showConfirmDialog(topFrame, 
-			        		createGradeablePanel, 
-							"Add New " + categoryName,
-							JOptionPane.OK_CANCEL_OPTION);
-			        
-			        if(result == JOptionPane.OK_OPTION) {
-			        	if(!createGradeablePanel.hasProperData()) {
-					    	JOptionPane.showMessageDialog(null, 
-					    			"Invalid data entered.");
-					    	return;
-			        	}
-			        	
-			        	String name = createGradeablePanel.getName();
-			        	if(category.getComponent(name) != null) {
-			        		JOptionPane.showMessageDialog(null, 
-					    			"Already have a " + categoryName + " with the name " 
-			        				+ name + ".");
-			        		return;
-			        	}
-			        	
-			        	//Set the valid data in the model so that we can recreate the table
-			        	gradeBookTable.setDataFromGUI();
-			        	
-			        	double maxScore = createGradeablePanel.getMaxScore();
-			        	double percentWeight = createGradeablePanel.getPercentWeight();
-			        	DataEntryMode entryMode = createGradeablePanel.getDataEntryMode();
-			        	CategoryComponent c = new GradeableComponent(name, true,
-			        			percentWeight/100, maxScore, entryMode);
-						category.addComponent(c);
-						gradeBookTable.refreshTable();
-			        }
+					handleAddNewComponent(true);
 				}
 			});
 			addPanel.add(addGradeBtn);
@@ -93,17 +57,69 @@ public class GradeBookTablePanel extends JPanel {
 		addTextBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Set the valid data in the model so that we can recreate the table
-	        	gradeBookTable.setDataFromGUI();
-	        	
-				System.out.println("Added new column to " + category.getName());
-				CategoryComponent c = new TextComponent("Text", true);
-				category.addComponent(c);
-				gradeBookTable.refreshTable();
+				handleAddNewComponent(false);
 			}
 		});
 		addPanel.add(addTextBtn);
 		this.add(addPanel, BorderLayout.PAGE_START);
+	}
+	
+	public void handleAddNewComponent(boolean isGradeable) {
+		JFrame topFrame = (JFrame) SwingUtilities
+				.getWindowAncestor(GradeBookTablePanel.this);
+		
+		CategoryComponentPanel componentPanel;
+		String type;
+		if(isGradeable) {
+			componentPanel = new GradeableComponentPanel();
+			type = category.getName();
+		}
+		else {
+			componentPanel = new CategoryComponentPanel();
+			type = "Text Column";
+		}
+		
+        int result = JOptionPane.showConfirmDialog(topFrame, 
+        		componentPanel, 
+				"Add New " + type,
+				JOptionPane.OK_CANCEL_OPTION);
+        
+        if(result == JOptionPane.OK_OPTION) {
+        	if(!componentPanel.hasProperData()) {
+		    	JOptionPane.showMessageDialog(null, 
+		    			"Invalid data entered.");
+		    	return;
+        	}
+        	
+        	String name = componentPanel.getName();
+        	if(category.getComponent(name) != null) {
+        		JOptionPane.showMessageDialog(null, 
+		    			"Already have a " + type + " with the name " 
+        				+ name + ".");
+        		return;
+        	}
+        	
+        	//Set the valid data in the model so that we can recreate the table
+        	gradeBookTable.setDataFromGUI();
+        	
+        	CategoryComponent component;
+        	if(isGradeable) {
+        		GradeableComponentPanel gradeablePanel = (GradeableComponentPanel) componentPanel;
+        		double maxScore = gradeablePanel.getMaxScore();
+        		double percentWeight = gradeablePanel.getPercentWeight();
+        		DataEntryMode entryMode = gradeablePanel.getDataEntryMode();
+        		component = new GradeableComponent(name, true,
+        				percentWeight/100, maxScore, entryMode);
+        	}
+    		else {
+    			component = new TextComponent(name, true);
+    		}
+        	
+			category.addComponent(component);
+			
+			gradeBookTable.refreshTable();
+        }
+	
 	}
 
 	private void addTable() {

@@ -258,53 +258,56 @@ public class GradeBookJTable extends JTable {
             			.getWindowAncestor(GradeBookJTable.this);
 
             	CategoryComponent c = category.getComponent(selectedModelHeader);
+            	CategoryComponentPanel componentPanel;
             	if(c.isGradeable()) {
             		GradeableComponent gradeableComp = (GradeableComponent) c;
-            		CreateGradeableComponentPanel createGradeablePanel =
-            				new CreateGradeableComponentPanel(gradeableComp.getName(), gradeableComp.getMaxScore(),
-            						gradeableComp.getWeight() * 100, gradeableComp.getDateEntryMode());
-            		int result = JOptionPane.showConfirmDialog(topFrame, 
-            				createGradeablePanel, 
-            				"Edit " + selectedModelHeader,
-            				JOptionPane.OK_CANCEL_OPTION);
+            		componentPanel = new GradeableComponentPanel(gradeableComp.getName(), gradeableComp.getMaxScore(),
+            				gradeableComp.getWeight() * 100, gradeableComp.getDateEntryMode());
+            	}
+            	else {
+            		componentPanel = new CategoryComponentPanel(c.getName());
+            	}
 
-            		if(result == JOptionPane.OK_OPTION) {
-            			if(!createGradeablePanel.hasProperData()) {
-            				JOptionPane.showMessageDialog(null, 
-            						"Invalid data entered.");
-            				return;
-            			}
+            	int result = JOptionPane.showConfirmDialog(topFrame, 
+            			componentPanel, 
+            			"Edit " + selectedModelHeader,
+            			JOptionPane.OK_CANCEL_OPTION);
 
-            			String name = createGradeablePanel.getName();
-            			if(!c.getName().equals(name) && category.getComponent(name) != null) {
-            				String categoryName = category.getName();
-            				JOptionPane.showMessageDialog(null, 
-            						"Already have a " + categoryName + " with the name " 
-            								+ name + ".");
-            				return;
-            			}
+            	if(result == JOptionPane.OK_OPTION) {
+            		if(!componentPanel.hasProperData()) {
+            			JOptionPane.showMessageDialog(null, 
+            					"Invalid data entered.");
+            			return;
+            		}
+
+            		String name = componentPanel.getName();
+            		if(!c.getName().equals(name) && category.getComponent(name) != null) {
+            			String categoryName = category.getName();
+            			JOptionPane.showMessageDialog(null, 
+            					"Already have a " + categoryName + " with the name " 
+            							+ name + ".");
+            			return;
+            		}
+
+            		//Set the valid data in the model in the format it is in now
+            		GradeBookJTable.this.setDataFromGUI();
+
+            		//Update to the new component data
+            		c.setName(name);
+            		if(c.isGradeable()) {
+            			GradeableComponent gradeableComp = (GradeableComponent) c;
+            			GradeableComponentPanel gradeablePanel = (GradeableComponentPanel) componentPanel;
             			
-            			//Set the valid data in the model in the format it is in now
-            			GradeBookJTable.this.setDataFromGUI();
+            			double maxScore = gradeablePanel.getMaxScore();
+            			double percentWeight = gradeablePanel.getPercentWeight();
+            			DataEntryMode entryMode = gradeablePanel.getDataEntryMode();
 
-            			double maxScore = createGradeablePanel.getMaxScore();
-            			double percentWeight = createGradeablePanel.getPercentWeight();
-            			DataEntryMode entryMode = createGradeablePanel.getDataEntryMode();
-            			
-            			gradeableComp.setName(name);
             			gradeableComp.setMaxScore(maxScore);
             			gradeableComp.setWeight(percentWeight / 100);
             			gradeableComp.setDateEntryMode(entryMode);
-            			
-                    	GradeBookJTable.this.refreshTable();
             		}
-            	}
-            	else {
-            		//Set the valid data in the model in the format it is in now
-        			GradeBookJTable.this.setDataFromGUI();
-        			
-        			
-                	GradeBookJTable.this.refreshTable();
+
+            		GradeBookJTable.this.refreshTable();
             	}
             }
 		});

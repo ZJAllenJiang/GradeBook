@@ -8,30 +8,26 @@ import javax.swing.JTextField;
 
 import model.GradeableComponent.DataEntryMode;
 
-public class CreateGradeableComponentPanel extends JPanel{
-	private JTextField nameField;
+public class GradeableComponentPanel extends CategoryComponentPanel{
 	private JTextField maxScoreField;
 	private JTextField percentWeightField;
 	private JComboBox<DataEntryMode> entryModeField;
 	
-	public CreateGradeableComponentPanel() {
+	public GradeableComponentPanel() {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		setUpGUI();
 	}
 	
-	public CreateGradeableComponentPanel(String name, double maxScore, double percentWeight, DataEntryMode entryMode) {
-		this();
+	public GradeableComponentPanel(String name, double maxScore, double percentWeight, DataEntryMode entryMode) {
+		super(name);
 		
-		nameField.setText(name);
 		maxScoreField.setText(Double.toString(maxScore));
 		percentWeightField.setText(Double.toString(percentWeight));
 		entryModeField.setSelectedItem(entryMode);
 	}
 
-	private void setUpGUI() {
-		addNamePanel();
+	@Override
+	protected void setUpGUI() {
+		super.setUpGUI();
 		this.add(GuiUtil.createVerticalGap(10));
 
 		addMaxScorePanel();
@@ -41,16 +37,6 @@ public class CreateGradeableComponentPanel extends JPanel{
 		this.add(GuiUtil.createVerticalGap(10));
 
 		addDataEntryPanel();
-	}
-
-	private void addNamePanel() {
-		JPanel namePanel = new JPanel();
-		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
-		JLabel nameLabel = new JLabel("Name: ");
-		namePanel.add(nameLabel);
-		nameField = createTextField(12);
-		namePanel.add(nameField);
-		this.add(namePanel);
 	}
 
 	private void addMaxScorePanel() {
@@ -82,17 +68,11 @@ public class CreateGradeableComponentPanel extends JPanel{
 		dataEntryPanel.add(entryModeField);
 		this.add(dataEntryPanel);
 	}
-	
-	private JTextField createTextField(int numColumns) {
-		JTextField textField = new JTextField();  
-		textField.setColumns(numColumns);
-		textField.setMaximumSize(textField.getPreferredSize());
-		return textField;
-	}
-	
+
+	@Override
 	public boolean hasProperData() {
-		String name = getName();
-		if(name == null || name.equals("")) {
+		boolean isGood = super.hasProperData();
+		if(!isGood) {
 			return false;
 		}
 		
@@ -118,11 +98,7 @@ public class CreateGradeableComponentPanel extends JPanel{
 		
 		return true;
 	}
-	
-	public String getName() {
-		return nameField.getText();
-	}
-	
+
 	public double getMaxScore() {
 		double maxScore = Double.parseDouble(maxScoreField.getText());
 		return maxScore;
