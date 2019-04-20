@@ -78,6 +78,7 @@ public class GradeBookPanel extends JPanel {
 			    	            @Override
 			    	            public void actionPerformed(ActionEvent e) {
 			    	            	System.out.println("Do edit on column: " + tabName);
+			    	            	
 			    	            	double weight = ((GradeableCategory) category).getWeight();
 			    					String weightToolTip = getWeightToolTipString(weight);
 			    	            	gradeBookTabs.setToolTipTextAt(tabIndex, weightToolTip);
@@ -104,7 +105,7 @@ public class GradeBookPanel extends JPanel {
 		add(gradeBookTabs);
 	}
 	
-	private String getWeightToolTipString(double weight) {
-		return "Weight: " + weight;
+	public static String getWeightToolTipString(double weight) {
+		return "Weight: " + weight*100 + "%";
 	}
 }

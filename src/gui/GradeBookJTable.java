@@ -212,7 +212,7 @@ public class GradeBookJTable extends JTable {
                 	GradeableComponent gComponent = ((GradeableComponent) category.getComponent(columnName));
                 	toolTipText = "<html>";
                 	double weight = gComponent.getWeight();
-                	toolTipText = toolTipText + "Weight: " + weight + "<br>";
+                	toolTipText = toolTipText + GradeBookPanel.getWeightToolTipString(weight) + "<br>";
                 	double maxScore = gComponent.getMaxScore();
                 	toolTipText = toolTipText + "Max Score: " + maxScore + "<br>";
                 	String entryMode = gComponent.getDateEntryMode().toString();
