@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -90,6 +93,14 @@ public class GradeBookJTable extends JTable {
 		tableModel.setColumnCount(0);
 		this.getTableHeader().setDraggedColumn(null);
 	    tableModel.setColumnIdentifiers(columnNameList);
+	    
+		if(studentHeaders.contains(Summary.STATUS)) {
+			JComboBox<Boolean> booleanComboBox = new JComboBox<Boolean>();
+			booleanComboBox.addItem(Boolean.TRUE);
+			booleanComboBox.addItem(Boolean.FALSE);
+			int index = studentHeaders.indexOf(Summary.STATUS);
+			this.getColumnModel().getColumn(index).setCellEditor(new DefaultCellEditor(booleanComboBox));
+		}
 	}
 
 	private void refreshTableData() {

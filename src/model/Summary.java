@@ -11,7 +11,7 @@ public class Summary extends TextCategory {
 	public static final String FIRST_NAME = "First Name";
 	public static final String MIDDLE_NAME = "Middle Name";
 	public static final String LAST_NAME = "Last Name";
-	public static final String STATUS = "Status";
+	public static final String STATUS = "Enrolled?";
 	
 	public Summary() {
 		super(SUMMARY, new ArrayList<Student>());
