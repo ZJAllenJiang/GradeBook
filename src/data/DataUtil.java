@@ -14,6 +14,7 @@ import model.GradeableCategory;
 import model.GradeableComponent;
 import model.Student;
 import model.StudentEntry;
+import model.Summary;
 import model.TextCategory;
 import model.TextComponent;
 import model.GradeableComponent.DataEntryMode;
@@ -72,11 +73,11 @@ public class DataUtil {
 		if (checkFileExist(coursePath + "/" + "Student.csv"))
 			writeToCSV(coursePath + "/" + "Student.csv", course.getAllStudents());
 		
-		// create Summary.csv
-		createFile(coursePath + "/" + "Summary.csv");
-		if (checkFileExist(coursePath + "/" + "Summary.csv"))
-			writeToCSV(coursePath + "/" + "Summary.csv", 
-					course.getSummary().getStudentEntries());
+		// create Summary
+		if(checkDirExist(coursePath + "/" + "Summary")) 
+			dropDir(coursePath + "/" + "Summary");
+		createDir(coursePath + "/" + "Summary");
+		handleCategory(coursePath + "/" + "Summary", course.getSummary());
 		
 		// create directory named Category
 		// Category has two sub directory /TextCategory and /GradeableCategory
@@ -122,8 +123,6 @@ public class DataUtil {
 		for (Student student : studentlist)
 			res.addStudent(student.getSid(), student.getFirstName(), 
 				student.getMiddleName(), student.getLastName());
-
-		// load Summary.csv
 		
 		// load categories
 		String GradeableCategory = coursePath + "/" + "Category" + "/" + "GradeableCategory";
@@ -156,6 +155,17 @@ public class DataUtil {
 				c.addComponent(component);
 			res.addCategory(c);
 		}
+		
+		// load Summary
+		String summary = coursePath + "/" + "Summary"; 
+		ArrayList<CategoryComponent> components = readXML(summary + "/attributes.xml");
+//		ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
+//				categorypath + "/" + categorypath + ".csv", studentlist, components);
+				
+		Summary ss = new Summary(res);
+		for (CategoryComponent component : components) 
+			ss.addComponent(component);
+		res.addSummary(ss);
 
 		return res;
 	}
@@ -175,6 +185,23 @@ public class DataUtil {
 			}
 		}
 		return res;
+	}
+	
+	//  ------- drop Course -------   //
+	protected static void drop(String name, String code, int year) {
+		String path = root + "database";
+		if (!checkDirExist(path)) {
+			System.out.println("[DataUtil drop] directory of /database doesn't exist!");
+			return;
+		}
+		
+		String coursePath = path + "/" + getCourseDir(name, code, year);
+		if (!checkDirExist(coursePath)) {
+			System.out.println("[DataUtil load] " + coursePath + " doesn't exist!");
+			return;
+		}
+		
+		dropDir(coursePath);
 	}
 	
 	//  ------- get course directory ------ //
