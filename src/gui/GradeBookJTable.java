@@ -37,6 +37,7 @@ import model.Student;
 import model.StudentEntry;
 import model.Summary;
 import model.GradeableComponent.DataEntryMode;
+import model.OverallGradeable;
 import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
@@ -44,6 +45,8 @@ public class GradeBookJTable extends JTable {
 	
 	private GradeBookPanel gradeBookPanel;
 	private Category category;
+	
+	private static final String OVERALL_GRADE_COLUMN_NAME = "Overall Grade";
 		
 	public GradeBookJTable(GradeBookPanel gradeBookPanel, Category category) {
 		super();
@@ -87,6 +90,11 @@ public class GradeBookJTable extends JTable {
 		//Add the category specific headers
 		for(CategoryComponent component : category.getComponents()) {
 			columnNameList.add(component.getName());
+		}
+		
+		//Add the special overall grade column
+		if(category instanceof OverallGradeable) {
+			columnNameList.add(OVERALL_GRADE_COLUMN_NAME);
 		}
 		
 		DefaultTableModel tableModel = (DefaultTableModel) this.getModel();
@@ -477,15 +485,20 @@ public class GradeBookJTable extends JTable {
 			for (int modelColumnIndex = 0; modelColumnIndex < this.getModel().getColumnCount(); modelColumnIndex++){
 				int viewColumnIndex = this.convertColumnIndexToView(modelColumnIndex);
 				String columnName = this.getColumnName(viewColumnIndex);
-				String guiValue = this.getModel().getValueAt(row, modelColumnIndex).toString();
+				Object guiValue = this.getModel().getValueAt(row, modelColumnIndex);
+				
+				String stringValue = null;
+				if(guiValue != null) {
+					stringValue = guiValue.toString();
+				}
 
 				if(this.isSummaryTable() && studentHeaders.contains(columnName)) {
-					Summary.setData(student, columnName, guiValue);
+					Summary.setData(student, columnName, stringValue);
 				}
 				else if(isComponentSpecificToCategory(columnName)){
 					DataEntry<?> dataEntry = studentEntry.getDataEnty(columnName);
 					if(dataEntry != null) {
-						boolean success = dataEntry.setDataFromGUI(guiValue);
+						boolean success = dataEntry.setDataFromGUI(stringValue);
 						if(!success) {
 							//Invalid data!
 							//return false;
@@ -494,5 +507,27 @@ public class GradeBookJTable extends JTable {
 				}
 			}	
 		}
+	}
+	
+	public boolean updateGradesIfApplicable() {
+		if(category instanceof OverallGradeable) {
+			int overallGradeGUIColumn = this.getColumnModel().getColumnIndex(OVERALL_GRADE_COLUMN_NAME);
+			
+			for (int row = 0; row < this.getModel().getRowCount(); row++){
+				StudentEntry studentEntry = this.category.getStudentEntries().get(row);
+				
+				OverallGradeable overallGradeable = (OverallGradeable) this.category;
+				Double grade = overallGradeable.computeOverallGrade(studentEntry);
+				if(grade == null) {
+					//Could not compute a grade
+					return false;
+				}
+				
+				//Set the overall grade value
+				this.setValueAt(grade.toString(), row, overallGradeGUIColumn);
+			}
+		}
+		
+		return true;
 	}
 }

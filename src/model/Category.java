@@ -52,16 +52,19 @@ public abstract class Category {
 	}
 	
 	public void deleteStudentEntry(Student student) {
-		StudentEntry entryToDelete = null;
-		for(StudentEntry entry : studentEntries) {
-			if(entry.getStudent().equals(student)) {
-				entryToDelete = entry;
-				break;
-			}
-		}
+		StudentEntry entryToDelete = getStudentEntry(student);
 		if(entryToDelete != null) {
 			studentEntries.remove(entryToDelete);
 		}
+	}
+	
+	protected StudentEntry getStudentEntry(Student student) {
+		for(StudentEntry entry : studentEntries) {
+			if(entry.getStudent().equals(student)) {
+				return entry;
+			}
+		}
+		return null;
 	}
 	
 	public void addComponent(CategoryComponent component) {

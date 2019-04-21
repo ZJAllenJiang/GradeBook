@@ -1,5 +1,7 @@
 package model;
 
 public interface OverallGradeable {
-	abstract public double computeTotl();
+	public boolean hasValidGradeableData(StudentEntry studentEntry);
+	
+	public Double computeOverallGrade(StudentEntry studentEntry);
 }
