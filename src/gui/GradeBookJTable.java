@@ -268,7 +268,7 @@ public class GradeBookJTable extends JTable {
             	//Set the valid data in the model in the format it is in now
     			GradeBookJTable.this.setDataFromGUI();
             	
-            	System.out.println("Compute statistics on column: " + selectedModelHeader);
+            	System.out.println("Compute statistics on column: " + selectedModelHeader);            	
             }
         });
         popupMenu.add(statisticItem);
@@ -509,8 +509,11 @@ public class GradeBookJTable extends JTable {
 		}
 	}
 	
-	public boolean updateGradesIfApplicable() {
+	public boolean updateOverallGradesIfApplicable() {
 		if(category instanceof OverallGradeable) {
+			setDataFromGUI();
+			refreshTable();
+			
 			int overallGradeGUIColumn = this.getColumnModel().getColumnIndex(OVERALL_GRADE_COLUMN_NAME);
 			
 			for (int row = 0; row < this.getModel().getRowCount(); row++){
