@@ -27,7 +27,7 @@ public class Course {
 		this.year = year;
 		categories = new ArrayList<>();
 		students = new ArrayList<>();
-		summary = new Summary();
+		summary = new Summary(this);
 		status = true;
 	}
 	

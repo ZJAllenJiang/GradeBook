@@ -11,7 +11,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -31,7 +30,6 @@ import javax.swing.table.TableCellRenderer;
 
 import model.Category;
 import model.CategoryComponent;
-import model.Course;
 import model.DataEntry;
 import model.Student;
 import model.StudentEntry;
@@ -268,7 +266,7 @@ public class GradeBookJTable extends JTable {
             	//Set the valid data in the model in the format it is in now
     			GradeBookJTable.this.setDataFromGUI();
             	
-            	System.out.println("Compute statistics on column: " + selectedModelHeader);            	
+            	System.out.println("Compute statistics on column: " + selectedModelHeader);
             }
         });
         popupMenu.add(statisticItem);

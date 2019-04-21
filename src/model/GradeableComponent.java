@@ -1,12 +1,11 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class GradeableComponent extends CategoryComponent {
 	private double weight;
-	private double maxScore;
+	private double maxScore;	//Must be > 0
 	private DataEntryMode dateEntryMode;
 	
 	public enum DataEntryMode{

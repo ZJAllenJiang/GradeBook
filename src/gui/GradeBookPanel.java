@@ -180,6 +180,14 @@ public class GradeBookPanel extends JPanel {
 		setAllData(false);
 	}
 	
+	public void updateOverallGrades() {
+		setAllData(true);
+		for(int tabIndex=0; tabIndex<gradeBookTabs.getTabCount(); tabIndex++) {
+			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
+			gBookTablePanel.updateOverallGrades();
+		}
+	}
+	
 	public void setAllData(boolean doSetData) {
 		for(int tabIndex=0; tabIndex<gradeBookTabs.getTabCount(); tabIndex++) {
 			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);

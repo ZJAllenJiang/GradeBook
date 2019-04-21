@@ -49,10 +49,19 @@ public class GradeableCategory extends Category implements OverallGradeable {
 	
 	@Override
 	public Double computeOverallGrade(StudentEntry studentEntry) {
+		if(!hasValidGradeableData(studentEntry)) {
+			return null;
+		}
+		
 		double weightedGrade = 0;
 		for(DataEntry<?> dataEntry : studentEntry.getAllData()) {
 			if(!dataEntry.getComponent().isGradeable()) {
 				continue;
+			}
+			
+			if(!studentEntry.getStudent().isStatus()) {
+				//Student is not active
+				return 0.0;
 			}
 			
 			GradeableComponent gComponent = (GradeableComponent) dataEntry.getComponent();

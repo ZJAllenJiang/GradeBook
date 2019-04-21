@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Summary extends TextCategory {
+public class Summary extends TextCategory implements OverallGradeable {
 	public static final String SUMMARY = "Summary";
 	
 	public static final String STUDENT_ID = "ID";
@@ -13,8 +13,12 @@ public class Summary extends TextCategory {
 	public static final String LAST_NAME = "Last Name";
 	public static final String STATUS = "Enrolled?";
 	
-	public Summary() {
+	private Course course;
+	
+	public Summary(Course course) {
 		super(SUMMARY, new ArrayList<Student>());
+		
+		this.course = course;
 	}
 
 	public static ArrayList<String> getAllHeaders(){
@@ -77,6 +81,51 @@ public class Summary extends TextCategory {
 			s.setStatus(Boolean.parseBoolean(value));
 			break;
 		}
+	}
+
+	@Override
+	/**
+	 * Check if all the weights of categories sum to 100%
+	 * Check if all the categories are valid
+	 */
+	public boolean hasValidGradeableData(StudentEntry studentEntry) {
+		double weightSum = 0;
+		for(Category category : course.getAllCategories()) {
+			if(category instanceof OverallGradeable) {
+				if(!((OverallGradeable) category).hasValidGradeableData(studentEntry)) {
+					return false;
+				}
+				if(category instanceof GradeableCategory) {
+					weightSum = weightSum + ((GradeableCategory) category).getWeight();
+				}
+			}
+		}
+		//Check if weights add to 100% (within an error)
+		if(Math.abs(100 - weightSum) > 0.0001) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public Double computeOverallGrade(StudentEntry studentEntry) {
+		if(!hasValidGradeableData(studentEntry)) {
+			return null;
+		}
+		
+		double finalGrade = 0;
+		for(Category category : course.getAllCategories()) {
+			if(category instanceof OverallGradeable) {
+				if(category instanceof GradeableCategory) {
+					double categoryGrade = ((OverallGradeable) category).computeOverallGrade(studentEntry)
+							* ((GradeableCategory) category).getWeight();
+					finalGrade = finalGrade + categoryGrade;
+				}
+			}
+		}
+		
+		return finalGrade;
 	}
 }
 

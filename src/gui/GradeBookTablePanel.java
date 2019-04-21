@@ -138,4 +138,8 @@ public class GradeBookTablePanel extends JPanel {
 		}
 		gradeBookTable.refreshTable();
 	}
+
+	public void updateOverallGrades() {
+		gradeBookTable.updateOverallGradesIfApplicable();
+	}
 }
