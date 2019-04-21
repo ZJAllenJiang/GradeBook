@@ -30,6 +30,7 @@ import javax.swing.table.TableCellRenderer;
 
 import model.Category;
 import model.CategoryComponent;
+import model.Course;
 import model.DataEntry;
 import model.Student;
 import model.StudentEntry;
@@ -512,9 +513,9 @@ public class GradeBookJTable extends JTable {
 		}
 	}
 	
-	public boolean updateOverallGradesIfApplicable() {
+	public boolean updateOverallGradesIfApplicable(Course course) {
 		if(category instanceof OverallGradeable) {
-			setDataFromGUI();
+			//setDataFromGUI();  we don't want to override the changes to Summary model overall grades
 			refreshTable();
 			
 			int overallGradeGUIColumn = this.getColumnModel().getColumnIndex(OVERALL_GRADE_COLUMN_NAME);
@@ -531,6 +532,15 @@ public class GradeBookJTable extends JTable {
 				
 				//Set the overall grade value
 				this.setValueAt(grade.toString(), row, overallGradeGUIColumn);
+				
+				if(!this.isSummaryTable()) {
+					StudentEntry summaryRow = course.getSummary().getStudentEntries().get(row);
+					String categoryName = category.getName();
+					DataEntry<?> dataEntry = summaryRow.getDataEnty(categoryName);
+					if(dataEntry != null) {
+						dataEntry.setDataFromGUI(grade.toString());
+					}
+				}
 			}
 		}
 		

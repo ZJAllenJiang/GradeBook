@@ -107,10 +107,12 @@ public class Summary extends TextCategory implements OverallGradeable {
 	 * Check if all the weights of categories sum to 100%
 	 * Check if all the categories are valid
 	 */
-	public boolean hasValidGradeableData(StudentEntry studentEntry) {
+	public boolean hasValidGradeableData(StudentEntry studentSummaryEntry) {
+		Student student = studentSummaryEntry.getStudent();
 		double weightSum = 0;
 		for(Category category : course.getAllCategories()) {
 			if(category instanceof OverallGradeable) {
+				StudentEntry studentEntry = category.getStudentEntry(student);
 				if(!((OverallGradeable) category).hasValidGradeableData(studentEntry)) {
 					return false;
 				}
@@ -120,7 +122,7 @@ public class Summary extends TextCategory implements OverallGradeable {
 			}
 		}
 		//Check if weights add to 100% (within an error)
-		if(Math.abs(100 - weightSum) > 0.0001) {
+		if(Math.abs(1 - weightSum) > 0.0001) {
 			return false;
 		}
 		
@@ -128,15 +130,17 @@ public class Summary extends TextCategory implements OverallGradeable {
 	}
 
 	@Override
-	public Double computeOverallGrade(StudentEntry studentEntry) {
-		if(!hasValidGradeableData(studentEntry)) {
+	public Double computeOverallGrade(StudentEntry studentSummaryEntry) {
+		if(!hasValidGradeableData(studentSummaryEntry)) {
 			return null;
 		}
 		
+		Student student = studentSummaryEntry.getStudent();
 		double finalGrade = 0;
 		for(Category category : course.getAllCategories()) {
 			if(category instanceof OverallGradeable) {
 				if(category instanceof GradeableCategory) {
+					StudentEntry studentEntry = category.getStudentEntry(student);
 					double categoryGrade = ((OverallGradeable) category).computeOverallGrade(studentEntry)
 							* ((GradeableCategory) category).getWeight();
 					finalGrade = finalGrade + categoryGrade;

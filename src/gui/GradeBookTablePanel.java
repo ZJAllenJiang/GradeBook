@@ -139,7 +139,7 @@ public class GradeBookTablePanel extends JPanel {
 		gradeBookTable.refreshTable();
 	}
 
-	public void updateOverallGrades() {
-		gradeBookTable.updateOverallGradesIfApplicable();
+	public void updateOverallGrades(Course course) {
+		gradeBookTable.updateOverallGradesIfApplicable(course);
 	}
 }

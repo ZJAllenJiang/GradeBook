@@ -182,9 +182,11 @@ public class GradeBookPanel extends JPanel {
 	
 	public void updateOverallGrades() {
 		setAllData(true);
-		for(int tabIndex=0; tabIndex<gradeBookTabs.getTabCount(); tabIndex++) {
+		
+		//Update the Summary table last
+		for(int tabIndex=gradeBookTabs.getTabCount()-1; tabIndex>=0; tabIndex--) {
 			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
-			gBookTablePanel.updateOverallGrades();
+			gBookTablePanel.updateOverallGrades(course);
 		}
 	}
 	

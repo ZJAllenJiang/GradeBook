@@ -22,7 +22,7 @@ public class GradeableCategory extends Category implements OverallGradeable {
 	
 	@Override
 	public String toString() {
-		return this.name + " " + this.weight + "%";
+		return this.name + " " + (this.weight * 100) + "%";
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class GradeableCategory extends Category implements OverallGradeable {
 			weightSum = weightSum + gComponent.getWeight();
 		}
 		//Check if weights add to 100% (within an error)
-		if(Math.abs(100 - weightSum) > 0.0001) {
+		if(Math.abs(1 - weightSum) > 0.0001) {
 			return false;
 		}
 
