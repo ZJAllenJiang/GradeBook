@@ -110,6 +110,10 @@ public class Course {
 		return this.summary;
 	}
 	
+	public void addSummary(Summary other) {
+		this.summary = other;
+	}
+	
 	
 	//------------ Methods for managing a category ------------
 	public void deleteCategory(String name) {

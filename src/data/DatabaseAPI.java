@@ -16,6 +16,12 @@ public class DatabaseAPI extends DataUtil{
 		return load(name, code, year);
 	}
 	
+	// delete files for a particular course
+	// won't throw exception but print out reminder msg if no such course
+	public static void dropCourse(String name, String code, int year) {
+		drop(name, code, year);
+	}
+	
 	// get all existing Course in database
 	// @return an empty ArrayList if nothing in database
 	public static ArrayList<Course> getCourseList() {
