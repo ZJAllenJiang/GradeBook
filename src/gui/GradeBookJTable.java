@@ -146,6 +146,10 @@ public class GradeBookJTable extends JTable {
 	}
 	
 	public boolean isCellEditable(String columnName) { 
+		if(columnName.equals(OVERALL_GRADE_COLUMN_NAME)) {
+			return false;
+		}
+		
 		if(!isSummaryTable()) {
 			if(!isComponentSpecificToCategory(columnName)) {
 				//Can only edit student data in Summary table
@@ -252,7 +256,8 @@ public class GradeBookJTable extends JTable {
 			public void show(java.awt.Component invoker, int x, int y) {
 				int guiColumn = GradeBookJTable.this.columnAtPoint(new Point(x, y));
 				String columnName = GradeBookJTable.this.getColumnName(guiColumn);
-				if(GradeBookJTable.this.isComponentSpecificToCategory(columnName)) {
+				if(GradeBookJTable.this.isComponentSpecificToCategory(columnName)
+						&& category.isComponentEditable(columnName)) {
 					super.show(invoker, x, y);
 				}
 			}

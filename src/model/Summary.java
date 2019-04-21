@@ -20,6 +20,25 @@ public class Summary extends TextCategory implements OverallGradeable {
 		
 		this.course = course;
 	}
+	
+	public void addComponentIfApplicable(Category newCategory) {
+		if(!newCategory.isGradeable()) {
+			return;
+		}
+		
+		String name = newCategory.getName();
+		TextComponent newComponent = new TextComponent(name, false);
+		this.addComponent(newComponent);
+	}
+	
+	public void removeComponentIfApplicable(Category oldCategory) {
+		if(!oldCategory.isGradeable()) {
+			return;
+		}
+		
+		String name = oldCategory.getName();
+		this.deleteComponent(name);
+	}
 
 	public static ArrayList<String> getAllHeaders(){
 		ArrayList<String> commonHeaders = getCommonHeaders();

@@ -15,7 +15,9 @@ public class Course {
 	private boolean status;
 	
 	//------------ Course contents ------------
+	//DO NOT ADD TO THIS DIRECTLY - USE THE METHOD Course.addCategory
 	private ArrayList<Category> categories;
+	
 	private ArrayList<Student> students;
 	private Summary summary;
 	
@@ -40,7 +42,7 @@ public class Course {
 		this.addStudent("U124", "John", "H", "Will");
 		this.addStudent("U125", "Kate", "", "Rose");
 		
-		categories.add(new GradeableCategory(1.0, "Homework", students));
+		addCategory(new GradeableCategory(1.0, "Homework", students));
 		CategoryComponent hw1 = new GradeableComponent("HW1", true, .1, 50, DataEntryMode.POINTS_EARNED);
 		CategoryComponent hw2 = new GradeableComponent("HW2", true, .5, 60, DataEntryMode.POINTS_LOST);
 		CategoryComponent hw3 = new GradeableComponent("HW3", true, .4, 50, DataEntryMode.PERCENTAGE);
@@ -110,26 +112,26 @@ public class Course {
 	
 	
 	//------------ Methods for managing a category ------------
-	public void addGradeable(double weight, String name) {
-		categories.add(new GradeableCategory(weight, name, students));
-	}
-	
-	public void addNonGradeable(String name) {
-		categories.add(new TextCategory(name, students));
-	}
-	
 	public void deleteCategory(String name) {
+		Category oldCategory = null;
 		for (Category categ : categories) {
 			if (categ.getName().equals(name)) {
 				categories.remove(categ);
+				oldCategory = categ;
 				break;
 			}
+		}
+		
+		if(oldCategory != null) {
+			summary.removeComponentIfApplicable(oldCategory);
 		}
 	}
 	
 	// add category by passing an existing category
 	public void addCategory(Category category) {
 		categories.add(category);
+		
+		summary.addComponentIfApplicable(category);
 	}
 	
 	//------------- Methods for adding students ------------
