@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.Map;
+
 
 import model.Course;
 import model.GradeableCategory;
@@ -17,6 +20,19 @@ import model.GradeableComponent.DataEntryMode;
 import model.Category;
 import model.CategoryComponent;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 public class DataUtil {
 	private static final String root = "";
 	private static final String ctypeText = "Text";
@@ -25,7 +41,7 @@ public class DataUtil {
 	
 	
 	//  ------- save Course -------   // 
-	public static void save(Course course) {
+	protected static void save(Course course) {
 		String path = root + "database";
 		if (!checkDirExist(path)) 
 			createDir(path);
@@ -84,7 +100,7 @@ public class DataUtil {
 	}
 	
 	//  ------- load Course -------   // 
-	public static Course load(String name, String code, int year) {
+	protected static Course load(String name, String code, int year) {
 		String path = root + "database";
 		if (!checkDirExist(path)) {
 			System.out.println("[DataUtil load] directory of /database doesn't exist!");
@@ -117,12 +133,10 @@ public class DataUtil {
 			String categoryname = categorypath;
 			double weight = readOverallWeight(GradeableCategory + "/" +
 					categorypath + "/" + "overweight");
-			ArrayList<CategoryComponent> components = readComponents(GradeableCategory + "/" +
-					categorypath + "/" + categorypath + ".csv",
-					GradeableCategory + "/" + categorypath + "/" + "componentType",
-					GradeableCategory + "/" + categorypath + "/" + "componentweight");
-			ArrayList<StudentEntry> studententries = readStudentEntries(GradeableCategory + "/" +
-					categorypath + "/" + categorypath + ".csv", studentlist, components);
+			ArrayList<CategoryComponent> components = readXML(GradeableCategory + "/" +
+					categorypath + "/attributes.xml");
+//			ArrayList<StudentEntry> studententries = readStudentEntries(GradeableCategory + "/" +
+//					categorypath + "/" + categorypath + ".csv", studentlist, components);
 			
 			Category c = new GradeableCategory(weight, categoryname, studentlist);
 			for (CategoryComponent component : components) 
@@ -132,12 +146,10 @@ public class DataUtil {
 		// organize text categories
 		for (String categorypath : lookForDir(TextCategory)) {
 			String categoryname = categorypath; 
-			ArrayList<CategoryComponent> components = readComponents(TextCategory + "/" + 
-					categorypath + "/" + categorypath + ".csv",
-					TextCategory + "/" + categorypath + "/" + "componentType",
-					"");
-			ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
-					categorypath + "/" + categorypath + ".csv", studentlist, components);
+			ArrayList<CategoryComponent> components = readXML(TextCategory + "/" + 
+					categorypath + "/attributes.xml");
+//			ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
+//					categorypath + "/" + categorypath + ".csv", studentlist, components);
 			
 			Category c = new TextCategory(categoryname, studentlist);
 			for (CategoryComponent component : components) 
@@ -145,6 +157,23 @@ public class DataUtil {
 			res.addCategory(c);
 		}
 
+		return res;
+	}
+	
+	//  ------- load all existing courses ------- //
+	protected static ArrayList<Course> readCourseList() {
+		ArrayList<Course> res = new ArrayList<Course>();
+		if(checkDirExist(root + "database")) {
+			for (String coursename : lookForDir(root + "database")) {
+				String[] terms = coursename.split("_");
+				
+				// code & name & year
+				if (terms.length == 3) 
+					res.add(load(terms[1], terms[0], Integer.parseInt(terms[2])));
+				else 
+					System.out.println("Invalid directory name: " + coursename);
+			}
+		}
 		return res;
 	}
 	
@@ -161,41 +190,6 @@ public class DataUtil {
 			Student object = new Student();
 			object.readFromRowData(rowData.get(i));
 			res.add(object);
-		}
-		return res;
-	}
-	
-	private static ArrayList<CategoryComponent> readComponents(String filename, 
-			String typefile, String optional) {
-		ArrayList<CategoryComponent> res = new ArrayList<CategoryComponent>();
-		
-		// read components from first row
-		String[] attributes = readCSV(filename).get(0).split(",");
-		String[] componentsType = readText(typefile).split(",");
-		String[] componentsWeight = null;
-		if (!optional.equals(""))
-			componentsWeight = readText(optional).split(",");
-		
-		if (attributes.length == componentsType.length + 1) {
-			for (int i = 1; i < attributes.length; i++) {
-				String name = attributes[i];
-				CategoryComponent c = null;
-				
-				// all return editable by default
-				if (componentsType[i-1].equals(ctypeText)) {
-					c = new TextComponent(name, true);
-				} else if (componentsType[i-1].equals(ctypeGradeable)
-						&& componentsWeight != null) {
-					c = new GradeableComponent(name, true, 
-							Double.parseDouble(componentsWeight[i-1]),
-							1, DataEntryMode.POINTS_EARNED);
-				} else {
-					System.out.println("[DataUtil readComponents] miss match type, type = "
-							+ componentsType[i-1]);
-					continue;
-				}
-				res.add(c);
-			}
 		}
 		return res;
 	}
@@ -258,10 +252,10 @@ public class DataUtil {
 		createFile(csvFile);
 		writeToCSV(csvFile, category.getStudentEntries());
 		
-		// text, componentType for each component
-		createFile(path + "/" + "componentType");
-		writeText(path + "/" + "componentType", 
-				getAllComponentType(category));
+		// attributes
+		String attributesFile = path + "/" + "attributes.xml";
+		createFile(attributesFile);
+		writeXML(attributesFile, category.getComponents());
 		
 		// only gradeablecategory would have weights thing
 		if (category instanceof GradeableCategory) {
@@ -271,52 +265,14 @@ public class DataUtil {
 			createFile(overweight);
 			writeText(overweight, 
 					Double.toString(((GradeableCategory) category).getWeight()));
-			
-			// text, weight for each component
-			String componentweight = path + "/" + "componentweight";
-			createFile(componentweight);
-			writeText(componentweight,
-					getAllComponentWeight(category));
 		}
-	}
-	
-	private static String getAllComponentWeight(Category category) {
-		String res = "";
-		for(int i = 0; i < category.getComponents().size(); i++) {
-			CategoryComponent c = category.getComponents().get(i);
-			
-			// only GradeableComponents have weights so far
-			if (c instanceof GradeableComponent) 
-				res += Double.toString(
-						((GradeableComponent) c).getWeight());
-			else
-				res += " ";
-			
-			if (i != category.getComponents().size() - 1)
-				res += ",";
-		}
-		return res;
-	}
-	
-	private static String getAllComponentType(Category category) {
-		String res = "";
-		for(int i = 0; i < category.getComponents().size(); i++) {
-			CategoryComponent c = category.getComponents().get(i);
-			if (c instanceof TextComponent) 
-				res += ctypeText;
-			else if (c instanceof GradeableComponent) 
-				res += ctypeGradeable;
-			
-			if (i != category.getComponents().size() - 1)
-				res += ",";
-		}
-		return res;
 	}
 	
 	/**
 	 *  file helper functions	
 	 */
 	private static ArrayList<String> lookForDir(String dir) {
+		dir = pathMapping(dir);
 		// return all directory under dir
 		ArrayList<String> res = new ArrayList<String>();
 		File currentDir = new File(dir);
@@ -328,6 +284,7 @@ public class DataUtil {
 	}
 	
 	private static ArrayList<String> lookForFiles(String dir, String reg) {
+		dir = pathMapping(dir);
 		// return all file that match the reg under dir
 		ArrayList<String> res = new ArrayList<String>();
 		File currentDir = new File(dir);
@@ -340,6 +297,7 @@ public class DataUtil {
 	}
 	
 	private static boolean checkDirExist(String dir) {
+		dir = pathMapping(dir);
 		File file = new File(dir);
 		if (file.exists() && file.isDirectory()) 
 			return true;
@@ -347,6 +305,7 @@ public class DataUtil {
 	}
 	
 	private static boolean checkFileExist(String filepath) {
+		filepath = pathMapping(filepath);
 		File file = new File(filepath);
 		if (file.exists() && file.isFile()) 
 			return true;
@@ -354,6 +313,7 @@ public class DataUtil {
 	}
 	
 	private static boolean createDir(String dir) {
+		dir = pathMapping(dir);
 		boolean res = true;
 		File file = new File(dir);
 		try {
@@ -366,18 +326,30 @@ public class DataUtil {
 	}
 	
 	private static boolean dropDir(String dir) {
+		dir = pathMapping(dir);
 		boolean res = true;
 		File file = new File(dir);
 		try {
-			res = file.delete();
+			recursiveDrop(file);
 		} catch(Exception e) {
 			System.out.println("[DataUtil createDir] delete directory failed!");
 			res = false;
 		}
 		return res;
 	}
+	
+	private static void recursiveDrop(File file) {
+		File[] files = file.listFiles();
+		if (files != null) {
+			for (File f : files) {
+				recursiveDrop(f);
+			}
+		}
+		file.delete();
+	}
 
-	private static boolean createFile(String filepath) {
+ 	private static boolean createFile(String filepath) {
+		filepath = pathMapping(filepath);
 		boolean res = true;
 		File file = new File(filepath);
 		try {
@@ -393,6 +365,7 @@ public class DataUtil {
 	 * @param <T>
 	 */
 	private static <T extends Writeout> void writeToCSV(String filename, ArrayList<T> records)  {
+		filename = pathMapping(filename);
 		if (records.size() > 0) {
 			ArrayList<String> tags = records.get(0).getColumnName();
 			
@@ -438,6 +411,7 @@ public class DataUtil {
 	}
 	
 	private static ArrayList<String> readCSV(String filename) {
+		filename = pathMapping(filename);
 		if (checkFileExist(filename)) {
 			ArrayList<String> res = new ArrayList<String>();
 			try (Scanner sc = new Scanner(new File(filename))) {
@@ -452,7 +426,9 @@ public class DataUtil {
 		return new ArrayList<String>();
 	}
 	
+	
 	private static String readText(String filename) {
+		filename = pathMapping(filename);
 		if (checkFileExist(filename)) {
 			String res = "";
 			try (Scanner sc = new Scanner(new File(filename))) {
@@ -468,6 +444,7 @@ public class DataUtil {
 	}
 	
 	private static void writeText(String filename, String content) {
+		filename = pathMapping(filename);
 		try(PrintWriter writer = new PrintWriter(new File(filename))) {
 			StringBuilder sbuilder = new StringBuilder();
 			sbuilder.append(content);
@@ -478,8 +455,108 @@ public class DataUtil {
 		}
 	}
 	
+	private static void writeXML(String filename, 
+			ArrayList<CategoryComponent> components) {
+		filename = pathMapping(filename);
+		Document dom;
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+			dom = dBuilder.newDocument();
+			
+			// root element
+			Element root = dom.createElement("Components");
+			dom.appendChild(root);
+			
+			for (CategoryComponent component : components) {
+				Map<String, String> attributes = component.getAllAttributes();
+				root.appendChild(getChildNode(dom, attributes));
+			}
+			
+			// write to file
+			try {
+	            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	            Transformer transformer = transformerFactory.newTransformer();
+	            //for pretty print
+	            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	            DOMSource source = new DOMSource(dom);
+	            StreamResult file = new StreamResult(new File(filename));
+	            transformer.transform(source, file);
+			}catch (Exception ee) { System.out.println(ee.getMessage());}
+		} catch(Exception e) { System.out.println(e.getMessage());}
+	}
+	
+	private static Node getChildNode(Document doc, Map<String, String> attributes) {
+		if (attributes.containsKey("name") && attributes.containsKey("type") &&
+				attributes.containsKey("isEditable")) {
+				Element ele = doc.createElement(attributes.get("name"));
+				
+				// has duplicate for "name", but seems doesn't matter...
+				for (Map.Entry<String, String> kv : attributes.entrySet()) {
+					ele.appendChild(getInfoNode(doc, kv.getKey(), kv.getValue()));
+				}
+				
+				return ele;
+		} 
+		return null;
+	}
+	
+	private static Node getInfoNode(Document doc, String name, String value) {
+		Element node = doc.createElement(name);
+		node.appendChild(doc.createTextNode(value));
+		return node;
+	}
+	
+	private static ArrayList<CategoryComponent> readXML(String filename) {
+		filename = pathMapping(filename);
+		Document dom;
+        // Make an  instance of the DocumentBuilderFactory
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        ArrayList<CategoryComponent> res = new ArrayList<CategoryComponent>();
+        try {
+            // use the factory to take an instance of the document builder
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            dom = db.parse(filename);
+            
+            Node root = dom.getFirstChild();
+            NodeList components = root.getChildNodes();
+            
+            for (int i = 0; i < components.getLength(); i++) {
+            	if (components.item(i).getNodeType() == Node.ELEMENT_NODE) {
+	            	
+	            	Map<String, String> attributes = readXMLComponent(components.item(i));
+	            	CategoryComponent c = null;
+	            	if (attributes.get("type").equals("gradeable")) 
+	            		c = new GradeableComponent(attributes);
+	            	else if (attributes.get("type").equals("text"))
+	            		c = new TextComponent(attributes);
+	            	else
+	            		System.out.println("[DataUtil readXML] mis matched type");
+	            	
+	            	res.add(c);
+            	}
+            }
+        } catch(Exception e) { System.out.println("[DataUtil readXML] read err");}
+        return res;
+	}
+	
+	private static Map<String, String> readXMLComponent(Node node) {
+		Map<String, String> res = new TreeMap<String, String>();
+		NodeList list = node.getChildNodes();
+		for (int i = 0; i < list.getLength(); i++) {
+			Node current = list.item(i);
+			if (current.hasChildNodes()) {
+				res.put(current.getNodeName(), current.getFirstChild().getTextContent());
+//				System.out.println(current.getNodeName() + " | " + current.getFirstChild().getTextContent());
+			}
+		}
+		
+		return res;
+	}
+	
 	// generate path according to diff sys of linux vs win vs macos
-	private String pathMapping(String path) {
+	private static String pathMapping(String path) {
 		// only windows need to map
 		if (File.separatorChar == '\\') 
 			return path.replace('/', File.pathSeparatorChar);

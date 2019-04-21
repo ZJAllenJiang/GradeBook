@@ -63,12 +63,13 @@ public class StudentEntry implements Writeout, ReadIn{
 			if (entry.getData() != null) 
 				res.add(entry.getData().toString());
 			else
-				res.add("");
+				res.add(" "); // add space to that field indicating empty
+
 			
 			if (entry.hasComment())
 				res.add(entry.getComment());
 			else
-				res.add("");
+				res.add(" "); // add space to that field indicating empty
 		}
 		return res;
 	}
@@ -84,7 +85,6 @@ public class StudentEntry implements Writeout, ReadIn{
 			res.add(key.getComponent().getName());
 			res.add("Comment");
 		}
-
 		return res;
 	}
 	

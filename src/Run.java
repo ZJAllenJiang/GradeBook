@@ -1,34 +1,26 @@
+import java.util.ArrayList;
+import java.util.Map;
+
 import data.DataUtil;
+import data.DatabaseAPI;
 import model.Category;
+import model.CategoryComponent;
 import model.Course;
 import model.Student;
 import model.StudentEntry;
 
 public class Run {
 	public static void main(String Args[]) {
-		DataUtil.save(new Course());
-		Course c = DataUtil.load("Java", "591", 2019);
+//		DatabaseAPI.saveCourse(new Course());
+//		Course c = DatabaseAPI.getCourseList().get(0);
 //		
-//		// show all category
-//		for (Category category : c.getAllCategories()) {
-//			System.out.println(category.getName());
+//		Category hw = c.getAllCategories().get(0);
+//		ArrayList<CategoryComponent> allcomponents = hw.getComponents();
+//		for (CategoryComponent tmp : allcomponents) {
+//			Map<String, String> atr = tmp.getAllAttributes();
+//			for (Map.Entry<String, String> kv : atr.entrySet()) {
+//				System.out.println(kv.getKey() + ": " + kv.getValue());
+//			}
 //		}
-//		
-//		// show all students
-//		for (Student student : c.getAllStudents()) {
-//			System.out.println(student.toString());
-//		}
-		
-		Category hw = c.getAllCategories().get(0);
-		for (StudentEntry se : hw.getStudentEntries()) {
-			System.out.print("Name: ");
-			System.out.println(se.getStudent().getFirstName()
-					+ " " + se.getStudent().getMiddleName()
-					+ " " + se.getStudent().getLastName());
-			
-			for (int i = 0; i < se.getAllData().size(); i++) {
-				System.out.println(se.getAllData().get(i).getData().toString());
-			}
-		}
 	}
 }
