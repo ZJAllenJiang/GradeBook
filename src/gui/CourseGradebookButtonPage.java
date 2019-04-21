@@ -149,7 +149,7 @@ public class CourseGradebookButtonPage {
 		addCategoryButton.setBounds(760, 140, 200, 40);
 		frame.getContentPane().add(addCategoryButton);
 		
-		gBookPanel.setBounds(100, 100, 600, 400);
+		gBookPanel.setBounds(50, 200, 900, 400);
 		frame.getContentPane().add(gBookPanel);
 		
 		JButton resetButton = new JButton("Reset");
