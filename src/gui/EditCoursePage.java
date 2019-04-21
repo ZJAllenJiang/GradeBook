@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -60,8 +62,19 @@ public class EditCoursePage {
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 300, 350);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setLocationRelativeTo(null);
+		// set the window in the middle of screen
+		int windowWidth = frame.getWidth(); 
+		int windowHeight = frame.getHeight(); 
+		Toolkit kit = Toolkit.getDefaultToolkit(); 
+		Dimension screenSize = kit.getScreenSize(); 
+		int screenWidth = screenSize.width; 
+		int screenHeight = screenSize.height; 
+		frame.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
+				
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Edit Course");
 		
 		JLabel createNewCourseLabel = new JLabel("Edit course information");
 		createNewCourseLabel.setHorizontalAlignment(SwingConstants.CENTER);

@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -53,8 +55,19 @@ public class DeleteCourseConfirmation {
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 450, 250);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setLocationRelativeTo(null);
+		// set the window in the middle of screen
+		int windowWidth = frame.getWidth(); 
+		int windowHeight = frame.getHeight(); 
+		Toolkit kit = Toolkit.getDefaultToolkit(); 
+		Dimension screenSize = kit.getScreenSize(); 
+		int screenWidth = screenSize.width; 
+		int screenHeight = screenSize.height; 
+		frame.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
+				
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Delete Course Confirmation");
 		
 		JLabel warningLabel = new JLabel("Are you sure you want to delete this course?");
 		warningLabel.setHorizontalAlignment(SwingConstants.CENTER);

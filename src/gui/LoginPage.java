@@ -1,11 +1,14 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -47,8 +50,19 @@ public class LoginPage {
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 600, 400);
+		//frame.setLocationRelativeTo(null);
+		// set the window in the middle of screen
+		int windowWidth = frame.getWidth(); 
+		int windowHeight = frame.getHeight(); 
+		Toolkit kit = Toolkit.getDefaultToolkit(); 
+		Dimension screenSize = kit.getScreenSize(); 
+		int screenWidth = screenSize.width; 
+		int screenHeight = screenSize.height; 
+		frame.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Login");
 		
 		JLabel welcomeLabel = new JLabel("Welcome");
 		welcomeLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 25));

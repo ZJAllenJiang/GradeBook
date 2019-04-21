@@ -1,10 +1,13 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
@@ -55,8 +58,19 @@ public class CreateCoursePage {
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 300, 350);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setLocationRelativeTo(null);
+		// set the window in the middle of screen
+		int windowWidth = frame.getWidth(); 
+		int windowHeight = frame.getHeight(); 
+		Toolkit kit = Toolkit.getDefaultToolkit(); 
+		Dimension screenSize = kit.getScreenSize(); 
+		int screenWidth = screenSize.width; 
+		int screenHeight = screenSize.height; 
+		frame.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
+				
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle("Create New Course");
 		
 		JLabel createNewCourseLabel = new JLabel("Create your new course");
 		createNewCourseLabel.setHorizontalAlignment(SwingConstants.CENTER);
