@@ -16,11 +16,15 @@ public class AlexMain {
 //		Course javaCourse = DatabaseAPI.loadCourse("Java", "591", 2019);
 		Course javaCourse = new Course();
 		
+		/*
 		alexFrame.add(new GradeBookPanel(javaCourse), BorderLayout.CENTER);
 		
 		alexFrame.setSize(1000, 800);
 		alexFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		alexFrame.setVisible(true); 
+		*/
+		
+		new CourseGradebookButtonPage(javaCourse);
 	}
 
 }

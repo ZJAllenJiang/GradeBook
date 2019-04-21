@@ -164,6 +164,7 @@ public class CourseGradebookButtonPage {
 		JButton recalculateButton = new JButton("Recalculate");
 		recalculateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				gBookPanel.updateOverallGrades();
 			}
 		});
 		recalculateButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
