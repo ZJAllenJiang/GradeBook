@@ -150,5 +150,14 @@ public class Summary extends TextCategory implements OverallGradeable {
 		
 		return finalGrade;
 	}
+	
+	
+	// for database composing object
+	// read student list from course, must add students in course first
+	public void addStudentInCourse() {
+		for (Student student : course.getAllStudents()) {
+			addStudentEntry(student);
+		}
+	}
 }
 

@@ -134,12 +134,12 @@ public class DataUtil {
 					categorypath + "/" + "overweight");
 			ArrayList<CategoryComponent> components = readXML(GradeableCategory + "/" +
 					categorypath + "/attributes.xml");
-//			ArrayList<StudentEntry> studententries = readStudentEntries(GradeableCategory + "/" +
-//					categorypath + "/" + categorypath + ".csv", studentlist, components);
-			
-			Category c = new GradeableCategory(weight, categoryname, studentlist);
+			Category c = new GradeableCategory(weight, categoryname, studentlist);			
 			for (CategoryComponent component : components) 
 				c.addComponent(component);
+			
+			readStudentEntries(GradeableCategory + "/" +
+					categorypath + "/" + categorypath + ".csv", studentlist, components, c);
 			res.addCategory(c);
 		}		
 		// organize text categories
@@ -147,24 +147,27 @@ public class DataUtil {
 			String categoryname = categorypath; 
 			ArrayList<CategoryComponent> components = readXML(TextCategory + "/" + 
 					categorypath + "/attributes.xml");
-//			ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
-//					categorypath + "/" + categorypath + ".csv", studentlist, components);
-			
-			Category c = new TextCategory(categoryname, studentlist);
+			Category c = new TextCategory(categoryname, studentlist);			
 			for (CategoryComponent component : components) 
 				c.addComponent(component);
+			
+			readStudentEntries(TextCategory + "/" +
+					categorypath + "/" + categorypath + ".csv", studentlist, components, c);
+
 			res.addCategory(c);
 		}
 		
 		// load Summary
 		String summary = coursePath + "/" + "Summary"; 
 		ArrayList<CategoryComponent> components = readXML(summary + "/attributes.xml");
-//		ArrayList<StudentEntry> studententries = readStudentEntries(TextCategory + "/" +
-//				categorypath + "/" + categorypath + ".csv", studentlist, components);
-				
 		Summary ss = new Summary(res);
 		for (CategoryComponent component : components) 
 			ss.addComponent(component);
+		// because res has added up student list, so the following function works
+		ss.addStudentInCourse();
+		
+		readStudentEntries(coursePath + "/" + "Summary" +
+				 "/" + "Summary.csv", studentlist, components, ss);		
 		res.addSummary(ss);
 
 		return res;
@@ -221,30 +224,22 @@ public class DataUtil {
 		return res;
 	}
 	
-	private static ArrayList<StudentEntry> readStudentEntries(String filename, 
-			ArrayList<Student> students, ArrayList<CategoryComponent> components) {
-		ArrayList<StudentEntry> res = new ArrayList<StudentEntry>();
+	private static void readStudentEntries(String filename, 
+			ArrayList<Student> students, ArrayList<CategoryComponent> components, Category category) {
 		ArrayList<String> rowData = readCSV(filename);
 		
-		for (int i = 1; i < rowData.size(); i++) {
-			// find name
-			String idname = rowData.get(i).split(",")[0];
-			Student s = null;
-			StudentEntry object;
-			for (int j = 0; j < students.size(); j++) {
-				if (students.get(j).toString().equals(idname))
-					s = students.get(j);
-			}
-			if (s != null) {
-				object = new StudentEntry(s, components);
-				object.readFromRowData(rowData.get(i));
-				res.add(object);
-			} else {
-				System.out.println("[DataUtil readStudentEntries] can't find such a student in studentlist: "
-						+ idname);
+		for (int i = 0; i < category.getStudentEntries().size(); i++) {
+			StudentEntry studententry = category.getStudentEntries().get(i);
+			String id = studententry.getStudent().toString();
+			for (int j = 1; j < rowData.size(); j++) {
+				String rowid = rowData.get(j).split(",")[0];
+				if (id.equals(rowid)) {
+					category.getStudentEntries().get(i).readFromRowData(rowData.get(j));
+					break;
+				}
 			}
 		}
-		return res;
+		return;
 	}
 	
 	private static double readOverallWeight(String filename) {
@@ -575,7 +570,6 @@ public class DataUtil {
 			Node current = list.item(i);
 			if (current.hasChildNodes()) {
 				res.put(current.getNodeName(), current.getFirstChild().getTextContent());
-//				System.out.println(current.getNodeName() + " | " + current.getFirstChild().getTextContent());
 			}
 		}
 		

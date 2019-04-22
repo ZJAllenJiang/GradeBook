@@ -114,7 +114,10 @@ public class StudentEntry implements Writeout, ReadIn{
 			String data = terms[i * 2 + 1];
 			String comment = terms[i * 2 + 2];
 			dataEntries.get(i).setDataWithString(data);
-			dataEntries.get(i).setComment(comment);
+			
+			// only set comment when there is content
+			if (!comment.equals(" "))
+				dataEntries.get(i).setComment(comment);
 		}
 	}
 }
