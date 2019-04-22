@@ -212,7 +212,9 @@ public class DataUtil {
 		return code + '_' + name + '_' + Integer.toString(year);
 	}
 	
-	private static ArrayList<Student> readStudent(String filename) {
+	// read student list from a csv file
+	// must ensure that the scheme of that file is the same as a Student object
+	protected static ArrayList<Student> readStudent(String filename) {
 		ArrayList<Student> res = new ArrayList<Student>();
 		ArrayList<String> rowData = readCSV(filename);
 		

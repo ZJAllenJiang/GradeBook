@@ -3,6 +3,7 @@ package data;
 import java.util.ArrayList;
 
 import model.Course;
+import model.Student;
 
 public class DatabaseAPI extends DataUtil{
 	// save a course into database
@@ -26,5 +27,17 @@ public class DatabaseAPI extends DataUtil{
 	// @return an empty ArrayList if nothing in database
 	public static ArrayList<Course> getCourseList() {
 		return readCourseList();
+	}
+	
+	// read a student list from a csv file
+	// The file should have five cols that are :
+	//	Student ID: String
+	//	First name: String
+	//	Middle initial: String
+	//	Last name: String
+	//	Status: only two values are acceptable for this field, 
+	//          (Active) vs (Inactive)
+	public static ArrayList<Student> importStudents(String filename) {
+		return readStudent(filename); 
 	}
 }
