@@ -7,7 +7,10 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -15,7 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import data.DatabaseAPI;
 import model.Course;
+import model.Student;
 
 import java.awt.Font;
 
@@ -23,6 +28,7 @@ public class CourseGradebookButtonPage {
 
 	private JFrame frame;
 	private GradeBookPanel gBookPanel;
+	private Course course;
 	
 	/**
 	 * Launch the application.
@@ -31,8 +37,8 @@ public class CourseGradebookButtonPage {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//CourseGradebookButtonPage window = new CourseGradebookButtonPage();
-					//window.frame.setVisible(true);
+					CourseGradebookButtonPage window = new CourseGradebookButtonPage();
+					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -57,6 +63,7 @@ public class CourseGradebookButtonPage {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Course course) {
+		this.course = course;
 		//initialize GradebookPanel 
 		//new GradeBookPanel(currentCourse);
 		//JFrame alexFrame = new JFrame("Gradebook");
@@ -86,6 +93,7 @@ public class CourseGradebookButtonPage {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		
 		JButton backButton = new JButton("Back");
 		backButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		backButton.addActionListener(new ActionListener() {
@@ -107,12 +115,8 @@ public class CourseGradebookButtonPage {
 		addStudentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gBookPanel.setAllData(true);
-				new CreateStudentPage();
-				String sId = CreateStudentPage.newStudentList.get(0);
-				String fName = CreateStudentPage.newStudentList.get(1);
-				String mName = CreateStudentPage.newStudentList.get(2);
-				String lName = CreateStudentPage.newStudentList.get(3);
-				course.addStudent(sId, fName, mName, lName);
+				new CreateStudentPage(course);
+				frame.dispose();
 				gBookPanel.setAllData(false);
 			}
 		});
@@ -125,6 +129,32 @@ public class CourseGradebookButtonPage {
 			public void actionPerformed(ActionEvent e) {
 				//wait for method in Course -> bulkLoadStudents
 				// after that could use addStudent() method repeatedly
+				JFileChooser jfc = new JFileChooser();
+				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
+				//jfc.showDialog(new JLabel(), "Select");
+				int result = jfc.showOpenDialog(null);
+				if(result != JFileChooser.CANCEL_OPTION) {
+				File file = jfc.getSelectedFile();
+				if(file.isDirectory()){
+					System.out.println("Selected file folder is: " + file.getAbsolutePath());
+				}else if(file.isFile()){
+					System.out.println("Selected file is: " + file.getAbsolutePath());
+				}
+				System.out.println(jfc.getSelectedFile().getName());
+				
+			
+				gBookPanel.setAllData(true);
+				ArrayList<Student> studentsArray = DatabaseAPI.importStudents(file.getAbsolutePath());
+				for (int i = 0; i < studentsArray.size(); i++) {
+					String sId = studentsArray.get(i).getSid();
+					String fName = studentsArray.get(i).getFirstName();
+					String mName = studentsArray.get(i).getMiddleName();
+					String lName = studentsArray.get(i).getLastName();
+					course.addStudent(sId, fName, mName, lName);
+				}
+				gBookPanel.setAllData(false);
+			}
+				
 			}
 		});
 		importStudentsButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -151,7 +181,7 @@ public class CourseGradebookButtonPage {
 		addCategoryButton.setBounds(760, 140, 200, 40);
 		frame.getContentPane().add(addCategoryButton);
 		
-		gBookPanel.setBounds(50, 200, 900, 400);
+		gBookPanel.setBounds(50, 200, 900, 500);
 		frame.getContentPane().add(gBookPanel);
 		
 		JButton resetButton = new JButton("Reset");
@@ -189,11 +219,15 @@ public class CourseGradebookButtonPage {
 		JButton saveChangesButton = new JButton("Save changes");
 		saveChangesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				DatabaseAPI.saveCourse(course);
 			}
 		});
 		saveChangesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		saveChangesButton.setBounds(790, 720, 170, 40);
 		frame.getContentPane().add(saveChangesButton);
 		frame.setTitle("Course Gradebook");
+		frame.setResizable(false);
 	}
+	
+	
 }

@@ -113,8 +113,7 @@ public class CourseCollectionPage {
 //		Object[][] courseInfo= {
 //				{"Java Development", "CS591", "2019", "Spring", "Active", "View", "Edit", "Delete"}
 //		};
-		//DatabaseAPI.saveCourse(new Course("Java", "591", 2019));
-		//DatabaseAPI.saveCourse(new Course("Data Mechanics", "504", 2019));
+		Course cCourse = new Course();
 		ArrayList<Course> courseList = DatabaseAPI.getCourseList();
 		Object[][] courseInfo = new Object[courseList.size()][8];
 		for (int i = 0; i < courseList.size(); i++) {

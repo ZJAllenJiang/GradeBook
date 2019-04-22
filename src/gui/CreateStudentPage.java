@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import model.Course;
+
 public class CreateStudentPage {
 
 	private JFrame frame;
@@ -25,7 +27,7 @@ public class CreateStudentPage {
 	private JTextField middleNameField;
 	private JTextField lastNameField;
 	
-	public static ArrayList<String> newStudentList;
+
 
 	/**
 	 * Launch the application.
@@ -46,14 +48,19 @@ public class CreateStudentPage {
 	/**
 	 * Create the application.
 	 */
+	public CreateStudentPage(Course course) {
+		initialize(course);
+	}
+	
+
 	public CreateStudentPage() {
-		initialize();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Course course) {
 		
 		frame = new JFrame();
 		frame.setVisible(true);
@@ -124,19 +131,18 @@ public class CreateStudentPage {
 		JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String studentID = idTextField.getText();
-				String firstName = firstNameField.getText();
-				String middleName = middleNameField.getText();
-				String lastName = lastNameField.getText();
-				if(studentID != "" && firstName != "" && middleName != "" && lastName != "") {
-				newStudentList = new ArrayList<>();
-				newStudentList.add(studentID);
-				newStudentList.add(firstName);
-				newStudentList.add(middleName);
-				newStudentList.add(lastName);
+				String sId = idTextField.getText();
+				String fName = firstNameField.getText();
+				String mName = middleNameField.getText();
+				String lName = lastNameField.getText();
+				if(sId != null && fName != null && mName != null && lName != null && sId != "" && fName != "" && mName != "" && lName != "") {
+					course.addStudent(sId, fName, mName, lName);
+					new CourseGradebookButtonPage(course);
+					frame.dispose();	
 				}
-				frame.dispose();
-				//new CourseCollectionPage();
+				
+				
+				
 			}
 		});
 		saveButton.setBounds(150, 290, 120, 30);
@@ -147,6 +153,7 @@ public class CreateStudentPage {
 		frame.getContentPane().add(lastNameField);
 		lastNameField.setColumns(10);
 		frame.setResizable(false);
+		
 		
 		//return newStudentList;
 	}
