@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -271,8 +272,23 @@ public class GradeBookJTable extends JTable {
             public void actionPerformed(ActionEvent e) {
             	//Set the valid data in the model in the format it is in now
     			GradeBookJTable.this.setDataFromGUI();
-            	
-            	System.out.println("Compute statistics on column: " + selectedModelHeader);
+    			
+    			System.err.println("TODO: Compute the statistics!");
+    			boolean status = true;
+    			
+    			JFrame topFrame = (JFrame) SwingUtilities
+            			.getWindowAncestor(GradeBookJTable.this);
+
+    			if(status) {
+    				StatisticsPanel statisticsPanel = new StatisticsPanel(0, 0, 0);
+
+    				JOptionPane.showMessageDialog(topFrame, statisticsPanel, 
+    						"Statistics for " + selectedModelHeader, JOptionPane.PLAIN_MESSAGE);
+    			}
+    			else {
+    				JOptionPane.showMessageDialog(topFrame, "Error when computing the statistics for " + selectedModelHeader, 
+							"Error", JOptionPane.ERROR_MESSAGE);
+    			}
             }
         });
         popupMenu.add(statisticItem);

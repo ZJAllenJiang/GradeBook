@@ -74,7 +74,25 @@ public class GradeBookPanel extends JPanel {
 			    				statisticItem.addActionListener(new ActionListener() {
 			    					@Override
 			    					public void actionPerformed(ActionEvent e) {
-			    						System.out.println("Compute statistics on category: " + tabName);
+			    						//Set the valid data in the model in the format it is in now
+			    						GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
+			    						gBookTablePanel.syncModelAndGUI(true);
+			    						boolean result = gBookTablePanel.updateOverallGrades(course);
+			    		    			
+			    						JFrame topFrame = (JFrame) SwingUtilities
+		    									.getWindowAncestor(GradeBookPanel.this);
+			    						if(result) {
+			    							System.err.println("TODO: Compute the statistics!");
+
+			    							StatisticsPanel statisticsPanel = new StatisticsPanel(0, 0, 0);
+
+			    							JOptionPane.showMessageDialog(topFrame, statisticsPanel, 
+			    									"Statistics for " + category.getName(), JOptionPane.PLAIN_MESSAGE);
+			    						}
+			    						else {
+			    							JOptionPane.showMessageDialog(topFrame, "Error when computing the statistics for " + category.getName(), 
+			    									"Error", JOptionPane.ERROR_MESSAGE);
+			    						}
 			    					}
 			    				});
 			    				popupMenu.add(statisticItem);
@@ -180,14 +198,18 @@ public class GradeBookPanel extends JPanel {
 		setAllData(false);
 	}
 	
-	public void updateOverallGrades() {
+	public boolean updateOverallGrades() {
 		setAllData(true);
 		
+		boolean status = true;
 		//Update the Summary table last
 		for(int tabIndex=gradeBookTabs.getTabCount()-1; tabIndex>=0; tabIndex--) {
 			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
-			gBookTablePanel.updateOverallGrades(course);
+			boolean result = gBookTablePanel.updateOverallGrades(course);
+			status = status && result;
 		}
+		
+		return status;
 	}
 	
 	public void setAllData(boolean doSetData) {

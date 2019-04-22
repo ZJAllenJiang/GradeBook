@@ -11,7 +11,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import model.Course;
 
@@ -164,7 +166,20 @@ public class CourseGradebookButtonPage {
 		JButton recalculateButton = new JButton("Recalculate");
 		recalculateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gBookPanel.updateOverallGrades();
+				boolean status = gBookPanel.updateOverallGrades();
+    			
+				if(status) {
+					System.err.println("TODO: Compute the statistics!");
+					
+					StatisticsPanel statisticsPanel = new StatisticsPanel(0, 0, 0);
+
+					JOptionPane.showMessageDialog(frame, statisticsPanel, 
+							"Statistics for Course: " + course.getName(), JOptionPane.PLAIN_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(frame, "Error when computing the statistics for course: " + course.getName(), 
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		recalculateButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
