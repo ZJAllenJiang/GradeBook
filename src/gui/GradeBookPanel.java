@@ -43,14 +43,7 @@ public class GradeBookPanel extends JPanel {
 		
 		//Add the other Categories
 		for(Category category : course.getAllCategories()) {
-			if(category.isGradeable()) {
-				double weight = ((GradeableCategory) category).getWeight();
-				String weightToolTip = getWeightToolTipString(weight);
-				gradeBookTabs.addTab(category.getName(), null, new GradeBookTablePanel(this, category), weightToolTip);
-			}
-			else {
-				gradeBookTabs.addTab(category.getName(), new GradeBookTablePanel(this, category));
-			}
+			addCategoryTab(category);
 		}
 		
 		gradeBookTabs.addMouseListener(new MouseAdapter() {
@@ -142,6 +135,17 @@ public class GradeBookPanel extends JPanel {
 		});
 		
 		add(gradeBookTabs);
+	}
+	
+	public void addCategoryTab(Category category) {
+		if(category.isGradeable()) {
+			double weight = ((GradeableCategory) category).getWeight();
+			String weightToolTip = getWeightToolTipString(weight);
+			gradeBookTabs.addTab(category.getName(), null, new GradeBookTablePanel(this, category), weightToolTip);
+		}
+		else {
+			gradeBookTabs.addTab(category.getName(), new GradeBookTablePanel(this, category));
+		}
 	}
 	
 	public static String getWeightToolTipString(double weight) {

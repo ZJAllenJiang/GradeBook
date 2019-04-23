@@ -19,8 +19,15 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import data.DatabaseAPI;
+import model.Category;
+import model.CategoryComponent;
 import model.Course;
+import model.GradeableCategory;
+import model.GradeableComponent;
 import model.Student;
+import model.TextCategory;
+import model.TextComponent;
+import model.GradeableComponent.DataEntryMode;
 
 import java.awt.Font;
 
@@ -175,7 +182,7 @@ public class CourseGradebookButtonPage {
 		JButton addCategoryButton = new JButton("Add Category");
 		addCategoryButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				handleAddNewCategory(true);
 			}
 		});
 		addCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -234,5 +241,60 @@ public class CourseGradebookButtonPage {
 		frame.setResizable(false);
 	}
 	
+	public void handleAddNewCategory(boolean isGradeable) {
+		JFrame topFrame = (JFrame) SwingUtilities
+				.getWindowAncestor(frame);
+		
+		NamePanel componentPanel;
+		String type;
+		if(isGradeable) {
+			componentPanel = new GradeableCategoryPanel();
+			type = "Gradeable Category";
+		}
+		else {
+			componentPanel = new NamePanel();
+			type = "Text Category";
+		}
+		
+        int result = JOptionPane.showConfirmDialog(topFrame, 
+        		componentPanel, 
+				"Add New " + type,
+				JOptionPane.OK_CANCEL_OPTION);
+        
+        if(result == JOptionPane.OK_OPTION) {
+        	if(!componentPanel.hasProperData()) {
+		    	JOptionPane.showMessageDialog(null, 
+		    			"Invalid data entered.");
+		    	return;
+        	}
+        	
+        	String name = componentPanel.getName();
+        	if(course.getCategory(name) != null) {
+        		JOptionPane.showMessageDialog(null, 
+		    			"Already have a " + type + " with the name " 
+        				+ name + ".");
+        		return;
+        	}
+        	        	
+        	ArrayList<Student> students = course.getAllStudents();
+        	Category newCategory;
+        	if(isGradeable) {
+        		GradeableCategoryPanel gradeablePanel = (GradeableCategoryPanel) componentPanel;
+        		double percentWeight = gradeablePanel.getPercentWeight();
+        		double weight = percentWeight / 100;
+        		newCategory = new GradeableCategory(weight, name, students);
+        	}
+    		else {
+    			newCategory = new TextCategory(name, students);
+    		}
+        	
+			course.addCategory(newCategory);
+			
+			//Refresh Summary table GUI
+			gBookPanel.setAllData(true);
+			
+			gBookPanel.addCategoryTab(newCategory);
+        }
 	
+	}
 }
