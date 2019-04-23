@@ -93,7 +93,8 @@ public class DeleteCourseConfirmation {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel tableModel = (DefaultTableModel) CourseCollectionPage.courseTable.getModel();
 				tableModel.removeRow(currentRow);
-				DatabaseAPI.dropCourse(currentCourse.getName(), currentCourse.getCode(), currentCourse.getYear());
+				DatabaseAPI.dropCourse(currentCourse.getName(), currentCourse.getCode(), currentCourse.getYear(),
+						currentCourse.getSemester());
 				frame.dispose();
 				new CourseCollectionPage();
 			}

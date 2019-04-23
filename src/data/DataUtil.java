@@ -18,6 +18,7 @@ import model.Summary;
 import model.TextCategory;
 import model.TextComponent;
 import model.GradeableComponent.DataEntryMode;
+import model.Semester;
 import model.Category;
 import model.CategoryComponent;
 
@@ -49,7 +50,8 @@ public class DataUtil {
 		
 		String coursePath = path + "/" + course.getCode() + '_' 
 							+ course.getName() + '_'
-							+ Integer.toString(course.getYear());
+							+ Integer.toString(course.getYear()) + '_'
+							+ course.getSemester().toString();
 		
 		// if exist, drop it and create a new one
 		if(checkDirExist(coursePath)) {
@@ -101,21 +103,21 @@ public class DataUtil {
 	}
 	
 	//  ------- load Course -------   // 
-	protected static Course load(String name, String code, int year) {
+	protected static Course load(String name, String code, int year, Semester semester) {
 		String path = root + "database";
 		if (!checkDirExist(path)) {
 			System.out.println("[DataUtil load] directory of /database doesn't exist!");
 			return null;
 		}
 		
-		String coursePath = path + "/" + getCourseDir(name, code, year);
+		String coursePath = path + "/" + getCourseDir(name, code, year, semester);
 		if (!checkDirExist(coursePath)) {
 			System.out.println("[DataUtil load] " + coursePath + " doesn't exist!");
 			return null;
 		}
 		
 		// load Active / Inactive status
-		Course res = new Course(name, code, year);
+		Course res = new Course(name, code, year, semester);
 		res.setStatus(readStatus(coursePath + "/" + "Status"));
 		
 		// load Student.csv
@@ -180,9 +182,9 @@ public class DataUtil {
 			for (String coursename : lookForDir(root + "database")) {
 				String[] terms = coursename.split("_");
 				
-				// code & name & year
-				if (terms.length == 3) 
-					res.add(load(terms[1], terms[0], Integer.parseInt(terms[2])));
+				// code & name & year & semester
+				if (terms.length == 4) 
+					res.add(load(terms[1], terms[0], Integer.parseInt(terms[2]), Semester.valueOf(terms[3])));
 				else 
 					System.out.println("Invalid directory name: " + coursename);
 			}
@@ -191,14 +193,14 @@ public class DataUtil {
 	}
 	
 	//  ------- drop Course -------   //
-	protected static void drop(String name, String code, int year) {
+	protected static void drop(String name, String code, int year, Semester semester) {
 		String path = root + "database";
 		if (!checkDirExist(path)) {
 			System.out.println("[DataUtil drop] directory of /database doesn't exist!");
 			return;
 		}
 		
-		String coursePath = path + "/" + getCourseDir(name, code, year);
+		String coursePath = path + "/" + getCourseDir(name, code, year, semester);
 		if (!checkDirExist(coursePath)) {
 			System.out.println("[DataUtil load] " + coursePath + " doesn't exist!");
 			return;
@@ -208,8 +210,17 @@ public class DataUtil {
 	}
 	
 	//  ------- get course directory ------ //
-	private static String getCourseDir(String name, String code, int year) {
-		return code + '_' + name + '_' + Integer.toString(year);
+	private static String getCourseDir(String name, String code, int year, Semester semester) {
+		return code + '_' + name + '_' + Integer.toString(year) + '_' + semester.toString();
+	}
+	
+	protected static ArrayList<Category> getCategories(String name, String code, int year, Semester semester) {
+		Course course = load(name, code, year, semester);
+		ArrayList<Category> res = new ArrayList<Category>();
+		if (course != null) {
+			res.addAll(course.getAllCategories());
+		}
+		return res;
 	}
 	
 	// read student list from a csv file
