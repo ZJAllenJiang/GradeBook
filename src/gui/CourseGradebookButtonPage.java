@@ -64,6 +64,8 @@ public class CourseGradebookButtonPage {
 	 * @wbp.parser.entryPoint
 	 */
 	public CourseGradebookButtonPage(Course course) {
+		this.course = course;
+		
 		initialize(course);
 	}
 	/**
@@ -191,6 +193,11 @@ public class CourseGradebookButtonPage {
 		frame.getContentPane().add(addGradeCategoryButton);
 		
 		JButton addTextCategoryButton = new JButton("Add Text Category");
+		addTextCategoryButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				handleAddNewCategory(false);
+			}
+		});
 		addTextCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		addTextCategoryButton.setBounds(970, 140, 200, 40);
 		frame.getContentPane().add(addTextCategoryButton);
