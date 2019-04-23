@@ -91,7 +91,7 @@ public class CourseGradebookButtonPage {
 		//System.out.println(screenWidth);
 		int screenHeight = screenSize.height;
 		//System.out.println(screenHeight);
-		frame.setBounds(100, 100, 1000, 800);
+		frame.setBounds(100, 100, 1200, 850);
 		//frame.setLocationRelativeTo(null);
 		// set the window in the middle of screen
 		int windowWidth = frame.getWidth(); 
@@ -116,7 +116,7 @@ public class CourseGradebookButtonPage {
 		JLabel courseTitleLabel = new JLabel("");
 		courseTitleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
 		courseTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		courseTitleLabel.setBounds(300, 60, 400, 60);
+		courseTitleLabel.setBounds(400, 60, 400, 60);
 		courseTitleLabel.setText("CS " + course.getCode() + " Gradebook");
 		frame.getContentPane().add(courseTitleLabel);
 		
@@ -130,7 +130,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		addStudentButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		addStudentButton.setBounds(40, 140, 200, 40);
+		addStudentButton.setBounds(30, 140, 200, 40);
 		frame.getContentPane().add(addStudentButton);
 		
 		JButton importStudentsButton = new JButton("Import Students");
@@ -167,31 +167,36 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		importStudentsButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		importStudentsButton.setBounds(280, 140, 200, 40);
+		importStudentsButton.setBounds(260, 140, 200, 40);
 		frame.getContentPane().add(importStudentsButton);
 		
-		JButton gradingSchemeButton = new JButton("Grading Scheme");
+		JButton gradingSchemeButton = new JButton("Import Grading Scheme");
 		gradingSchemeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// wait for the import existing grading scheme data
 			}
 		});
 		gradingSchemeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		gradingSchemeButton.setBounds(520, 140, 200, 40);
+		gradingSchemeButton.setBounds(490, 140, 220, 40);
 		frame.getContentPane().add(gradingSchemeButton);
 		
-		JButton addCategoryButton = new JButton("Add Category");
-		addCategoryButton.addActionListener(new ActionListener() {
+		JButton addGradeCategoryButton = new JButton("Add Grade Category");
+		addGradeCategoryButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handleAddNewCategory(true);
 			}
 		});
-		addCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		addCategoryButton.setBounds(760, 140, 200, 40);
-		frame.getContentPane().add(addCategoryButton);
+		addGradeCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		addGradeCategoryButton.setBounds(740, 140, 200, 40);
+		frame.getContentPane().add(addGradeCategoryButton);
+		
+		JButton addTextCategoryButton = new JButton("Add Text Category");
+		addTextCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		addTextCategoryButton.setBounds(970, 140, 200, 40);
+		frame.getContentPane().add(addTextCategoryButton);
 		
 		gBookPanel.setAllData(true);
-		gBookPanel.setBounds(50, 200, 900, 500);
+		gBookPanel.setBounds(50, 200, 1100, 500);
 		frame.getContentPane().add(gBookPanel);
 		gBookPanel.setAllData(false);
 		
@@ -205,7 +210,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		resetButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		resetButton.setBounds(40, 720, 170, 40);
+		resetButton.setBounds(40, 720, 200, 40);
 		frame.getContentPane().add(resetButton);
 		
 		JButton recalculateButton = new JButton("Recalculate");
@@ -228,7 +233,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		recalculateButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		recalculateButton.setBounds(600, 720, 170, 40);
+		recalculateButton.setBounds(700, 720, 200, 40);
 		frame.getContentPane().add(recalculateButton);
 		
 		JButton saveChangesButton = new JButton("Save changes");
@@ -243,7 +248,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		saveChangesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		saveChangesButton.setBounds(790, 720, 170, 40);
+		saveChangesButton.setBounds(950, 720, 200, 40);
 		frame.getContentPane().add(saveChangesButton);
 		frame.setTitle("Course Gradebook");
 		frame.setResizable(false);
