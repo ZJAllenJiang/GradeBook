@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Components>
+    <HW1>
+        <isEditable>true</isEditable>
+        <maxScore>50.0</maxScore>
+        <mode>POINTS_EARNED</mode>
+        <name>HW1</name>
+        <type>gradeable</type>
+        <weight>0.1</weight>
+    </HW1>
+    <HW2>
+        <isEditable>true</isEditable>
+        <maxScore>60.0</maxScore>
+        <mode>POINTS_LOST</mode>
+        <name>HW2</name>
+        <type>gradeable</type>
+        <weight>0.5</weight>
+    </HW2>
+    <HW3>
+        <isEditable>true</isEditable>
+        <maxScore>50.0</maxScore>
+        <mode>PERCENTAGE</mode>
+        <name>HW3</name>
+        <type>gradeable</type>
+        <weight>0.4</weight>
+    </HW3>
+</Components>
