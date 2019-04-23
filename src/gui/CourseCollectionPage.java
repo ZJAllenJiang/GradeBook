@@ -61,6 +61,10 @@ public class CourseCollectionPage {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		Course javaCourse = new Course();
+//		DatabaseAPI.saveCourse(javaCourse);
+		
+		
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 800, 500);
@@ -113,7 +117,7 @@ public class CourseCollectionPage {
 //		Object[][] courseInfo= {
 //				{"Java Development", "CS591", "2019", "Spring", "Active", "View", "Edit", "Delete"}
 //		};
-		//Course cCourse = new Course();
+		
 		ArrayList<Course> courseList = DatabaseAPI.getCourseList();
 		Object[][] courseInfo = new Object[courseList.size()][8];
 		int index = 0;

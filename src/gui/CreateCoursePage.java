@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import data.DatabaseAPI;
 import model.Course;
+import model.Semester;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -162,7 +163,7 @@ public class CreateCoursePage {
 				if(name.equals("") || code.equals("") || year.equals("") || semester.equals("")) {
 					// could add some more features
 				}else {
-					Course newCourse = new Course(name, code, Integer.parseInt(year));
+					Course newCourse = new Course(name, code, Integer.parseInt(year), Semester.valueOf(semester));
 					DatabaseAPI.saveCourse(newCourse);
 					tableModel.addRow(courseRow);
 					new CourseCollectionPage();

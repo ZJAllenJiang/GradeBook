@@ -70,7 +70,8 @@ public class CourseGradebookButtonPage {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Course course) {
-		this.course = course;
+		//course = DatabaseAPI.loadCourse(inputCourse.getName(), inputCourse.getCode(), inputCourse.getYear());
+		//this.course = course;
 		//initialize GradebookPanel 
 		//new GradeBookPanel(currentCourse);
 		//JFrame alexFrame = new JFrame("Gradebook");
@@ -189,13 +190,15 @@ public class CourseGradebookButtonPage {
 		addCategoryButton.setBounds(760, 140, 200, 40);
 		frame.getContentPane().add(addCategoryButton);
 		
+		gBookPanel.setAllData(true);
 		gBookPanel.setBounds(50, 200, 900, 500);
 		frame.getContentPane().add(gBookPanel);
+		gBookPanel.setAllData(false);
 		
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Course resetCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear());
+				Course resetCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear(), course.getSemester());
 				frame.dispose();
 				new CourseGradebookButtonPage(resetCourse);
 				//new CourseCollectionPage();
@@ -231,7 +234,12 @@ public class CourseGradebookButtonPage {
 		JButton saveChangesButton = new JButton("Save changes");
 		saveChangesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				frame.dispose();
+				gBookPanel.setAllData(true);
 				DatabaseAPI.saveCourse(course);
+				//Course updateCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear());
+				new CourseGradebookButtonPage(course);
 			}
 		});
 		saveChangesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
