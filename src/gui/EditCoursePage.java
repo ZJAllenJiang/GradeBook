@@ -212,7 +212,8 @@ public class EditCoursePage {
 					tableModel.setValueAt(year, currentRow, 2);
 					tableModel.setValueAt(semester, currentRow, 3);
 					tableModel.setValueAt(status, currentRow, 4);
-					DatabaseAPI.dropCourse(currentCourse.getName(), currentCourse.getCode(), currentCourse.getYear());
+					DatabaseAPI.dropCourse(currentCourse.getName(), currentCourse.getCode(), currentCourse.getYear(), 
+							currentCourse.getSemester());
 					currentCourse.setName(name);
 					currentCourse.setCode(code);
 					currentCourse.setYear(Integer.parseInt(year));

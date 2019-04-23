@@ -12,6 +12,7 @@ public class Course {
 	private String name;
 	private String code;
 	private int year;
+	private Semester semester;
 	private boolean status;
 	
 	//------------ Course contents ------------
@@ -23,10 +24,12 @@ public class Course {
 	
 	
 	//------------ Constructors ------------
-	public Course(String name, String code, int year) {
+	public Course(String name, String code, int year, Semester semester) {
 		this.name = name;
 		this.code = code;
 		this.year = year;
+		this.semester = semester;
+		
 		categories = new ArrayList<>();
 		students = new ArrayList<>();
 		summary = new Summary(this);
@@ -36,7 +39,7 @@ public class Course {
 	
 	//  test for writing database
 	public Course() {
-		this("Java", "591", 2019);
+		this("Java", "591", 2019, Semester.Fall);
 
 		this.addStudent("U123", "Peter", "J", "Patrick");
 		this.addStudent("U124", "John", "H", "Will");
@@ -108,6 +111,10 @@ public class Course {
 	
 	public Summary getSummary() {
 		return this.summary;
+	}
+	
+	public Semester getSemester() {
+		return this.semester;
 	}
 	
 	public void addSummary(Summary other) {

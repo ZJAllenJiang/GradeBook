@@ -188,7 +188,7 @@ public class CourseGradebookButtonPage {
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Course resetCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear());
+				Course resetCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear(), course.getSemester());
 				frame.dispose();
 				new CourseGradebookButtonPage(resetCourse);
 				//new CourseCollectionPage();
