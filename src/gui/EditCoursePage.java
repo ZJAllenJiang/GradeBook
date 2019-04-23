@@ -15,6 +15,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import data.DatabaseAPI;
+import model.Course;
+
 import javax.swing.JComboBox;
 
 public class EditCoursePage {
@@ -51,14 +55,14 @@ public class EditCoursePage {
 		
 	}
 
-	public EditCoursePage(int currentRow) {
-		initialize(currentRow);
+	public EditCoursePage(int currentRow, Course currentCourse) {
+		initialize(currentRow, currentCourse);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int currentRow) {
+	private void initialize(int currentRow, Course currentCourse) {
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 300, 350);
@@ -208,7 +212,11 @@ public class EditCoursePage {
 					tableModel.setValueAt(year, currentRow, 2);
 					tableModel.setValueAt(semester, currentRow, 3);
 					tableModel.setValueAt(status, currentRow, 4);
-					
+					DatabaseAPI.dropCourse(currentCourse.getName(), currentCourse.getCode(), currentCourse.getYear());
+					currentCourse.setName(name);
+					currentCourse.setCode(code);
+					currentCourse.setYear(Integer.parseInt(year));
+					DatabaseAPI.saveCourse(currentCourse);
 				}
 				frame.dispose();
 				
