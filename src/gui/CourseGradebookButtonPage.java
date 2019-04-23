@@ -212,7 +212,7 @@ public class CourseGradebookButtonPage {
 							"Statistics for Course: " + course.getName(), JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(frame, "Error when computing the statistics for course: " + course.getName(), 
+					JOptionPane.showMessageDialog(frame, "Error when computing the grades for course: " + course.getName(), 
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
