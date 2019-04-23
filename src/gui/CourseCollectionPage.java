@@ -87,7 +87,7 @@ public class CourseCollectionPage {
 		JButton addCourseButton = new JButton("Add Course +");
 		addCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//frame.setVisible(false);
+				frame.dispose();
 				new CreateCoursePage();
 			}
 		});
@@ -113,18 +113,20 @@ public class CourseCollectionPage {
 //		Object[][] courseInfo= {
 //				{"Java Development", "CS591", "2019", "Spring", "Active", "View", "Edit", "Delete"}
 //		};
-		Course cCourse = new Course();
+		//Course cCourse = new Course();
 		ArrayList<Course> courseList = DatabaseAPI.getCourseList();
 		Object[][] courseInfo = new Object[courseList.size()][8];
+		int index = 0;
 		for (int i = 0; i < courseList.size(); i++) {
-			courseInfo[i][0] = courseList.get(i).getName();
-			courseInfo[i][1] = courseList.get(i).getCode();
-			courseInfo[i][2] = String.valueOf(courseList.get(i).getYear());
-			courseInfo[i][3] = "Spring";
-			courseInfo[i][4] = "Active";
-			courseInfo[i][5] = "View";
-			courseInfo[i][6] = "Edit";
-			courseInfo[i][7] = "Delete";
+			courseInfo[index][0] = courseList.get(i).getName();
+			courseInfo[index][1] = courseList.get(i).getCode();
+			courseInfo[index][2] = String.valueOf(courseList.get(i).getYear());
+			courseInfo[index][3] = "Spring";
+			courseInfo[index][4] = "Active";
+			courseInfo[index][5] = "View";
+			courseInfo[index][6] = "Edit";
+			courseInfo[index][7] = "Delete";
+			index++;
 		}
 		DefaultTableModel model = new DefaultTableModel(courseInfo, columnName);
 		courseTable = new JTable(courseInfo, columnName) {
@@ -180,15 +182,17 @@ public class CourseCollectionPage {
 					Course currentCourse = courseList.get(currentRow);
 					//Course javaCourse = new Course();
 					new CourseGradebookButtonPage(currentCourse);
-					
+					frame.dispose();
 				}
 				if(currentColumn == 6) {
 					new EditCoursePage(currentRow);
 					
 				}
 				if(currentColumn == 7) {
-					new DeleteCourseConfirmation(currentRow);
-									
+					Course currentCourse = courseList.get(currentRow);
+					new DeleteCourseConfirmation(currentRow, currentCourse);
+					frame.dispose();
+					
 				}
 					
 			}

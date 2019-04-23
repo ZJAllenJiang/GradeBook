@@ -99,6 +99,7 @@ public class CourseGradebookButtonPage {
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
+				new CourseCollectionPage();
 			}
 		});
 		backButton.setBounds(30, 20, 120, 40);
@@ -187,6 +188,10 @@ public class CourseGradebookButtonPage {
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Course resetCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear());
+				frame.dispose();
+				new CourseGradebookButtonPage(resetCourse);
+				//new CourseCollectionPage();
 			}
 		});
 		resetButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));

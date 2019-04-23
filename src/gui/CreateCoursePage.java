@@ -10,6 +10,10 @@ import java.awt.Toolkit;
 
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import data.DatabaseAPI;
+import model.Course;
+
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
@@ -88,7 +92,7 @@ public class CreateCoursePage {
 		frame.getContentPane().add(nameTextField);
 		nameTextField.setColumns(10);
 		
-		JLabel codeLabel = new JLabel("Code (eg. CS591)");
+		JLabel codeLabel = new JLabel("Code (eg. 591)");
 		codeLabel.setBounds(50, 115, 190, 20);
 		frame.getContentPane().add(codeLabel);
 		
@@ -158,7 +162,10 @@ public class CreateCoursePage {
 				if(name.equals("") || code.equals("") || year.equals("") || semester.equals("")) {
 					// could add some more features
 				}else {
-				tableModel.addRow(courseRow);
+					Course newCourse = new Course(name, code, Integer.parseInt(year));
+					DatabaseAPI.saveCourse(newCourse);
+					tableModel.addRow(courseRow);
+					new CourseCollectionPage();
 				}
 				frame.dispose();
 				//new CourseCollectionPage();
