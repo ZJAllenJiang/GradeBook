@@ -135,7 +135,7 @@ public class CreateStudentPage {
 				String fName = firstNameField.getText();
 				String mName = middleNameField.getText();
 				String lName = lastNameField.getText();
-				if(!sId.equals("") && !fName.equals("") && !mName.equals("") && !lName.equals("") ) {
+				if(!sId.equals("") && !fName.equals("") && !lName.equals("") ) {
 					course.addStudent(sId, fName, mName, lName);
 					new CourseGradebookButtonPage(course);
 					frame.dispose();	
