@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Components>
+    <Homework>
+        <isEditable>false</isEditable>
+        <name>Homework</name>
+        <type>text</type>
+    </Homework>
+</Components>

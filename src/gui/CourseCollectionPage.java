@@ -185,7 +185,8 @@ public class CourseCollectionPage {
 					frame.dispose();
 				}
 				if(currentColumn == 6) {
-					new EditCoursePage(currentRow);
+					Course currentCourse = courseList.get(currentRow);
+					new EditCoursePage(currentRow, currentCourse);
 					
 				}
 				if(currentColumn == 7) {
