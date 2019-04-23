@@ -9,6 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import data.DatabaseAPI;
+import model.Course;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -44,14 +48,14 @@ public class DeleteCourseConfirmation {
 		
 	}
 
-	public DeleteCourseConfirmation(int currentRow) {
-		initialize(currentRow);
+	public DeleteCourseConfirmation(int currentRow, Course currentCourse) {
+		initialize(currentRow, currentCourse);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int currentRow) {
+	private void initialize(int currentRow, Course currentCourse) {
 		frame = new JFrame();
 		frame.setVisible(true);
 		frame.setBounds(100, 100, 450, 250);
@@ -89,7 +93,9 @@ public class DeleteCourseConfirmation {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel tableModel = (DefaultTableModel) CourseCollectionPage.courseTable.getModel();
 				tableModel.removeRow(currentRow);
+				DatabaseAPI.dropCourse(currentCourse.getName(), currentCourse.getCode(), currentCourse.getYear());
 				frame.dispose();
+				new CourseCollectionPage();
 			}
 		});
 		yesButton.setBounds(240, 150, 120, 30);
