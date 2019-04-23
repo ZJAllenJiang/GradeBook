@@ -530,6 +530,7 @@ public class GradeBookJTable extends JTable {
 	}
 	
 	public boolean updateOverallGradesIfApplicable(Course course) {
+		boolean success = true;
 		if(category instanceof OverallGradeable) {
 			//setDataFromGUI();  we don't want to override the changes to Summary model overall grades
 			refreshTable();
@@ -541,25 +542,31 @@ public class GradeBookJTable extends JTable {
 				
 				OverallGradeable overallGradeable = (OverallGradeable) this.category;
 				Double grade = overallGradeable.computeOverallGrade(studentEntry);
-				if(grade == null) {
-					//Could not compute a grade
-					return false;
+				
+				if(grade != null) {
+					//Set the overall grade value
+					this.setValueAt(grade.toString(), row, overallGradeGUIColumn);
 				}
-				
-				//Set the overall grade value
-				this.setValueAt(grade.toString(), row, overallGradeGUIColumn);
-				
+				else {
+					success = false;
+				}
+
 				if(!this.isSummaryTable()) {
 					StudentEntry summaryRow = course.getSummary().getStudentEntries().get(row);
 					String categoryName = category.getName();
 					DataEntry<?> dataEntry = summaryRow.getDataEnty(categoryName);
 					if(dataEntry != null) {
-						dataEntry.setDataFromGUI(grade.toString());
+						if(grade != null) {
+							dataEntry.setDataFromGUI(grade.toString());
+						}
+						else {
+							dataEntry.setDataFromGUI(null);
+						}
 					}
 				}
 			}
 		}
 		
-		return true;
+		return success;
 	}
 }
