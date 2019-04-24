@@ -125,8 +125,8 @@ public class CourseCollectionPage {
 			courseInfo[index][0] = courseList.get(i).getName();
 			courseInfo[index][1] = courseList.get(i).getCode();
 			courseInfo[index][2] = String.valueOf(courseList.get(i).getYear());
-			courseInfo[index][3] = "Spring";
-			courseInfo[index][4] = "Active";
+			courseInfo[index][3] = String.valueOf(courseList.get(i).getSemester());
+			courseInfo[index][4] = courseList.get(i).status() == true ? "Active" : "Inactive";
 			courseInfo[index][5] = "View";
 			courseInfo[index][6] = "Edit";
 			courseInfo[index][7] = "Delete";
