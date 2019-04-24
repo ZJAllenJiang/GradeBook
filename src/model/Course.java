@@ -117,6 +117,10 @@ public class Course {
 		return this.semester;
 	}
 	
+	public void setSemester(Semester semester) {
+		this.semester = semester;
+	}
+	
 	public void addSummary(Summary other) {
 		this.summary = other;
 	}
