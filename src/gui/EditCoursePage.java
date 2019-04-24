@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import data.DatabaseAPI;
 import model.Course;
+import model.Semester;
 
 import javax.swing.JComboBox;
 
@@ -217,6 +218,12 @@ public class EditCoursePage {
 					currentCourse.setName(name);
 					currentCourse.setCode(code);
 					currentCourse.setYear(Integer.parseInt(year));
+					currentCourse.setSemester(Semester.valueOf(semester));
+					if(status.equals("Active")) {
+						currentCourse.setStatus(true);
+					}else {
+						currentCourse.setStatus(false);
+					}
 					DatabaseAPI.saveCourse(currentCourse);
 				}
 				frame.dispose();
