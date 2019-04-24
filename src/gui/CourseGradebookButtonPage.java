@@ -78,7 +78,7 @@ public class CourseGradebookButtonPage {
 		//new GradeBookPanel(currentCourse);
 		//JFrame alexFrame = new JFrame("Gradebook");
 		gBookPanel = new GradeBookPanel(course);
-		
+		gBookPanel.setAllData(true);
 		
 		//frame.setSize(1000, 800);
 		//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -202,10 +202,10 @@ public class CourseGradebookButtonPage {
 		addTextCategoryButton.setBounds(970, 140, 200, 40);
 		frame.getContentPane().add(addTextCategoryButton);
 		
-		gBookPanel.setAllData(true);
+		
 		gBookPanel.setBounds(50, 200, 1100, 500);
 		frame.getContentPane().add(gBookPanel);
-		gBookPanel.setAllData(false);
+		
 		
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener(new ActionListener() {
@@ -249,9 +249,10 @@ public class CourseGradebookButtonPage {
 				
 				frame.dispose();
 				gBookPanel.setAllData(true);
-				DatabaseAPI.saveCourse(course);
+				new SaveCourseConfirmationPage(course);
+				//DatabaseAPI.saveCourse(course);
 				//Course updateCourse = DatabaseAPI.loadCourse(course.getName(), course.getCode(), course.getYear());
-				new CourseGradebookButtonPage(course);
+				//new CourseCollectionPage();
 			}
 		});
 		saveChangesButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -315,6 +316,7 @@ public class CourseGradebookButtonPage {
 			
 			gBookPanel.addCategoryTab(newCategory);
         }
-	
+        
+        gBookPanel.setAllData(false);
 	}
 }
