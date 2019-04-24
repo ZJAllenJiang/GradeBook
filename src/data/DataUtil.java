@@ -593,7 +593,7 @@ public class DataUtil {
 	private static String pathMapping(String path) {
 		// only windows need to map
 		if (File.separatorChar == '\\') 
-			return path.replace('/', File.pathSeparatorChar);
+			return path.replace('/', File.separatorChar);
 		
 		return path;
 	}
