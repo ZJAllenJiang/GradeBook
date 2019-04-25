@@ -6,7 +6,7 @@ import data.ReadIn;
 import data.Writeout;
 
 public abstract class Student implements Writeout, ReadIn{
-	protected enum StudentType{
+	public enum StudentType{
 		UNDERGRADUATE,
 		GRADUATE;
 	}

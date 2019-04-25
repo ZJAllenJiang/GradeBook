@@ -34,6 +34,7 @@ import model.CategoryComponent;
 import model.Course;
 import model.DataEntry;
 import model.Student;
+import model.Student.StudentType;
 import model.StudentEntry;
 import model.Summary;
 import model.GradeableComponent.DataEntryMode;
@@ -109,6 +110,11 @@ public class GradeBookJTable extends JTable {
 			booleanComboBox.addItem(Boolean.FALSE);
 			int index = studentHeaders.indexOf(Summary.STATUS);
 			this.getColumnModel().getColumn(index).setCellEditor(new DefaultCellEditor(booleanComboBox));
+		}
+		if(studentHeaders.contains(Summary.TYPE)) {
+			JComboBox<StudentType> studentTypeComboBox = new JComboBox<StudentType>(StudentType.values());
+			int index = studentHeaders.indexOf(Summary.TYPE);
+			this.getColumnModel().getColumn(index).setCellEditor(new DefaultCellEditor(studentTypeComboBox));
 		}
 	}
 
