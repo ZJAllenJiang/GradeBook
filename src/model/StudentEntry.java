@@ -8,7 +8,7 @@ import data.ReadIn;
 import data.Writeout;
 
 
-public class StudentEntry implements Writeout, ReadIn{
+public class StudentEntry implements Writeout, ReadIn {
 	
 	private ArrayList<DataEntry<?>> dataEntries;
 	private Student student;
@@ -52,7 +52,7 @@ public class StudentEntry implements Writeout, ReadIn{
 		// TODO Auto-generated method stub
 		return student.toString();
 	}
-
+	
 	@Override
 	public ArrayList<String> writeAsRecord() {
 		// TODO Auto-generated method stub
@@ -60,11 +60,11 @@ public class StudentEntry implements Writeout, ReadIn{
 		
 		for (DataEntry<?> entry : dataEntries) {
 			// add values together with comments in records
-			if (entry.getData() != null) 
+			if (entry.getData() != null)
 				res.add(entry.getData().toString());
 			else
 				res.add(" "); // add space to that field indicating empty
-
+			
 			
 			if (entry.hasComment())
 				res.add(entry.getComment());
@@ -73,12 +73,12 @@ public class StudentEntry implements Writeout, ReadIn{
 		}
 		return res;
 	}
-
+	
 	@Override
 	public ArrayList<String> getColumnName() {
 		// TODO Auto-generated method stub
 		ArrayList<String> res = new ArrayList<String>();
-				
+		
 		res.add("ID/Name");
 		for (DataEntry<?> key : dataEntries) {
 			// ensure that each col has a corresponding comment col
@@ -93,7 +93,7 @@ public class StudentEntry implements Writeout, ReadIn{
 	public ArrayList<DataEntry<?>> getAllData() {
 		return dataEntries;
 	}
-
+	
 	@Override
 	public void readFromRowData(String line) {
 		// TODO Auto-generated method stub
@@ -106,7 +106,7 @@ public class StudentEntry implements Writeout, ReadIn{
 		if (terms.length - 1 != 2 * dataEntries.size()) {
 			System.out.println("[StudentEntry readFromRowData] mis matched size. "
 					+ "terms.length = " + terms.length + " , size of components = "
-							+ dataEntries.size());
+					+ dataEntries.size());
 			return;
 		}
 		
@@ -120,4 +120,13 @@ public class StudentEntry implements Writeout, ReadIn{
 				dataEntries.get(i).setComment(comment);
 		}
 	}
+	
+	double studentGrade() {
+		return 0;
+	}
+	
+	void removeComponent(String componentName) {
+		dataEntries.remove(getDataEnty(componentName));
+	}
+	
 }

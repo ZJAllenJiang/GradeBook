@@ -1,7 +1,6 @@
 package model;
 
 
-
 import model.GradeableComponent.DataEntryMode;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class Course {
 	//  test for writing database
 	public Course() {
 		this("Java", "591", 2019, Semester.Fall);
-
+		
 		this.addStudent("U123", "Peter", "J", "Patrick");
 		this.addStudent("U124", "John", "H", "Will");
 		this.addStudent("U125", "Kate", "", "Rose");
@@ -92,8 +91,25 @@ public class Course {
 		return this.categories;
 	}
 	
+	public Category getCategoryByName(String categName) {
+		for (Category category : categories) {
+			if (category.getName().equals(categName)) {
+				return category;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<Student> getAllStudents() {
 		return this.students;
+	}
+	
+	public Student getStudentById(String sId) {
+		for (Student student : students) {
+			if (student.getSid().equals(sId))
+				return student;
+		}
+		return null;
 	}
 	
 	public Category getCategory(int index) {
@@ -101,8 +117,8 @@ public class Course {
 	}
 	
 	public Category getCategory(String categoryName) {
-		for(Category c : categories) {
-			if(c.getName().equals(categoryName)) {
+		for (Category c : categories) {
+			if (c.getName().equals(categoryName)) {
 				return c;
 			}
 		}
@@ -127,6 +143,19 @@ public class Course {
 	
 	
 	//------------ Methods for managing a category ------------
+	public void addGradeable(double weight, String name) {
+		categories.add(new GradeableCategory(weight, name, students));
+	}
+	
+	public void addNonGradeable(String name) {
+		categories.add(new TextCategory(name, students));
+	}
+	
+	// add category by passing an existing category
+//	public void addCategory(Category category) {
+//		categories.add(category);
+//	}
+	
 	public void deleteCategory(String name) {
 		Category oldCategory = null;
 		for (Category categ : categories) {
@@ -137,12 +166,12 @@ public class Course {
 			}
 		}
 		
-		if(oldCategory != null) {
+		if (oldCategory != null) {
 			summary.removeComponentIfApplicable(oldCategory);
 		}
 	}
 	
-	// add category by passing an existing category
+	//	 add category by passing an existing category
 	public void addCategory(Category category) {
 		categories.add(category);
 		
@@ -170,5 +199,44 @@ public class Course {
 		for (Category category : categories) {
 			category.deleteStudentEntry(student);
 		}
+	}
+	
+	Statistics categoryStatistics(String categoryName) {
+		for (Category category : categories) {
+			if (category.getName().equals(categoryName))
+				return CategoryStatistics(category);
+		}
+		return new Statistics(null);
+	}
+	
+	Statistics CategoryStatistics(Category category) {
+		ArrayList<Double> grades = new ArrayList<>();
+		Double grade = null;
+		for (StudentEntry studentEntry : category.getStudentEntries()) {
+			if (category instanceof GradeableCategory) {
+				if (studentEntry.getStudent().isStatus()) {
+					grade = ((GradeableCategory) category).computeOverallGrade(studentEntry);
+					if (grade == null)
+						return null;
+					grades.add(grade);
+				}
+			}
+		}
+		return new Statistics(grades);
+	}
+	
+	Statistics courseStatistics() {
+		ArrayList<Double> grades = new ArrayList<>();
+		Double grade = null;
+		
+		for (StudentEntry studentEntry: summary.getStudentEntries()){
+			grade = summary.computeOverallGrade(studentEntry);
+			if (studentEntry.getStudent().isStatus()) {
+				if (grade == null)
+					return null;
+				grades.add(grade);
+			}
+		}
+		return new Statistics(grades);
 	}
 }

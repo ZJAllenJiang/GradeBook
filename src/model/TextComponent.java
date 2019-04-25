@@ -43,7 +43,7 @@ public class TextComponent extends CategoryComponent {
 			boolean editable = (line.get("isEditable").equals("true")) ? true : false;
 			setEditable(editable);
 			setName(line.get("name"));
-		} else 
+		} else
 			System.out.println("[TextComponent setAttributes] not enough attributes to read in");
 		
 		return;

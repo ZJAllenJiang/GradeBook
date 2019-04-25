@@ -1,11 +1,16 @@
 package model;
 
+import javafx.util.Pair;
+
+import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public abstract class Category {
 	protected String name;
 	protected ArrayList<CategoryComponent> components;
 	protected ArrayList<StudentEntry> studentEntries;
+	protected TextComponent averages;
 	
 	
 	public Category(String categName, ArrayList<Student> students) {
@@ -13,8 +18,12 @@ public abstract class Category {
 		
 		components = new ArrayList<>();
 		studentEntries = new ArrayList<>();
+		averages = new TextComponent("Total", false);
+		averages.createEntry();
+		
 		for (Student student : students) {
 			studentEntries.add(new StudentEntry(student, components));
+			
 		}
 	}
 	
@@ -53,14 +62,14 @@ public abstract class Category {
 	
 	public void deleteStudentEntry(Student student) {
 		StudentEntry entryToDelete = getStudentEntry(student);
-		if(entryToDelete != null) {
+		if (entryToDelete != null) {
 			studentEntries.remove(entryToDelete);
 		}
 	}
 	
 	protected StudentEntry getStudentEntry(Student student) {
-		for(StudentEntry entry : studentEntries) {
-			if(entry.getStudent().equals(student)) {
+		for (StudentEntry entry : studentEntries) {
+			if (entry.getStudent().equals(student)) {
 				return entry;
 			}
 		}
@@ -131,15 +140,54 @@ public abstract class Category {
 	
 	public boolean isComponentEditable(String componentName) {
 		CategoryComponent c = getComponent(componentName);
-		if(c == null) {
+		if (c == null) {
 			return false;
 		}
 		return c.isEditable();
 	}
-
+	
 	public void deleteComponent(String componentName) {
 		// TODO Auto-generated method stub
 		System.err.println("TODO: Implement Delete Category.deleteComponent()");
+		for (CategoryComponent c : components) {
+			
+			if (c.getName().equals(componentName)) {
+				for (StudentEntry entry : studentEntries)
+					entry.removeComponent(componentName);
+				components.remove(c);
+				return;
+			}
+		}
+		
+	}
+	
+	
+	Statistics componentStatistics(String componentName) {
+		
+		
+		CategoryComponent component = null;
+		
+		for (CategoryComponent c : components) {
+			if (c.getName().equals(componentName)) {
+				component = c;
+				break;
+			}
+		}
+		
+		if (component == null)
+			return new Statistics(null);
+		
+		if (!(component instanceof GradeableComponent))
+			return new Statistics(null);
+		
+		ArrayList<Double> componentGrades = new ArrayList<>();
+		
+		for (StudentEntry studentEntry : studentEntries) {
+			if (studentEntry.getStudent().isStatus())
+				componentGrades.add((Double) studentEntry.getDataEnty(componentName).getData());
+		}
+		
+		return new Statistics(componentGrades);
 	}
 }
 
