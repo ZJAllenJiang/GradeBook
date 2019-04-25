@@ -34,6 +34,7 @@ import model.CategoryComponent;
 import model.Course;
 import model.DataEntry;
 import model.Student;
+import model.Student.StudentType;
 import model.StudentEntry;
 import model.Summary;
 import model.GradeableComponent.DataEntryMode;
@@ -42,7 +43,7 @@ import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
 	private static final String OVERALL_GRADE_COLUMN_NAME = "Overall Grade";
-	public static final String ERROR_STRING = "Error";
+	public static final String ERROR_STRING = "Weights Error";
 	
 	private ArrayList<String> studentHeaders;
 	
@@ -109,6 +110,11 @@ public class GradeBookJTable extends JTable {
 			booleanComboBox.addItem(Boolean.FALSE);
 			int index = studentHeaders.indexOf(Summary.STATUS);
 			this.getColumnModel().getColumn(index).setCellEditor(new DefaultCellEditor(booleanComboBox));
+		}
+		if(studentHeaders.contains(Summary.TYPE)) {
+			JComboBox<StudentType> studentTypeComboBox = new JComboBox<StudentType>(StudentType.values());
+			int index = studentHeaders.indexOf(Summary.TYPE);
+			this.getColumnModel().getColumn(index).setCellEditor(new DefaultCellEditor(studentTypeComboBox));
 		}
 	}
 
@@ -228,6 +234,11 @@ public class GradeBookJTable extends JTable {
 				//Border coloring
 				Border border = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.YELLOW);
 				((JComponent) rendererComp).setBorder(border);
+			}
+			
+			Student student = category.getStudentEntries().get(row).getStudent();
+			if(!student.isStatus()) {
+				rendererComp.setBackground(Color.LIGHT_GRAY);
 			}
 			
 			return rendererComp;

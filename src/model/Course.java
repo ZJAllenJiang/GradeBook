@@ -180,7 +180,7 @@ public class Course {
 	
 	//------------- Methods for adding students ------------
 	public void addStudent(String sId, String fName, String mName, String lName) {
-		Student student = new Student(sId, fName, mName, lName);
+		Student student = new GraduateStudent(sId, fName, mName, lName);
 		students.add(student);
 		
 		summary.addStudentEntry(student);

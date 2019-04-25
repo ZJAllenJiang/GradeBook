@@ -5,16 +5,23 @@ import java.util.ArrayList;
 import data.ReadIn;
 import data.Writeout;
 
-public class Student implements Writeout, ReadIn{
+public abstract class Student implements Writeout, ReadIn{
+	public enum StudentType{
+		UNDERGRADUATE,
+		GRADUATE;
+	}
+	
 	private String sid;
 	private Name name;
 	private boolean status = true;
+	private StudentType type;
 	
-	public Student(){
-		this("0", "me", "me", "me");
+	public Student(StudentType type){
+		this.setType(type);
 	}
 	
-	public Student(String sid, String fName, String mName, String lName) {
+	public Student(String sid, String fName, String mName, String lName, StudentType type) {
+		this(type);
 		this.sid = sid;
 		name = new Name(fName, mName, lName);
 	}
@@ -51,6 +58,14 @@ public class Student implements Writeout, ReadIn{
 		this.status = status;
 	}
 	
+	public StudentType getType() {
+		return type;
+	}
+
+	public void setType(StudentType type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		return sid + " " + name.toString();
