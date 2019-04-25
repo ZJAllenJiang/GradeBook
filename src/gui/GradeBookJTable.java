@@ -236,6 +236,11 @@ public class GradeBookJTable extends JTable {
 				((JComponent) rendererComp).setBorder(border);
 			}
 			
+			Student student = category.getStudentEntries().get(row).getStudent();
+			if(!student.isStatus()) {
+				rendererComp.setBackground(Color.LIGHT_GRAY);
+			}
+			
 			return rendererComp;
 		}
 	}
