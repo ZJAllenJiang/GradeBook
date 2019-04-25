@@ -43,7 +43,7 @@ import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
 	private static final String OVERALL_GRADE_COLUMN_NAME = "Overall Grade";
-	public static final String ERROR_STRING = "Error";
+	public static final String ERROR_STRING = "Weights Error";
 	
 	private ArrayList<String> studentHeaders;
 	
