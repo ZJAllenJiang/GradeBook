@@ -213,13 +213,13 @@ public class GradeBookJTable extends JTable {
 			
 			//Invalid input coloring
 			if(isComponentSpecificToCategory(columnName) && !category.validUserEntry(row, columnName, (String)value)) {
-				rendererComp.setBackground(Color.RED);
+				rendererComp.setBackground(Color.PINK);
 			}
 			
 			//Computation errors?
 			if(isSummaryTable()) {
 				if(value != null && value.equals(ERROR_STRING)) {
-					rendererComp.setBackground(Color.RED);
+					rendererComp.setBackground(Color.PINK);
 				}
 			}
 
