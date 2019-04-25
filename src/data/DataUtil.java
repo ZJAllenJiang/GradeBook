@@ -18,6 +18,7 @@ import model.Summary;
 import model.TextCategory;
 import model.TextComponent;
 import model.GradeableComponent.DataEntryMode;
+import model.GraduateStudent;
 import model.Semester;
 import model.Category;
 import model.CategoryComponent;
@@ -230,7 +231,7 @@ public class DataUtil {
 		ArrayList<String> rowData = readCSV(filename);
 		
 		for (int i = 1; i < rowData.size(); i++) {
-			Student object = new Student();
+			Student object = new GraduateStudent();
 			object.readFromRowData(rowData.get(i));
 			res.add(object);
 		}

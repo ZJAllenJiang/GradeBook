@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import model.Student.StudentType;
+
 public class Summary extends TextCategory implements OverallGradeable {
 	public static final String SUMMARY = "Summary";
 	
@@ -12,6 +14,7 @@ public class Summary extends TextCategory implements OverallGradeable {
 	public static final String MIDDLE_NAME = "Middle Name";
 	public static final String LAST_NAME = "Last Name";
 	public static final String STATUS = "Enrolled?";
+	public static final String TYPE = "Type";
 	
 	private Course course;
 	
@@ -45,6 +48,7 @@ public class Summary extends TextCategory implements OverallGradeable {
 		ArrayList<String> allHeaders = new ArrayList<String>();
 		allHeaders.addAll(commonHeaders);
 		allHeaders.add(STATUS);
+		allHeaders.add(TYPE);
 		return allHeaders;
 	}
 	
@@ -75,6 +79,9 @@ public class Summary extends TextCategory implements OverallGradeable {
 		case STATUS:
 			retData = Boolean.toString(s.isStatus());
 			break;
+		case TYPE:
+			retData = s.getType().toString();
+			break;
 		default:
 			retData = "";
 		}
@@ -98,6 +105,9 @@ public class Summary extends TextCategory implements OverallGradeable {
 			break;
 		case STATUS:
 			s.setStatus(Boolean.parseBoolean(value));
+			break;
+		case TYPE:
+			s.setType(StudentType.valueOf(value));
 			break;
 		}
 	}
