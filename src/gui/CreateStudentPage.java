@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import model.Course;
 import model.Student.StudentType;
+import javax.swing.JComboBox;
 
 public class CreateStudentPage {
 
@@ -27,7 +30,7 @@ public class CreateStudentPage {
 	private JTextField firstNameField;
 	private JTextField middleNameField;
 	private JTextField lastNameField;
-	
+	public StudentType studentType;
 
 
 	/**
@@ -48,6 +51,7 @@ public class CreateStudentPage {
 
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public CreateStudentPage(Course course) {
 		initialize(course);
@@ -65,7 +69,7 @@ public class CreateStudentPage {
 		
 		frame = new JFrame();
 		frame.setVisible(true);
-		frame.setBounds(100, 100, 300, 350);
+		frame.setBounds(100, 100, 300, 420);
 		//frame.setLocationRelativeTo(null);
 		// set the window in the middle of screen
 		int windowWidth = frame.getWidth(); 
@@ -118,6 +122,38 @@ public class CreateStudentPage {
 		lastNameLabel.setBounds(50, 225, 80, 20);
 		frame.getContentPane().add(lastNameLabel);
 		
+		lastNameField = new JTextField();
+		lastNameField.setBounds(50, 245, 175, 30);
+		frame.getContentPane().add(lastNameField);
+		lastNameField.setColumns(10);
+		
+		JLabel studentTypeLabel = new JLabel("Studnent Type");
+		studentTypeLabel.setBounds(50, 280, 150, 20);
+		frame.getContentPane().add(studentTypeLabel);
+		
+		
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.addItem("Undergraduate Student");
+		comboBox.addItem("Graduate Student");
+		
+		comboBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					if(comboBox.getSelectedIndex() == 0) {
+						studentType = StudentType.UNDERGRADUATE;
+					}
+					if(comboBox.getSelectedIndex() == 1) {
+						studentType = StudentType.GRADUATE;
+					}
+				}else {
+					studentType = StudentType.UNDERGRADUATE;
+				}
+			}
+		});
+		
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
@@ -126,7 +162,7 @@ public class CreateStudentPage {
 				
 			}
 		});
-		cancelButton.setBounds(30, 290, 120, 30);
+		cancelButton.setBounds(20, 350, 120, 30);
 		frame.getContentPane().add(cancelButton);
 		
 		JButton saveButton = new JButton("Save");
@@ -137,7 +173,7 @@ public class CreateStudentPage {
 				String mName = middleNameField.getText();
 				String lName = lastNameField.getText();
 				if(!sId.equals("") && !fName.equals("") && !lName.equals("") ) {
-					course.addStudent(sId, fName, mName, lName, true, StudentType.UNDERGRADUATE);
+					course.addStudent(sId, fName, mName, lName, true, studentType);
 					new CourseGradebookButtonPage(course);
 					frame.dispose();	
 				}
@@ -146,17 +182,18 @@ public class CreateStudentPage {
 				
 			}
 		});
-		saveButton.setBounds(150, 290, 120, 30);
+		saveButton.setBounds(160, 350, 120, 30);
 		frame.getContentPane().add(saveButton);
 		
-		lastNameField = new JTextField();
-		lastNameField.setBounds(50, 245, 175, 30);
-		frame.getContentPane().add(lastNameField);
-		lastNameField.setColumns(10);
+		
+		
+		
+		
+		comboBox.setBounds(50, 305, 175, 30);
+		frame.getContentPane().add(comboBox);
 		frame.setResizable(false);
 		
 		
 		//return newStudentList;
 	}
-	
 }
