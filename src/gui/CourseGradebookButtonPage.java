@@ -25,6 +25,7 @@ import model.Course;
 import model.GradeableCategory;
 import model.GradeableComponent;
 import model.Student;
+import model.Student.StudentType;
 import model.TextCategory;
 import model.TextComponent;
 import model.GradeableComponent.DataEntryMode;
@@ -161,7 +162,7 @@ public class CourseGradebookButtonPage {
 					String fName = studentsArray.get(i).getFirstName();
 					String mName = studentsArray.get(i).getMiddleName();
 					String lName = studentsArray.get(i).getLastName();
-					course.addStudent(sId, fName, mName, lName);
+					course.addStudent(sId, fName, mName, lName, true, StudentType.UNDERGRADUATE);
 				}
 				gBookPanel.setAllData(false);
 			}

@@ -13,6 +13,7 @@ import model.Course;
 import model.GradeableCategory;
 import model.GradeableComponent;
 import model.Student;
+import model.Student.StudentType;
 import model.StudentEntry;
 import model.Summary;
 import model.TextCategory;
@@ -125,7 +126,7 @@ public class DataUtil {
 		ArrayList<Student> studentlist = readStudent(coursePath + "/" + "Student.csv"); 
 		for (Student student : studentlist)
 			res.addStudent(student.getSid(), student.getFirstName(), 
-				student.getMiddleName(), student.getLastName());
+				student.getMiddleName(), student.getLastName(), student.isStatus(), student.getType());
 		
 		// load categories
 		String GradeableCategory = coursePath + "/" + "Category" + "/" + "GradeableCategory";
@@ -231,7 +232,15 @@ public class DataUtil {
 		ArrayList<String> rowData = readCSV(filename);
 		
 		for (int i = 1; i < rowData.size(); i++) {
-			Student object = new GraduateStudent();
+			// the last element would be the student type
+			String[] items = rowData.get(i).split(",");
+			String type = items[items.length - 1];
+			Student object = null;
+			if (type.equals(StudentType.GRADUATE.toString()))
+				object = Student.factory(StudentType.GRADUATE);
+			else if (type.equals(StudentType.UNDERGRADUATE.toString()))
+				object = Student.factory(StudentType.UNDERGRADUATE);
+			
 			object.readFromRowData(rowData.get(i));
 			res.add(object);
 		}

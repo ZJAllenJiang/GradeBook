@@ -2,6 +2,7 @@ package model;
 
 
 import model.GradeableComponent.DataEntryMode;
+import model.Student.StudentType;
 
 import java.util.ArrayList;
 
@@ -39,10 +40,10 @@ public class Course {
 	//  test for writing database
 	public Course() {
 		this("Java", "591", 2019, Semester.Fall);
-		
-		this.addStudent("U123", "Peter", "J", "Patrick");
-		this.addStudent("U124", "John", "H", "Will");
-		this.addStudent("U125", "Kate", "", "Rose");
+
+		this.addStudent("U123", "Peter", "J", "Patrick", true, StudentType.UNDERGRADUATE);
+		this.addStudent("U124", "John", "H", "Will", true, StudentType.UNDERGRADUATE);
+		this.addStudent("U125", "Kate", "", "Rose", true, StudentType.UNDERGRADUATE);
 		
 		addCategory(new GradeableCategory(1.0, "Homework", students));
 		CategoryComponent hw1 = new GradeableComponent("HW1", true, .1, 50, DataEntryMode.POINTS_EARNED);
@@ -179,13 +180,22 @@ public class Course {
 	}
 	
 	//------------- Methods for adding students ------------
-	public void addStudent(String sId, String fName, String mName, String lName) {
-		Student student = new GraduateStudent(sId, fName, mName, lName);
-		students.add(student);
-		
-		summary.addStudentEntry(student);
-		for (Category category : categories) {
-			category.addStudentEntry(student);
+	public void addStudent(String sId, String fName, String mName, String lName, boolean status, StudentType type) {
+		Student student = null;
+		switch(type) {
+		case UNDERGRADUATE:
+			student = new UndergraduateStudent(sId, fName, mName, lName, status);
+			break;
+		case GRADUATE:
+			student = new GraduateStudent(sId, fName, mName, lName, status);
+			break;
+		}
+		if (student != null) {
+			students.add(student);
+			summary.addStudentEntry(student);
+			for (Category category : categories) {
+				category.addStudentEntry(student);
+			}
 		}
 	}
 	

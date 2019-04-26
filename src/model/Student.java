@@ -11,19 +11,23 @@ public abstract class Student implements Writeout, ReadIn{
 		GRADUATE;
 	}
 	
-	private String sid;
-	private Name name;
-	private boolean status = true;
-	private StudentType type;
+	protected String sid;
+	protected Name name;
+	protected boolean status = true;
+	protected StudentType type;
 	
 	public Student(StudentType type){
+		this.sid = "";
+		this.name = new Name("", "", "");
+		this.status = true;
 		this.setType(type);
 	}
 	
-	public Student(String sid, String fName, String mName, String lName, StudentType type) {
+	public Student(String sid, String fName, String mName, String lName, boolean status, StudentType type) {
 		this(type);
 		this.sid = sid;
 		name = new Name(fName, mName, lName);
+		this.status = status;
 	}
 	
 	public String getSid() {
@@ -72,63 +76,30 @@ public abstract class Student implements Writeout, ReadIn{
 	}
 
 	@Override
-	public String getKey() {
-		// TODO Auto-generated method stub
-		return sid;
-	}
+	abstract public String getKey();
 
 	@Override
-	public ArrayList<String> writeAsRecord() {
-		// TODO Auto-generated method stub
-		ArrayList<String> res = new ArrayList<String>();
-		res.add(this.getFirstName());
-		res.add(this.getMiddleName());
-		res.add(this.getLastName());
-		if (status)
-			res.add("Active");
-		else
-			res.add("Inactive");
-		
-		return res;
-	}
+	abstract public ArrayList<String> writeAsRecord();
 
 	@Override
-	public ArrayList<String> getColumnName() {
-		// TODO Auto-generated method stub
-		ArrayList<String> res = new ArrayList<String>();
-		res.add("Student ID");
-		res.add("First name");
-		res.add("Middle initial");
-		res.add("Last name");
-		res.add("Status");
-		
-		return res;
-	}
+	abstract public ArrayList<String> getColumnName();
 
 	@Override
-	public void readFromRowData(String line) {
-		// TODO Auto-generated method stub
-		
-		// the separator of csv is ','
-		String[] terms = line.split(",");
-		
-		// should be one to one mapping 
-		if (terms.length != 5) {
-			System.out.println("[Student readFromRowData] can't compose object, "
-					+ "the rowdata is: " + line);
-			return;
+	abstract public void readFromRowData(String line);
+	
+	
+	// factory mode, compose an object by specifying type
+	public static Student factory(StudentType type) {
+		Student x = null;
+		switch(type) {
+		case GRADUATE:
+			x = new GraduateStudent();
+			break;
+		case UNDERGRADUATE:
+			x = new UndergraduateStudent();
+			break;
 		}
 		
-		this.setSid(terms[0]);
-		this.setName(terms[1], terms[2], terms[3]);
-		if (terms[4].equals("Active"))
-			this.setStatus(true);
-		else if (terms[4].equals("Inactive"))
-			this.setStatus(false);
-		else {
-			this.setStatus(false);
-			System.out.println("[Student readFromRowData] miss matched type."
-					+ " status = " + terms[4]);
-		}
+		return x;
 	}
 }

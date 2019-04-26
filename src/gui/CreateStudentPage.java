@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import model.Course;
+import model.Student.StudentType;
 
 public class CreateStudentPage {
 
@@ -136,7 +137,7 @@ public class CreateStudentPage {
 				String mName = middleNameField.getText();
 				String lName = lastNameField.getText();
 				if(!sId.equals("") && !fName.equals("") && !lName.equals("") ) {
-					course.addStudent(sId, fName, mName, lName);
+					course.addStudent(sId, fName, mName, lName, true, StudentType.UNDERGRADUATE);
 					new CourseGradebookButtonPage(course);
 					frame.dispose();	
 				}
