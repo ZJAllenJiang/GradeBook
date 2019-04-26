@@ -55,7 +55,7 @@ public class GraduateStudent extends Student {
 		String[] terms = line.split(",");
 		
 		// should be one to one mapping 
-		if (terms.length != 5) {
+		if (terms.length != 6) {
 			System.out.println("[Student readFromRowData] can't compose object, "
 					+ "the rowdata is: " + line);
 			return;
