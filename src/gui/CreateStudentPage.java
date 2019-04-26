@@ -30,7 +30,7 @@ public class CreateStudentPage {
 	private JTextField firstNameField;
 	private JTextField middleNameField;
 	private JTextField lastNameField;
-	public StudentType studentType;
+	public StudentType studentType = StudentType.UNDERGRADUATE;
 
 
 	/**
@@ -148,8 +148,6 @@ public class CreateStudentPage {
 					if(comboBox.getSelectedIndex() == 1) {
 						studentType = StudentType.GRADUATE;
 					}
-				}else {
-					studentType = StudentType.UNDERGRADUATE;
 				}
 			}
 		});
@@ -196,4 +194,7 @@ public class CreateStudentPage {
 		
 		//return newStudentList;
 	}
+
+	
+	
 }
