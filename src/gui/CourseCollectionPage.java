@@ -185,6 +185,7 @@ public class CourseCollectionPage {
 				if(currentColumn == 5) {
 					Course currentCourse = courseList.get(currentRow);
 					//Course javaCourse = new Course();
+					DatabaseAPI.saveCourse(currentCourse);
 					new CourseGradebookButtonPage(currentCourse);
 					frame.dispose();
 				}

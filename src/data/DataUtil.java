@@ -69,7 +69,7 @@ public class DataUtil {
 			if (course.status())
 				writeText(coursePath + "/" + "Status", "Active");
 			else
-				writeText(coursePath + "/" + "Status", "InActive");
+				writeText(coursePath + "/" + "Status", "Inactive");
 		}
 		
 		// create Student.csv
