@@ -162,7 +162,7 @@ public abstract class Category {
 	}
 	
 	
-	Statistics componentStatistics(String componentName) {
+	public Statistics componentStatistics(String componentName) {
 		
 		
 		CategoryComponent component = null;

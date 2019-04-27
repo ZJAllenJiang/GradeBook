@@ -39,6 +39,7 @@ import model.StudentEntry;
 import model.Summary;
 import model.GradeableComponent.DataEntryMode;
 import model.OverallGradeable;
+import model.Statistics;
 import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
@@ -292,14 +293,14 @@ public class GradeBookJTable extends JTable {
             	//Set the valid data in the model in the format it is in now
     			GradeBookJTable.this.setDataFromGUI();
     			
-    			System.err.println("TODO: Compute the statistics!");
-    			boolean status = true;
+    			Statistics stats = category.componentStatistics(selectedModelHeader);
     			
     			JFrame topFrame = (JFrame) SwingUtilities
             			.getWindowAncestor(GradeBookJTable.this);
 
-    			if(status) {
-    				StatisticsPanel statisticsPanel = new StatisticsPanel(0, 0, 0);
+    			if(stats != null) {
+    				StatisticsPanel statisticsPanel = new StatisticsPanel(stats.getMedian(), 
+    						stats.getMean(), stats.getStandardDev());
 
     				JOptionPane.showMessageDialog(topFrame, statisticsPanel, 
     						"Statistics for " + selectedModelHeader, JOptionPane.PLAIN_MESSAGE);
