@@ -18,8 +18,6 @@ import model.StudentEntry;
 import model.Summary;
 import model.TextCategory;
 import model.TextComponent;
-import model.GradeableComponent.DataEntryMode;
-import model.GraduateStudent;
 import model.Semester;
 import model.Category;
 import model.CategoryComponent;
@@ -39,10 +37,6 @@ import org.w3c.dom.NodeList;
 
 public class DataUtil {
 	private static final String root = "";
-	private static final String ctypeText = "Text";
-	private static final String ctypeGradeable = "Gradeable";
-	private static final char fileSeparator = File.separatorChar;
-	
 	
 	//  ------- save Course -------   // 
 	protected static void save(Course course) {
