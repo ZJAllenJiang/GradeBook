@@ -24,6 +24,7 @@ import model.CategoryComponent;
 import model.Course;
 import model.GradeableCategory;
 import model.GradeableComponent;
+import model.Statistics;
 import model.Student;
 import model.Student.StudentType;
 import model.TextCategory;
@@ -38,21 +39,6 @@ public class CourseGradebookButtonPage {
 	private GradeBookPanel gBookPanel;
 	private Course course;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CourseGradebookButtonPage window = new CourseGradebookButtonPage();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -227,15 +213,17 @@ public class CourseGradebookButtonPage {
 				boolean status = gBookPanel.updateOverallGrades();
     			
 				if(status) {
-					System.err.println("TODO: Compute the statistics!");
+					Statistics stats = course.courseStatistics();		    							
 					
-					StatisticsPanel statisticsPanel = new StatisticsPanel(0, 0, 0);
+					StatisticsPanel statisticsPanel = new StatisticsPanel(stats.getMedian(), 
+    						stats.getMean(), stats.getStandardDev());
 
 					JOptionPane.showMessageDialog(frame, statisticsPanel, 
 							"Statistics for Course: " + course.getName(), JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(frame, "Error when computing the grades for course: " + course.getName(), 
+					JOptionPane.showMessageDialog(frame, "Error when computing the grades for course: " + course.getName()
+					+ "\n See Summary tab for more information.", 
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}

@@ -211,15 +211,15 @@ public class Course {
 		}
 	}
 	
-	Statistics categoryStatistics(String categoryName) {
+	public Statistics categoryStatistics(String categoryName) {
 		for (Category category : categories) {
 			if (category.getName().equals(categoryName))
-				return CategoryStatistics(category);
+				return categoryStatistics(category);
 		}
 		return new Statistics(null);
 	}
 	
-	Statistics CategoryStatistics(Category category) {
+	public Statistics categoryStatistics(Category category) {
 		ArrayList<Double> grades = new ArrayList<>();
 		Double grade = null;
 		for (StudentEntry studentEntry : category.getStudentEntries()) {
@@ -235,7 +235,7 @@ public class Course {
 		return new Statistics(grades);
 	}
 	
-	Statistics courseStatistics() {
+	public Statistics courseStatistics() {
 		ArrayList<Double> grades = new ArrayList<>();
 		Double grade = null;
 		

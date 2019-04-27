@@ -23,6 +23,7 @@ import model.GradeableComponent.DataEntryMode;
 import model.Student;
 import model.GradeableCategory;
 import model.GradeableComponent;
+import model.Statistics;
 
 public class GradeBookPanel extends JPanel {
 	private Course course;
@@ -75,9 +76,10 @@ public class GradeBookPanel extends JPanel {
 			    						JFrame topFrame = (JFrame) SwingUtilities
 		    									.getWindowAncestor(GradeBookPanel.this);
 			    						if(result) {
-			    							System.err.println("TODO: Compute the statistics!");
-
-			    							StatisticsPanel statisticsPanel = new StatisticsPanel(0, 0, 0);
+			    							Statistics stats = course.categoryStatistics(category);		    							
+			    							
+			    							StatisticsPanel statisticsPanel = new StatisticsPanel(stats.getMedian(), 
+			    		    						stats.getMean(), stats.getStandardDev());
 
 			    							JOptionPane.showMessageDialog(topFrame, statisticsPanel, 
 			    									"Statistics for " + category.getName(), JOptionPane.PLAIN_MESSAGE);
