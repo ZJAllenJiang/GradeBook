@@ -136,7 +136,7 @@ public class CreateCoursePage {
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				
+				new CourseCollectionPage();
 			}
 		});
 		cancelButton.setBounds(30, 280, 120, 30);
@@ -161,15 +161,37 @@ public class CreateCoursePage {
 				Object[] courseRow = {name, code, year, semester, "Active", "View", "Edit", "Delete"};
 				DefaultTableModel tableModel = (DefaultTableModel) CourseCollectionPage.courseTable.getModel();
 				if(name.equals("") || code.equals("") || year.equals("") || semester.equals("")) {
-					// could add some more features
-				}else {
+					frame.dispose();
+					String str = "You input course data is missing some values.";
+					new HandleCourseInputErrorPopup(str);
+				}else if(!name.equals("") && !code.equals("") && !year.equals("") && !semester.equals("")){
+					char[] numOrNot = year.toCharArray();
+					boolean flag = true;
+					for (int i = 0; i < numOrNot.length; i++) {
+						if(numOrNot[i] >= '0' && numOrNot[i] <= '9') {
+							continue;
+						}else {
+							flag = false;
+							break;
+						}
+					}
+					if(flag) {
 					Course newCourse = new Course(name, code, Integer.parseInt(year), Semester.valueOf(semester));
 					DatabaseAPI.saveCourse(newCourse);
 					tableModel.addRow(courseRow);
+					frame.dispose();
 					new CourseCollectionPage();
+					}else {
+						frame.dispose();
+						String str = "You input year is not a number value!";
+						new HandleCourseInputErrorPopup(str);
+					}
+				}else {
+					frame.dispose();
+					String str = "You input contains error and needs to be fixed.";
+					new HandleCourseInputErrorPopup(str);
 				}
-				frame.dispose();
-				//new CourseCollectionPage();
+				
 			}
 		});
 		saveButton.setBounds(150, 280, 120, 30);

@@ -157,7 +157,7 @@ public class CreateStudentPage {
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				
+				new CourseGradebookButtonPage(course);
 			}
 		});
 		cancelButton.setBounds(20, 350, 120, 30);
@@ -174,6 +174,13 @@ public class CreateStudentPage {
 					course.addStudent(sId, fName, mName, lName, true, studentType);
 					new CourseGradebookButtonPage(course);
 					frame.dispose();	
+				}else if (sId.equals("") || fName.equals("") || lName.equals("")) {
+					//frame.dispose();
+					String str = "You input student data is missing some values.";
+					new HandleStudentInputErrorPopup(str);
+				}else {
+					String str = "You input student data contains error and needs to be fixed.";
+					new HandleStudentInputErrorPopup(str);
 				}
 				
 				

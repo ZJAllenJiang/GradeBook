@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import model.Category;
 import model.CategoryComponent;
@@ -104,6 +106,13 @@ public class GradeBookJTable extends JTable {
 		tableModel.setColumnCount(0);
 		this.getTableHeader().setDraggedColumn(null);
 	    tableModel.setColumnIdentifiers(columnNameList);
+	    
+	    for (int i = 0; i < tableModel.getColumnCount(); i++) {
+	    	TableColumn column = this.getColumnModel().getColumn(i);
+	        column.setMinWidth(130);
+	    }
+	    //this.setPreferredScrollableViewportSize(new Dimension(300, 200));
+        this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    
 		if(studentHeaders.contains(Summary.STATUS)) {
 			JComboBox<Boolean> booleanComboBox = new JComboBox<Boolean>();
