@@ -1,6 +1,7 @@
 package gui;
 
 import model.Course;
+import model.Student;
 
 public class Main {
 	
