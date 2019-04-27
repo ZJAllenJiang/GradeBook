@@ -100,4 +100,22 @@ public class GradeEntry extends DataEntry<Double>{
 		this.setData(validValue);
 		return true;
 	}
+	
+	@Override
+	public void setDataWithString(String xdata) {
+		// don't need to handle
+		if (xdata == null || xdata.equals("") || xdata.equals(" "))
+			return;
+		
+		try {
+			
+			// read String from database
+			// the real number of value so don't need to check entry mode and convert
+			double douVal = Double.parseDouble(xdata);
+			this.setData(douVal);
+			
+		}catch(Exception e) {
+			System.out.println("[GradeEntry setDataWithString] " + e.getMessage());
+		}
+	}
 }

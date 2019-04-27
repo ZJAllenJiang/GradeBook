@@ -59,8 +59,5 @@ public abstract class DataEntry<T> {
 	
 	// need to implement because every time string type is returned 
 	// when read from database
-	public String setDataWithString(String data) {
-		
-		return null;
-	}
+	abstract public void setDataWithString(String xdata);
 }
