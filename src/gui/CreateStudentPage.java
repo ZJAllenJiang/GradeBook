@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import model.Course;
+import model.Student;
 import model.Student.StudentType;
 import javax.swing.JComboBox;
 
@@ -170,10 +171,24 @@ public class CreateStudentPage {
 				String fName = firstNameField.getText();
 				String mName = middleNameField.getText();
 				String lName = lastNameField.getText();
+				ArrayList<Student> studentList = course.getAllStudents();
+				boolean flag = true;
+				for (int i = 0; i < studentList.size(); i++) {
+					if(studentList.get(i).getSid().equals(sId)) {
+						flag = false;
+						break;
+					}
+				}
 				if(!sId.equals("") && !fName.equals("") && !lName.equals("") ) {
+					if(flag) {
 					course.addStudent(sId, fName, mName, lName, true, studentType);
 					new CourseGradebookButtonPage(course);
 					frame.dispose();	
+					}else {
+						String str  = "You already add this student.";
+						//frame.dispose();
+						new HandleStudentInputErrorPopup(str);
+					}
 				}else if (sId.equals("") || fName.equals("") || lName.equals("")) {
 					//frame.dispose();
 					String str = "You input student data is missing some values.";

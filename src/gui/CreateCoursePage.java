@@ -25,6 +25,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class CreateCoursePage {
 
@@ -175,12 +176,30 @@ public class CreateCoursePage {
 							break;
 						}
 					}
+					
+					//check for repeat courses
+					boolean flag2 = true;
 					if(flag) {
-					Course newCourse = new Course(name, code, Integer.parseInt(year), Semester.valueOf(semester));
-					DatabaseAPI.saveCourse(newCourse);
-					tableModel.addRow(courseRow);
-					frame.dispose();
-					new CourseCollectionPage();
+						ArrayList<Course> courseList = DatabaseAPI.getCourseList();
+						Course checkCourse = new Course("", code, Integer.parseInt(year), Semester.valueOf(semester));
+						for (int i = 0; i < courseList.size(); i++) {
+							if(checkCourse.equals(courseList.get(i))) {
+								flag2 = false;
+								break;
+							}
+						}
+					}
+					
+					if(flag && flag2 == false) {
+						frame.dispose();
+						String str = "You already have this course.";
+						new HandleCourseInputErrorPopup(str);
+					}else if(flag && flag2) {
+						Course newCourse = new Course(name, code, Integer.parseInt(year), Semester.valueOf(semester));
+						DatabaseAPI.saveCourse(newCourse);
+						tableModel.addRow(courseRow);
+						frame.dispose();
+						new CourseCollectionPage();
 					}else {
 						frame.dispose();
 						String str = "You input year is not a number value!";
@@ -191,6 +210,7 @@ public class CreateCoursePage {
 					String str = "You input contains error and needs to be fixed.";
 					new HandleCourseInputErrorPopup(str);
 				}
+				
 				
 			}
 		});
