@@ -162,7 +162,48 @@ public class CourseGradebookButtonPage {
 		JButton gradingSchemeButton = new JButton("Import Grading Scheme");
 		gradingSchemeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// wait for the import existing grading scheme data
+				gBookPanel.setAllData(true);
+				
+				if(!course.getAllCategories().isEmpty()) {
+					JOptionPane.showMessageDialog(null, 
+			    			"Cannot import into a course already has categories.");
+			    	return;
+				}
+				
+				ArrayList<Course> allCourses = DatabaseAPI.getCourseList();
+				allCourses.remove(course);
+				if(allCourses.isEmpty()) {
+					JOptionPane.showMessageDialog(null, 
+							"No other courses to clone.");
+					return;
+				}
+				
+				ArrayList<String> courseNames = new ArrayList<String>();
+				for(Course c : allCourses) {
+					courseNames.add(c.toString());
+				}
+				CourseSelectionPanel coursesPanel = new CourseSelectionPanel(courseNames);
+				int result = JOptionPane.showConfirmDialog(frame, 
+						coursesPanel, 
+						"Import Course Template",
+						JOptionPane.OK_CANCEL_OPTION);
+		        
+		        if(result == JOptionPane.OK_OPTION) {
+					String courseNameToCopy = coursesPanel.getSelectedCourse();
+					Course courseToCopy = null;
+					for(Course c : allCourses) {
+						if(c.equals(courseNameToCopy)) {
+							courseToCopy = c;
+						}
+					}
+					
+					for(Category newCategory : courseToCopy.getAllCategories()) {
+						newCategory.clearStudentEntries();
+						course.addCategory(newCategory);
+					}
+					
+					gBookPanel.setAllData(true);
+		        }	        
 			}
 		});
 		gradingSchemeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));

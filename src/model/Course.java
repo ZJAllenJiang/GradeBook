@@ -277,7 +277,15 @@ public class Course {
 		if (o == null || getClass() != o.getClass()) return false;
 		Course course = (Course) o;
 		
-		return this.toString().equals(course.toString());
+		return equals(course.toString());
+	}
+	
+	public boolean equals(String otherCourseStringify) {
+		if(otherCourseStringify == null) {
+			return false;
+		}
+		
+		return this.toString().equals(otherCourseStringify);
 	}
 	
 	@Override

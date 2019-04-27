@@ -67,6 +67,10 @@ public abstract class Category {
 		}
 	}
 	
+	public void clearStudentEntries() {
+		studentEntries.clear();
+	}
+	
 	protected StudentEntry getStudentEntry(Student student) {
 		for (StudentEntry entry : studentEntries) {
 			if (entry.getStudent().equals(student)) {
