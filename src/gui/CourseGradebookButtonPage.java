@@ -181,7 +181,7 @@ public class CourseGradebookButtonPage {
 				CourseSelectionPanel coursesPanel = new CourseSelectionPanel(allCourses);
 				int result = JOptionPane.showConfirmDialog(frame, 
 						coursesPanel, 
-						"Import Course Template",
+						"Import Grading Scheme",
 						JOptionPane.OK_CANCEL_OPTION);
 		        
 		        if(result == JOptionPane.OK_OPTION) {

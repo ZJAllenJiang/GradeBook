@@ -30,7 +30,7 @@ public class CourseSelectionPanel extends JPanel {
 	private void addCourseListPanel(List<Course> courses) {
 		JPanel courseListPanel = new JPanel();
 		courseListPanel.setLayout(new BoxLayout(courseListPanel, BoxLayout.X_AXIS));
-		JLabel courseListLabel = new JLabel("Course Template to Copy: ");
+		JLabel courseListLabel = new JLabel("Grading Scheme to Copy: ");
 		courseListPanel.add(courseListLabel);
 		
 		Course[] array = new Course[courses.size()];
