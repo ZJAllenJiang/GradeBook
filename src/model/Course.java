@@ -281,4 +281,14 @@ public class Course {
 				Objects.equals(code, course.code) &&
 				semester == course.semester;
 	}
+	
+	public String getCourseSummaryInfo() {
+		String info = "Categories: ";
+		
+		for(Category c : this.getAllCategories()) {
+			info = info + c.getName() + " ";
+		}
+		
+		return info;
+	}
 }

@@ -190,6 +190,7 @@ public class CourseGradebookButtonPage {
 					for(Category newCategory : courseToCopy.getAllCategories()) {
 						newCategory.clearStudentEntries();
 						course.addCategory(newCategory);
+						gBookPanel.addCategoryTab(newCategory);
 					}
 					
 					gBookPanel.setAllData(true);

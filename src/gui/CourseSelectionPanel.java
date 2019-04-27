@@ -41,8 +41,9 @@ public class CourseSelectionPanel extends JPanel {
 		            Object value, int index, boolean isSelected,
 		            boolean cellHasFocus) {
 		        if (value instanceof Course) {
-		            setToolTipText("TEST");
-		            value = ((Course) value).getName();
+		        	Course course = (Course) value;
+		            value = course.getName();
+		            setToolTipText(course.getCourseSummaryInfo());
 		        } else {
 		            setToolTipText(null);
 		        }
