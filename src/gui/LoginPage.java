@@ -13,12 +13,13 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class LoginPage {
 
 	private JFrame frame;
 	private JTextField userNametextField;
-	private JTextField passwordtextField;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -73,13 +74,13 @@ public class LoginPage {
 		JLabel userNameLabel = new JLabel("Username");
 		userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		userNameLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		userNameLabel.setBounds(150, 108, 100, 40);
+		userNameLabel.setBounds(140, 108, 100, 40);
 		frame.getContentPane().add(userNameLabel);
 		
 		JLabel passwordLabel = new JLabel("Password");
 		passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		passwordLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
-		passwordLabel.setBounds(150, 180, 100, 40);
+		passwordLabel.setBounds(140, 180, 100, 40);
 		frame.getContentPane().add(passwordLabel);
 		
 		userNametextField = new JTextField();
@@ -87,16 +88,11 @@ public class LoginPage {
 		frame.getContentPane().add(userNametextField);
 		userNametextField.setColumns(10);
 		
-		passwordtextField = new JTextField();
-		passwordtextField.setBounds(330, 180, 180, 40);
-		frame.getContentPane().add(passwordtextField);
-		passwordtextField.setColumns(10);
-		
 		JButton loginButton = new JButton("Login");
 		loginButton.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(userNametextField.getText().equals("cpk") && passwordtextField.getText().equals("cpk")) {
+				if(userNametextField.getText().equals("cpk") && passwordField.getText().equals("cpk")) {
 					frame.dispose();
 					new CourseCollectionPage();
 				}else {
@@ -106,7 +102,11 @@ public class LoginPage {
 				
 			}
 		});
-		loginButton.setBounds(240, 300, 120, 40);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(330, 180, 180, 40);
+		frame.getContentPane().add(passwordField);
+		loginButton.setBounds(240, 280, 120, 40);
 		frame.getContentPane().add(loginButton);
 		
 		frame.setResizable(false);
