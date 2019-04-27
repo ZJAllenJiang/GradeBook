@@ -180,7 +180,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		gradingSchemeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		gradingSchemeButton.setBounds(490, 140, 220, 40);
+		gradingSchemeButton.setBounds(485, 140, 230, 40);
 		frame.getContentPane().add(gradingSchemeButton);
 		
 		JButton addGradeCategoryButton = new JButton("Add Grade Category");

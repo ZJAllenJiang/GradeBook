@@ -56,6 +56,9 @@ public class EditCoursePage {
 		
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public EditCoursePage(int currentRow, Course currentCourse) {
 		initialize(currentRow, currentCourse);
 	}
