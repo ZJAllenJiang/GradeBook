@@ -322,18 +322,18 @@ public class DataUtil {
 		return res;
 	}
 	
-	private static ArrayList<String> lookForFiles(String dir, String reg) {
-		dir = pathMapping(dir);
-		// return all file that match the reg under dir
-		ArrayList<String> res = new ArrayList<String>();
-		File currentDir = new File(dir);
-		String reg_expression = "(.*)" + reg + "(.*)";
-		for (File file : currentDir.listFiles()) {
-			if (file.isFile() && file.getName().matches(reg_expression))
-				res.add(file.getName());
-		}
-		return res;
-	}
+//	private static ArrayList<String> lookForFiles(String dir, String reg) {
+//		dir = pathMapping(dir);
+//		// return all file that match the reg under dir
+//		ArrayList<String> res = new ArrayList<String>();
+//		File currentDir = new File(dir);
+//		String reg_expression = "(.*)" + reg + "(.*)";
+//		for (File file : currentDir.listFiles()) {
+//			if (file.isFile() && file.getName().matches(reg_expression))
+//				res.add(file.getName());
+//		}
+//		return res;
+//	}
 	
 	private static boolean checkDirExist(String dir) {
 		dir = pathMapping(dir);
