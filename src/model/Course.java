@@ -276,8 +276,9 @@ public class Course {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Course course = (Course) o;
-		
-		return this.toString().equals(course.toString());
+		return year == course.year &&
+				Objects.equals(code, course.code) &&
+				semester == course.semester;
 	}
 	
 	@Override
