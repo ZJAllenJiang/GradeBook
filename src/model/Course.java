@@ -40,7 +40,7 @@ public class Course {
 	//  test for writing database
 	public Course() {
 		this("Java", "591", 2019, Semester.Fall);
-
+		
 		this.addStudent("U123", "Peter", "J", "Patrick", true, StudentType.UNDERGRADUATE);
 		this.addStudent("U124", "John", "H", "Will", true, StudentType.UNDERGRADUATE);
 		this.addStudent("U125", "Kate", "", "Rose", true, StudentType.UNDERGRADUATE);
@@ -173,22 +173,34 @@ public class Course {
 	}
 	
 	//	 add category by passing an existing category
-	public void addCategory(Category category) {
-		categories.add(category);
+	public boolean addCategory(Category category) {
 		
+		if (findCategory((category.getName())))
+			return false;
+		
+		categories.add(category);
 		summary.addComponentIfApplicable(category);
+		return true;
+	}
+	
+	private boolean findCategory(String categoryName) {
+		for (Category categ : categories) {
+			if (categ.getName().equals(categoryName))
+				return true;
+		}
+		return false;
 	}
 	
 	//------------- Methods for adding students ------------
 	public void addStudent(String sId, String fName, String mName, String lName, boolean status, StudentType type) {
 		Student student = null;
-		switch(type) {
-		case UNDERGRADUATE:
-			student = new UndergraduateStudent(sId, fName, mName, lName, status);
-			break;
-		case GRADUATE:
-			student = new GraduateStudent(sId, fName, mName, lName, status);
-			break;
+		switch (type) {
+			case UNDERGRADUATE:
+				student = new UndergraduateStudent(sId, fName, mName, lName, status);
+				break;
+			case GRADUATE:
+				student = new GraduateStudent(sId, fName, mName, lName, status);
+				break;
 		}
 		if (student != null) {
 			students.add(student);
@@ -239,7 +251,7 @@ public class Course {
 		ArrayList<Double> grades = new ArrayList<>();
 		Double grade = null;
 		
-		for (StudentEntry studentEntry: summary.getStudentEntries()){
+		for (StudentEntry studentEntry : summary.getStudentEntries()) {
 			grade = summary.computeOverallGrade(studentEntry);
 			if (studentEntry.getStudent().isStatus()) {
 				if (grade == null)
