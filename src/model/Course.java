@@ -276,25 +276,9 @@ public class Course {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Course course = (Course) o;
-		
-		return equals(course.toString());
-	}
-	
-	public boolean equals(String otherCourseStringify) {
-		if(otherCourseStringify == null) {
-			return false;
-		}
-		
-		return this.toString().equals(otherCourseStringify);
-	}
-	
-	@Override
-	public String toString() {
-		return "Course{" +
-				name +
-				", " + code +
-				", " + year +
-				", " + semester +
-				'}';
+
+		return year == course.year &&
+				Objects.equals(code, course.code) &&
+				semester == course.semester;
 	}
 }

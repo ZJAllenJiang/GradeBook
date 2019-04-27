@@ -189,14 +189,8 @@ public class CourseGradebookButtonPage {
 						JOptionPane.OK_CANCEL_OPTION);
 		        
 		        if(result == JOptionPane.OK_OPTION) {
-					String courseNameToCopy = coursesPanel.getSelectedCourse();
-					Course courseToCopy = null;
-					for(Course c : allCourses) {
-						if(c.equals(courseNameToCopy)) {
-							courseToCopy = c;
-						}
-					}
-					
+		        	Course courseToCopy = coursesPanel.getSelectedCourse();
+
 					for(Category newCategory : courseToCopy.getAllCategories()) {
 						newCategory.clearStudentEntries();
 						course.addCategory(newCategory);
