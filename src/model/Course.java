@@ -5,6 +5,7 @@ import model.GradeableComponent.DataEntryMode;
 import model.Student.StudentType;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Course {
 	
@@ -192,8 +193,14 @@ public class Course {
 	}
 	
 	//------------- Methods for adding students ------------
-	public void addStudent(String sId, String fName, String mName, String lName, boolean status, StudentType type) {
+	public boolean addStudent(String sId, String fName, String mName, String lName, boolean status, StudentType type) {
 		Student student = null;
+		
+		for (Student stud : students) {
+			if (stud.getSid().equals(sId))
+				return false;
+		}
+		
 		switch (type) {
 			case UNDERGRADUATE:
 				student = new UndergraduateStudent(sId, fName, mName, lName, status);
@@ -202,6 +209,7 @@ public class Course {
 				student = new GraduateStudent(sId, fName, mName, lName, status);
 				break;
 		}
+		
 		if (student != null) {
 			students.add(student);
 			summary.addStudentEntry(student);
@@ -209,6 +217,7 @@ public class Course {
 				category.addStudentEntry(student);
 			}
 		}
+		return true;
 	}
 	
 	public void bulkLoadStudents(String csvName) {
@@ -261,4 +270,15 @@ public class Course {
 		}
 		return new Statistics(grades);
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Course course = (Course) o;
+		return year == course.year &&
+				Objects.equals(code, course.code) &&
+				semester == course.semester;
+	}
+	
 }
