@@ -69,7 +69,7 @@ public class DataUtil {
 			if (course.status())
 				writeText(coursePath + "/" + "Status", "Active");
 			else
-				writeText(coursePath + "/" + "Status", "InActive");
+				writeText(coursePath + "/" + "Status", "Inactive");
 		}
 		
 		// create Student.csv
@@ -451,7 +451,7 @@ public class DataUtil {
 				System.out.println(e.getMessage());
 			}
 		} else {
-			System.out.println("[DataUtil writeToCSV] len of records is 0, target file: " + filename);
+//			System.out.println("[DataUtil writeToCSV] len of records is 0, target file: " + filename);
 		}
 	}
 	
