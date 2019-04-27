@@ -451,7 +451,7 @@ public class DataUtil {
 				System.out.println(e.getMessage());
 			}
 		} else {
-			System.out.println("[DataUtil writeToCSV] len of records is 0, target file: " + filename);
+//			System.out.println("[DataUtil writeToCSV] len of records is 0, target file: " + filename);
 		}
 	}
 	
