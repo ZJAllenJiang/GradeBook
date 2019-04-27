@@ -166,7 +166,7 @@ public class CourseGradebookButtonPage {
 				
 				if(!course.getAllCategories().isEmpty()) {
 					JOptionPane.showMessageDialog(null, 
-			    			"Cannot import into a course already has categories.");
+			    			"Cannot import into a course that already has categories.");
 			    	return;
 				}
 				
@@ -178,11 +178,7 @@ public class CourseGradebookButtonPage {
 					return;
 				}
 				
-				ArrayList<String> courseNames = new ArrayList<String>();
-				for(Course c : allCourses) {
-					courseNames.add(c.toString());
-				}
-				CourseSelectionPanel coursesPanel = new CourseSelectionPanel(courseNames);
+				CourseSelectionPanel coursesPanel = new CourseSelectionPanel(allCourses);
 				int result = JOptionPane.showConfirmDialog(frame, 
 						coursesPanel, 
 						"Import Course Template",
