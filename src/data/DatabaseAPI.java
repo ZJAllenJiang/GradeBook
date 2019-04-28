@@ -1,6 +1,8 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import model.Category;
 import model.Course;
@@ -28,7 +30,30 @@ public class DatabaseAPI extends DataUtil{
 	// get all existing Course in database
 	// @return an empty ArrayList if nothing in database
 	public static ArrayList<Course> getCourseList() {
-		return readCourseList();
+		ArrayList<Course> courses = readCourseList();
+		Collections.sort(courses, new Comparator<Course>() {
+			@Override
+			public int compare(Course o1, Course o2) {
+				int result = Integer.compare(o1.getYear(), o2.getYear());
+				if(result != 0) {
+					return result;
+				}
+				
+				result = o1.getSemester().compareTo(o2.getSemester());
+				if(result != 0) {
+					return result;
+				}
+				
+				result = o1.getCode().compareTo(o2.getCode());
+				if(result != 0) {
+					return result;
+				}
+				
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		
+		return courses;
 	}
 	
 	// get scheme from a existing course
