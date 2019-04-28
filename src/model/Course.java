@@ -220,6 +220,23 @@ public class Course {
 		return true;
 	}
 	
+	// keep the actual object of student in database
+	// for self composing
+	public boolean addStudent(ArrayList<Student> xstudents) {
+		// calling this when totally new object of Course
+		if (this.students == null || this.students.size() == 0) {
+			for (int i = 0; i < xstudents.size(); i++) {
+				students.add(xstudents.get(i));
+				summary.addStudentEntry(xstudents.get(i));
+				
+				for (int j = 0; j < categories.size(); j++) 
+					categories.get(j).addStudentEntry(xstudents.get(i));
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	public void bulkLoadStudents(String csvName) {
 	
 	}

@@ -118,10 +118,8 @@ public class DataUtil {
 		
 		// load Student.csv
 		ArrayList<Student> studentlist = readStudent(coursePath + "/" + "Student.csv"); 
-		for (Student student : studentlist)
-			res.addStudent(student.getSid(), student.getFirstName(), 
-				student.getMiddleName(), student.getLastName(), student.isStatus(), student.getType());
-		
+		res.addStudent(studentlist);
+					
 		// load categories
 		String GradeableCategory = coursePath + "/" + "Category" + "/" + "GradeableCategory";
 		String TextCategory = coursePath + "/" + "Category" + "/" + "TextCategory";
@@ -167,7 +165,7 @@ public class DataUtil {
 		readStudentEntries(coursePath + "/" + "Summary" +
 				 "/" + "Summary.csv", studentlist, components, ss);		
 		res.addSummary(ss);
-
+		
 		return res;
 	}
 	
