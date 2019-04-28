@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Components>
+<Requirements>
+<isEditable>true</isEditable>
+<maxScore>100.0</maxScore>
+<mode>POINTS_EARNED</mode>
+<name>Requirements</name>
+<type>gradeable</type>
+<weight>0.15</weight>
+</Requirements>
+<Design>
+<isEditable>true</isEditable>
+<maxScore>120.0</maxScore>
+<mode>POINTS_EARNED</mode>
+<name>Design</name>
+<type>gradeable</type>
+<weight>0.5</weight>
+</Design>
+<Software>
+<isEditable>true</isEditable>
+<maxScore>200.0</maxScore>
+<mode>POINTS_EARNED</mode>
+<name>Software</name>
+<type>gradeable</type>
+<weight>0.35</weight>
+</Software>
+</Components>

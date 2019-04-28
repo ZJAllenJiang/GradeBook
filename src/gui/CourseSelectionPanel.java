@@ -1,6 +1,9 @@
 package gui;
 
 import java.awt.Component;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -34,7 +37,17 @@ public class CourseSelectionPanel extends JPanel {
 		courseListPanel.add(courseListLabel);
 		
 		Course[] array = new Course[courses.size()];
-		courseComboBox = new JComboBox<Course>(courses.toArray(array));
+		array = courses.toArray(array);
+		Arrays.sort(array, new Comparator<Course>() {
+			@Override
+			public int compare(Course o1, Course o2) {
+				String s1 = o1.toString();
+				String s2 = o2.toString();
+				return s1.compareTo(s2);
+			}
+		});
+		
+		courseComboBox = new JComboBox<Course>(array);
 		ListCellRenderer comboRenderer = new DefaultListCellRenderer() {
 		    @Override
 		    public Component getListCellRendererComponent(JList<?> list,
@@ -42,7 +55,7 @@ public class CourseSelectionPanel extends JPanel {
 		            boolean cellHasFocus) {
 		        if (value instanceof Course) {
 		        	Course course = (Course) value;
-		            value = course.getName();
+		            value = course.toString();
 		            setToolTipText(course.getCourseSummaryInfo());
 		        } else {
 		            setToolTipText(null);

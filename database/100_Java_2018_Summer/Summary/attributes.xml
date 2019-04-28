@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Components>
+<Sketch>
+<isEditable>true</isEditable>
+<name>Sketch</name>
+<type>text</type>
+</Sketch>
+<HW>
+<isEditable>false</isEditable>
+<name>HW</name>
+<type>text</type>
+</HW>
+<Project>
+<isEditable>false</isEditable>
+<name>Project</name>
+<type>text</type>
+</Project>
+<undergraduateBONUS>
+<isEditable>true</isEditable>
+<name>undergraduateBONUS</name>
+<type>text</type>
+</undergraduateBONUS>
+</Components>

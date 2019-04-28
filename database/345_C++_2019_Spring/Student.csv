@@ -1,0 +1,21 @@
+Student ID,First name,Middle initial,Last name,Status,Student Type
+1,A,Q,M,Active,GRADUATE
+2,B,W,N,Active,GRADUATE
+3,C,E,B,Active,UNDERGRADUATE
+4,D,R,V,Active,GRADUATE
+5,E,T,C,Active,GRADUATE
+6,F,Y,X,Active,GRADUATE
+7,G,U,Z,Active,GRADUATE
+8,H,I,L,Active,GRADUATE
+9,I,O,K,Active,GRADUATE
+10,J,P,J,Active,GRADUATE
+11,K,A,H,Active,UNDERGRADUATE
+12,L,S,G,Active,GRADUATE
+13,M,D,F,Active,GRADUATE
+14,N,F,D,Active,GRADUATE
+15,O,G,S,Active,GRADUATE
+16,P,H,A,Active,GRADUATE
+17,Q,J,P,Active,UNDERGRADUATE
+18,R,K,O,Active,UNDERGRADUATE
+19,S,L,I,Active,GRADUATE
+20,T,Z,U,Active,GRADUATE

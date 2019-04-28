@@ -299,6 +299,12 @@ public class Course {
 				semester == course.semester;
 	}
 	
+	@Override 
+	public String toString() {
+		return "CS" + getCode() + " " + getName() + " (" 
+				+ this.getSemester() + " " + this.getYear() + ")";
+	}
+	
 	public String getCourseSummaryInfo() {
 		String info = "Categories: ";
 		

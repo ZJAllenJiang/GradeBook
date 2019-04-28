@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Components>
+<Cave_Adventure>
+<isEditable>true</isEditable>
+<maxScore>80.0</maxScore>
+<mode>PERCENTAGE</mode>
+<name>Cave_Adventure</name>
+<type>gradeable</type>
+<weight>0.4</weight>
+</Cave_Adventure>
+<Bank_ATM>
+<isEditable>true</isEditable>
+<maxScore>120.0</maxScore>
+<mode>PERCENTAGE</mode>
+<name>Bank_ATM</name>
+<type>gradeable</type>
+<weight>0.6</weight>
+</Bank_ATM>
+</Components>

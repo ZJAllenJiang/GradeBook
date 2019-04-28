@@ -143,8 +143,6 @@ public abstract class Category {
 	}
 	
 	public void deleteComponent(String componentName) {
-		// TODO Auto-generated method stub
-		System.err.println("TODO: Implement Delete Category.deleteComponent()");
 		for (CategoryComponent c : components) {
 			
 			if (c.getName().equals(componentName)) {

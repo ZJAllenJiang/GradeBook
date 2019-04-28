@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Components>
+<Theory>
+<isEditable>true</isEditable>
+<maxScore>100.0</maxScore>
+<mode>POINTS_LOST</mode>
+<name>Theory</name>
+<type>gradeable</type>
+<weight>0.4</weight>
+</Theory>
+<Practical>
+<isEditable>true</isEditable>
+<maxScore>100.0</maxScore>
+<mode>POINTS_LOST</mode>
+<name>Practical</name>
+<type>gradeable</type>
+<weight>0.6</weight>
+</Practical>
+</Components>

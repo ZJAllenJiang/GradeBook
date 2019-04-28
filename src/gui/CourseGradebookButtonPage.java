@@ -99,8 +99,8 @@ public class CourseGradebookButtonPage {
 		JLabel courseTitleLabel = new JLabel("");
 		courseTitleLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
 		courseTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		courseTitleLabel.setBounds(400, 60, 400, 60);
-		courseTitleLabel.setText("CS " + course.getCode() + " Gradebook");
+		courseTitleLabel.setBounds(200, 60, 800, 60);
+		courseTitleLabel.setText(course.toString() + " Gradebook");
 		frame.getContentPane().add(courseTitleLabel);
 		
 		JButton addStudentButton = new JButton("Add Student");
