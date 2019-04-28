@@ -1,25 +1,17 @@
 package model;
 
-import javafx.util.Pair;
-
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public abstract class Category {
 	protected String name;
 	protected ArrayList<CategoryComponent> components;
-	protected ArrayList<StudentEntry> studentEntries;
-	protected TextComponent averages;
-	
+	protected ArrayList<StudentEntry> studentEntries;	
 	
 	public Category(String categName, ArrayList<Student> students) {
 		this.name = categName;
 		
 		components = new ArrayList<>();
 		studentEntries = new ArrayList<>();
-		averages = new TextComponent("Total", false);
-		averages.createEntry();
 		
 		for (Student student : students) {
 			studentEntries.add(new StudentEntry(student, components));

@@ -180,7 +180,7 @@ public class Course {
 			return false;
 		
 		categories.add(category);
-		summary.addComponentIfApplicable(category);
+		summary.autoAddComponentIfApplicable(category);
 		return true;
 	}
 	

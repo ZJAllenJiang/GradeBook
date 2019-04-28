@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -23,14 +21,10 @@ import model.Category;
 import model.CategoryComponent;
 import model.Course;
 import model.GradeableCategory;
-import model.GradeableComponent;
 import model.Statistics;
 import model.Student;
 import model.Student.StudentType;
 import model.TextCategory;
-import model.TextComponent;
-import model.GradeableComponent.DataEntryMode;
-
 import java.awt.Font;
 
 public class CourseGradebookButtonPage {
@@ -187,10 +181,22 @@ public class CourseGradebookButtonPage {
 		        if(result == JOptionPane.OK_OPTION) {
 		        	Course courseToCopy = coursesPanel.getSelectedCourse();
 
+		        	//Add the Categories
 					for(Category newCategory : courseToCopy.getAllCategories()) {
 						newCategory.clearStudentEntries();
 						course.addCategory(newCategory);
 						gBookPanel.addCategoryTab(newCategory);
+					}
+
+		        	//Add to Summary tab
+					//First clear out anything we may have added to it automatically
+					course.getSummary().getComponents().clear();
+					for(CategoryComponent cc : courseToCopy.getSummary().getComponents()) {
+						if(cc.isGradeable()) {
+							continue;
+						}
+						
+						course.getSummary().addComponent(cc);
 					}
 					
 					gBookPanel.setAllData(true);

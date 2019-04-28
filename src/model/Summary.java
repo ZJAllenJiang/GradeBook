@@ -24,7 +24,7 @@ public class Summary extends TextCategory implements OverallGradeable {
 		this.course = course;
 	}
 	
-	public void addComponentIfApplicable(Category newCategory) {
+	public void autoAddComponentIfApplicable(Category newCategory) {
 		if(!newCategory.isGradeable()) {
 			return;
 		}
