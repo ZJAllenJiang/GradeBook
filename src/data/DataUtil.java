@@ -313,9 +313,13 @@ public class DataUtil {
 		// return all directory under dir
 		ArrayList<String> res = new ArrayList<String>();
 		File currentDir = new File(dir);
-		for (File file : currentDir.listFiles()) {
-			if (file.isDirectory())
-				res.add(file.getName());
+		try {
+			for (File file : currentDir.listFiles()) {
+				if (file.isDirectory())
+					res.add(file.getName());
+			}
+		} catch(Exception e) {
+//			System.out.println("[DataUtil lookFirDir] " + e.getMessage());
 		}
 		return res;
 	}
