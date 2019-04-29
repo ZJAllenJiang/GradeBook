@@ -208,8 +208,24 @@ public class EditCoursePage {
 				}
 				Object[] courseRow = {name, code, year, semester, status, "View", "Edit", "Delete"};
 				DefaultTableModel tableModel = (DefaultTableModel) CourseCollectionPage.courseTable.getModel();
+				char[] numOrNot = year.toCharArray();
+				boolean flag = true;
+				for (int i = 0; i < numOrNot.length; i++) {
+					if(numOrNot[i] >= '0' && numOrNot[i] <= '9') {
+						continue;
+					}else {
+						flag = false;
+						break;
+					}
+				}
 				if(name.equals("") || code.equals("") || year.equals("") || semester.equals("")) {
-					// could add some more features
+					//frame.dispose();
+					String str = "You input course data is missing some values.";
+					new HandleEditCoursePopup(str);
+				}else if(flag == false) {
+					//frame.dispose();
+					String str = "You input year is not a number value!";
+					new HandleEditCoursePopup(str);
 				}else {
 					tableModel.setValueAt(name, currentRow, 0);
 					tableModel.setValueAt(code, currentRow, 1);
@@ -228,8 +244,9 @@ public class EditCoursePage {
 						currentCourse.setStatus(false);
 					}
 					DatabaseAPI.saveCourse(currentCourse);
+					frame.dispose();
 				}
-				frame.dispose();
+				
 				
 			}
 		});
