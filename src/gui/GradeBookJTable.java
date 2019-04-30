@@ -165,7 +165,9 @@ public class GradeBookJTable extends JTable {
 	}
 	
 	public boolean isCellEditable(String columnName) { 
-		if(columnName.equals(Summary.TYPE) || columnName.equals(OVERALL_GRADE_COLUMN_NAME)) {
+		if(columnName.equals(Summary.TYPE) 
+				|| columnName.equals(Summary.STUDENT_ID)
+				|| columnName.equals(OVERALL_GRADE_COLUMN_NAME)) {
 			return false;
 		}
 		
