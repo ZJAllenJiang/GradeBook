@@ -83,6 +83,7 @@ public class DeleteCourseConfirmation {
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
+				new CourseCollectionPage();
 			}
 		});
 		cancelButton.setBounds(90, 150, 120, 30);
