@@ -46,7 +46,7 @@ import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
 	private static final String OVERALL_GRADE_COLUMN_NAME = "Overall Grade";
-	public static final String ERROR_STRING = "Weights Error";
+	public static final String ERROR_STRING = "Weight Error";
 	
 	private ArrayList<String> studentHeaders;
 	
@@ -229,10 +229,8 @@ public class GradeBookJTable extends JTable {
 			}
 			
 			//Computation errors?
-			if(isSummaryTable()) {
-				if(value != null && value.equals(ERROR_STRING)) {
-					rendererComp.setBackground(Color.PINK);
-				}
+			if(value != null && value.equals(ERROR_STRING)) {
+				rendererComp.setBackground(Color.PINK);
 			}
 
 			//Comment coloring
@@ -581,9 +579,7 @@ public class GradeBookJTable extends JTable {
 				}
 				else {
 					success = false;
-					if(this.isSummaryTable()) {
-						this.setValueAt(ERROR_STRING, row, overallGradeGUIColumn);
-					}
+					this.setValueAt(ERROR_STRING, row, overallGradeGUIColumn);
 				}
 
 				if(!this.isSummaryTable()) {
