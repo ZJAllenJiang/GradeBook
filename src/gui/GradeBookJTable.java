@@ -576,7 +576,8 @@ public class GradeBookJTable extends JTable {
 				
 				if(grade != null) {
 					//Set the overall grade value
-					this.setValueAt(grade.toString(), row, overallGradeGUIColumn);
+					String stringValue = GuiUtil.getDisplayFormat(grade);
+					this.setValueAt(stringValue, row, overallGradeGUIColumn);
 				}
 				else {
 					success = false;
@@ -591,7 +592,8 @@ public class GradeBookJTable extends JTable {
 					DataEntry<?> dataEntry = summaryRow.getDataEnty(categoryName);
 					if(dataEntry != null) {
 						if(grade != null) {
-							dataEntry.setDataFromGUI(grade.toString());
+							String stringValue = GuiUtil.getDisplayFormat(grade);
+							dataEntry.setDataFromGUI(stringValue);
 						}
 						else {
 							dataEntry.setDataFromGUI(ERROR_STRING);

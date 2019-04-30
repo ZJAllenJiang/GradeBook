@@ -92,7 +92,7 @@ public class GradeableComponentPanel extends NamePanel{
 		}catch(Exception e) {
 			return false;
 		}
-		if(percentWeight <= 0 || 100 < percentWeight) {
+		if(percentWeight < 0 || 100 < percentWeight) {
 			return false;
 		}
 		
