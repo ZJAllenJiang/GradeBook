@@ -15,4 +15,9 @@ public class GuiUtil {
 	public static Component createHorizontalGap(int width) {
 		return Box.createRigidArea(new Dimension(width, 0));
 	}
+	
+	public static String getDisplayFormat(double computedValue) {
+		double roundedValue = Math.round(computedValue * 100.0) / 100.0;
+		return Double.toString(roundedValue);
+	}
 }

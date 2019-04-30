@@ -24,7 +24,8 @@ public class StatisticsPanel extends JPanel{
 		dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.X_AXIS));
 		JLabel dataLabel = new JLabel(label + ": ");
 		dataPanel.add(dataLabel);
-		JLabel data = new JLabel(Double.toString(value));
+		String stringValue = GuiUtil.getDisplayFormat(value);
+		JLabel data = new JLabel(stringValue);
 		dataPanel.add(data);
 		this.add(dataPanel);
 	}
