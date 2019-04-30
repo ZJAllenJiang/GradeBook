@@ -63,7 +63,7 @@ public class LoginPage {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setTitle("Login");
+		frame.setTitle("GrA+deBook Login");
 		
 		JLabel welcomeLabel = new JLabel("Welcome");
 		welcomeLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
