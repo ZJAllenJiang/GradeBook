@@ -88,7 +88,7 @@ public class CourseCollectionPage {
 		courseLabel.setBounds(340, 20, 120, 60);
 		frame.getContentPane().add(courseLabel);
 		
-		JButton addCourseButton = new JButton("Add Course +");
+		JButton addCourseButton = new JButton("Add Course");
 		addCourseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();

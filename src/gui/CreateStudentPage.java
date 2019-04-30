@@ -83,7 +83,7 @@ public class CreateStudentPage {
 				
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setTitle("Create New Course");
+		frame.setTitle("Create New Student");
 		
 		JLabel addANewStudentLabel = new JLabel("Add a new student");
 		addANewStudentLabel.setHorizontalAlignment(SwingConstants.CENTER);

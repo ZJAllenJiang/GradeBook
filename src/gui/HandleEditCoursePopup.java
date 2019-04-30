@@ -72,7 +72,7 @@ public class HandleEditCoursePopup {
 				
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setTitle("Input Error");
+		frame.setTitle("Edit Input Error");
 		
 		JLabel tipLabel = new JLabel(str);
 		tipLabel.setHorizontalAlignment(SwingConstants.CENTER);
