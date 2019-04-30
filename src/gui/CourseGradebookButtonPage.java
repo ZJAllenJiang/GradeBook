@@ -150,7 +150,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		importStudentsButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		importStudentsButton.setBounds(260, 140, 200, 40);
+		importStudentsButton.setBounds(740, 140, 200, 40);
 		frame.getContentPane().add(importStudentsButton);
 		
 		JButton gradingSchemeButton = new JButton("Import Grading Scheme");
@@ -203,8 +203,8 @@ public class CourseGradebookButtonPage {
 		        }	        
 			}
 		});
-		gradingSchemeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		gradingSchemeButton.setBounds(485, 140, 230, 40);
+		gradingSchemeButton.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		gradingSchemeButton.setBounds(965, 140, 210, 40);
 		frame.getContentPane().add(gradingSchemeButton);
 		
 		JButton addGradeCategoryButton = new JButton("Add Grade Category");
@@ -214,7 +214,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		addGradeCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		addGradeCategoryButton.setBounds(740, 140, 200, 40);
+		addGradeCategoryButton.setBounds(260, 140, 200, 40);
 		frame.getContentPane().add(addGradeCategoryButton);
 		
 		JButton addTextCategoryButton = new JButton("Add Text Category");
@@ -224,7 +224,7 @@ public class CourseGradebookButtonPage {
 			}
 		});
 		addTextCategoryButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		addTextCategoryButton.setBounds(970, 140, 200, 40);
+		addTextCategoryButton.setBounds(500, 140, 200, 40);
 		frame.getContentPane().add(addTextCategoryButton);
 		
 		

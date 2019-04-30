@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import java.awt.SystemColor;
 
 public class LoginPage {
 
