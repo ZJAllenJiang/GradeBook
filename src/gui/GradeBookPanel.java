@@ -208,18 +208,34 @@ public class GradeBookPanel extends JPanel {
 		setAllData(false);
 	}
 	
-	public boolean updateOverallGrades() {
+	public String updateOverallGrades() {
 		setAllData(true);
 		
-		boolean status = true;
+		String errorString = null;
 		//Update the Summary table last
 		for(int tabIndex=gradeBookTabs.getTabCount()-1; tabIndex>=0; tabIndex--) {
 			GradeBookTablePanel gBookTablePanel = (GradeBookTablePanel) gradeBookTabs.getComponentAt(tabIndex);
 			boolean result = gBookTablePanel.updateOverallGrades(course);
-			status = status && result;
+			
+			String categoryName = gradeBookTabs.getTitleAt(tabIndex);
+			if(!result) {
+				if(!categoryName.equals(Summary.SUMMARY)) {
+					if(errorString == null) {
+						errorString = "Assignment weights do not sum to 100% in the categories: " + categoryName;
+					}
+					else {
+						errorString = errorString + ", " + categoryName;
+					}
+				}
+				else {
+					if(errorString == null) {
+						errorString = "Categories for the course do not sum to 100%";
+					}
+				}
+			}
 		}
 		
-		return status;
+		return errorString;
 	}
 	
 	public void setAllData(boolean doSetData) {

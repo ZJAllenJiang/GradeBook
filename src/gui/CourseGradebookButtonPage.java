@@ -248,9 +248,9 @@ public class CourseGradebookButtonPage {
 		JButton recalculateButton = new JButton("Recalculate");
 		recalculateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean status = gBookPanel.updateOverallGrades();
+				String status = gBookPanel.updateOverallGrades();
     			
-				if(status) {
+				if(status == null) {
 					Statistics stats = course.courseStatistics();		    							
 					
 					StatisticsPanel statisticsPanel = new StatisticsPanel(stats.getMedian(), 
@@ -260,8 +260,7 @@ public class CourseGradebookButtonPage {
 							"Statistics for Course: " + course.getName(), JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(frame, "Error when computing the grades for course: " + course.getName()
-					+ "\n See Summary tab for more information.", 
+					JOptionPane.showMessageDialog(frame, status, 
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
