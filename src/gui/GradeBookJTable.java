@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,6 +46,7 @@ import model.Statistics;
 import model.GradeableComponent;
 
 public class GradeBookJTable extends JTable {
+	private static final int FONT_SIZE = 16;
 	private static final String OVERALL_GRADE_COLUMN_NAME = "Overall Grade";
 	public static final String ERROR_STRING = "Weight Error";
 	
@@ -55,15 +57,26 @@ public class GradeBookJTable extends JTable {
 			
 	public GradeBookJTable(GradeBookPanel gradeBookPanel, Category category) {
 		super();
+		setUpFont();
 		
 		this.gradeBookPanel = gradeBookPanel;
 		this.category = category;
-				
+
 		refreshTable();
 		
 		//Setup right clicks just once
 		addRightClickHeaderMenu();
 		addRightClickContentMenu();
+	}
+	
+	private void setUpFont() {
+		Font headerFont = this.getTableHeader().getFont();
+		Font newHeaderFont = new Font(headerFont.getName(), headerFont.getStyle(), FONT_SIZE);
+		this.getTableHeader().setFont(newHeaderFont);
+
+		Font tableFont = this.getFont();
+		Font newTableFont = new Font(tableFont.getName(), tableFont.getStyle(), FONT_SIZE - 2);
+		this.setFont(newTableFont);		
 	}
 	
 	public boolean isSummaryTable() {
@@ -109,7 +122,7 @@ public class GradeBookJTable extends JTable {
 	    
 	    for (int i = 0; i < tableModel.getColumnCount(); i++) {
 	    	TableColumn column = this.getColumnModel().getColumn(i);
-	        column.setMinWidth(130);
+	        column.setMinWidth(140);
 	    }
 	    //this.setPreferredScrollableViewportSize(new Dimension(300, 200));
         this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

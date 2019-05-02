@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +39,9 @@ public class GradeBookPanel extends JPanel {
 
 	private void setUpGUI() {
 		gradeBookTabs = new JTabbedPane();
+		Font font = gradeBookTabs.getFont();
+		Font newFont = new Font(font.getName(), font.getStyle(), 18);
+		gradeBookTabs.setFont(newFont);
 		
 		//Add the Summary
 		gradeBookTabs.addTab(Summary.SUMMARY, new GradeBookTablePanel(this, course.getSummary()));

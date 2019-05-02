@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -43,9 +44,14 @@ public class GradeBookTablePanel extends JPanel {
 	}
 
 	private void addButtonsForTable() {
+		int fontSize = 14;
+		
 		JPanel addPanel = new JPanel();
 		if(category.isGradeable()) {
 			JButton addGradeBtn = new JButton("Add New " + category.getName());
+			Font oldFont = addGradeBtn.getFont();
+			Font newFont = new Font(oldFont.getName(), oldFont.getStyle(), fontSize);
+			addGradeBtn.setFont(newFont);
 			addGradeBtn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -57,6 +63,9 @@ public class GradeBookTablePanel extends JPanel {
 		}
 		
 		JButton addTextBtn = new JButton("Add New Text Column");
+		Font oldFont = addTextBtn.getFont();
+		Font newFont = new Font(oldFont.getName(), oldFont.getStyle(), fontSize);
+		addTextBtn.setFont(newFont);
 		addTextBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
