@@ -314,6 +314,7 @@ public class GradeBookJTable extends JTable {
             public void actionPerformed(ActionEvent e) {
             	//Set the valid data in the model in the format it is in now
     			GradeBookJTable.this.setDataFromGUI();
+    			GradeBookJTable.this.refreshTable();	//Wipe out any invalid data
     			
     			Statistics stats = category.componentStatistics(selectedModelHeader);
     			
