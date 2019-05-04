@@ -9,7 +9,9 @@ public class Statistics {
 	double standardDev;
 	
 	public Statistics(ArrayList<Double> grades) {
-		Collections.sort(grades);
+		if(grades != null) {
+			Collections.sort(grades);
+		}
 		mean = computeMean(grades);
 		median = computeMedian(grades);
 		standardDev = computeDeviation(grades);

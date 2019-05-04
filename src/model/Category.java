@@ -177,8 +177,13 @@ public abstract class Category {
 		ArrayList<Double> componentGrades = new ArrayList<>();
 		
 		for (StudentEntry studentEntry : studentEntries) {
-			if (studentEntry.getStudent().isStatus())
-				componentGrades.add((Double) studentEntry.getDataEnty(componentName).getData());
+			if (studentEntry.getStudent().isStatus()) {
+				Object g = studentEntry.getDataEnty(componentName).getData();
+				if(g == null) {
+					g = new Double(100);
+				}
+				componentGrades.add((Double) g);
+			}
 		}
 		
 		return new Statistics(componentGrades);
