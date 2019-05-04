@@ -1,8 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class GradeableCategory extends Category implements OverallGradeable {
 	double weight;

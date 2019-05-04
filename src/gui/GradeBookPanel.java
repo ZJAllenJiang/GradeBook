@@ -17,13 +17,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.TabbedPaneUI;
 
 import model.Category;
-import model.CategoryComponent;
 import model.Course;
 import model.Summary;
-import model.GradeableComponent.DataEntryMode;
 import model.Student;
 import model.GradeableCategory;
-import model.GradeableComponent;
 import model.Statistics;
 
 public class GradeBookPanel extends JPanel {

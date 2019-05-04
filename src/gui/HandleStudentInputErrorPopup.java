@@ -12,8 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import model.Course;
-
 public class HandleStudentInputErrorPopup {
 
 	private JFrame frame;

@@ -3,8 +3,6 @@ package model;
 import java.util.Map;
 import java.util.TreeMap;
 
-import model.GradeableComponent.DataEntryMode;
-
 public class TextComponent extends CategoryComponent {
 	
 	// self compose through reading data from database

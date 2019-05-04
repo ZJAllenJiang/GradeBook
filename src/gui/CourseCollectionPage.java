@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
@@ -15,19 +14,15 @@ import javax.swing.table.TableColumn;
 import data.DatabaseAPI;
 import model.Course;
 
-import java.awt.ScrollPane;
 import java.awt.Toolkit;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JPanel;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
 
 public class CourseCollectionPage {
 	public static JTable courseTable;

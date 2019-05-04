@@ -1,9 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
 import model.Student.StudentType;
 
 public class Summary extends TextCategory implements OverallGradeable {
