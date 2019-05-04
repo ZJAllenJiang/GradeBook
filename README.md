@@ -2,11 +2,11 @@
 Your A+ grading assistant
 
 ## Contributors:
-Team 8
-Efstathios Karatsiolis
-Wei Jiang
-Aleksandr Burkatovskiy
-Chenjun Wu
+Team 8  
+Efstathios Karatsiolis  
+Wei Jiang  
+Aleksandr Burkatovskiy  
+Chenjun Wu  
 
 
 ## How to Run:
